@@ -1,33 +1,34 @@
 package uk.co.newagedev.hieranarchy.graphics;
 
-import uk.co.newagedev.hieranarchy.util.Location;
-
 public class Camera {
-	private Location location;
+	private int x, y;
 	private float zoom = 1.0f;
 	
-	public Camera(Location loc) {
-		location = loc;
+	public Camera(int x, int y) {
+		this.x = x;
+		this.y = y;
 	}
 	
 	public float getX() {
-		return location.getX();
+		return x;
 	}
 	
 	public float getY() {
-		return location.getY();
+		return y;
 	}
 	
 	public float getZoom() {
 		return zoom;
 	}
 	
-	public Location getLocation() {
-		return location;
+	public void move(int x, int y) {
+		this.x += x;
+		this.y += y;
 	}
 	
-	public Camera(Location loc, float zoom) {
-		location = loc;
+	public Camera(int x, int y, float zoom) {
+		this.x = x;
+		this.y = y;
 		this.zoom = zoom;
 	}
 }

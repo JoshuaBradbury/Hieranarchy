@@ -1,7 +1,6 @@
 package uk.co.newagedev.hieranarchy.tile;
 
 import uk.co.newagedev.hieranarchy.Main;
-import uk.co.newagedev.hieranarchy.graphics.RenderPriority;
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.util.Location;
 
@@ -11,7 +10,6 @@ public class TileConnectedTexture extends Tile {
 		super(loc, texture);
 	}
 
-	@RenderPriority
 	public void render() {
 		float txmi = 0.0f, tymi = 0.0f, txma = 1.0f, tyma = 1.0f;
 		boolean top = false, bottom = false, left = false, right = false;
@@ -45,29 +43,29 @@ public class TileConnectedTexture extends Tile {
 		}
 		
 		if (top && !bottom) {
-			tyma = 0.75f;
+			tyma = 0.8f;
 		}
 		
 		if (bottom && !top) {
-			tymi = 0.25f;
+			tymi = 0.2f;
 		}
 		
 		if (top && bottom) {
-			tymi = 0.25f;
-			tyma = 0.75f;
+			tymi = 0.2f;
+			tyma = 0.8f;
 		}
 		
 		if (left && !right) {
-			txmi = 0.25f;
+			txmi = 0.2f;
 		}
 		
 		if (right && !left) {
-			txma = 0.75f;
+			txma = 0.8f;
 		}
 		
 		if (left && right) {
-			txmi = 0.25f;
-			txma = 0.75f;
+			txmi = 0.2f;
+			txma = 0.8f;
 		}
 		
 		if (!left && !right && !top && !bottom) {

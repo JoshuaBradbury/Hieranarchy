@@ -42,4 +42,24 @@ public class KeyBinding {
 		int id = getBinding(function);
 		return Keyboard.isKeyDown(id);
 	}
+	
+	public static boolean isKeyPrssing(String function) {
+		int id = getBinding(function);
+		while(Keyboard.next()) {
+			if(Keyboard.getEventKey() == id) {
+				return Keyboard.getEventKeyState();
+			}
+		}
+		return false;
+	}
+	
+	public static boolean isKeyReleasing(String function) {
+		int id = getBinding(function);
+		while(Keyboard.next()) {
+			if(Keyboard.getEventKey() == id) {
+				return !Keyboard.getEventKeyState();
+			}
+		}
+		return false;
+	}
 }

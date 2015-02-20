@@ -3,14 +3,13 @@ package uk.co.newagedev.hieranarchy.map;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 import uk.co.newagedev.hieranarchy.Main;
 import uk.co.newagedev.hieranarchy.graphics.Background;
 import uk.co.newagedev.hieranarchy.graphics.Camera;
-import uk.co.newagedev.hieranarchy.graphics.RenderPriority;
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.tile.Tile;
+import uk.co.newagedev.hieranarchy.tile.TileConnectedTexture;
 import uk.co.newagedev.hieranarchy.tile.TileType;
 import uk.co.newagedev.hieranarchy.util.FileUtil;
 import uk.co.newagedev.hieranarchy.util.KeyBinding;
@@ -18,16 +17,16 @@ import uk.co.newagedev.hieranarchy.util.Location;
 import uk.co.newagedev.hieranarchy.util.Logger;
 
 public class Map {
-	
+
 	private Background bg;
 	private Tile[] tiles;
 	private Camera camera;
-	
+
 	public Map(String mapPath) {
 		loadMap(mapPath);
-		switchCamera(new Camera(new Location(10, 0)));
+		switchCamera(new Camera(100, 0));
 	}
-	
+
 	public Tile getTileAt(Location loc) {
 		Tile tile = null;
 		for (Tile t : tiles) {
@@ -40,27 +39,27 @@ public class Map {
 		}
 		return tile;
 	}
-	
+
 	public void setBackground(Background background) {
 		bg = background;
 		bg.setMap(this);
 	}
-	
+
 	public Camera getCurrentCamera() {
 		return camera;
 	}
-	
+
 	public void switchCamera(Camera camera) {
 		this.camera = camera;
 	}
-	
+
 	public void update() {
 		bg.update();
 		if (KeyBinding.isKeyDown("Left")) {
-			camera.getLocation().add(new Location(5, 0));
+			camera.move((int) (5 * camera.getZoom()), 0);
 		}
 		if (KeyBinding.isKeyDown("Right")) {
-			camera.getLocation().add(new Location(-5, 0));
+			camera.move((int) (-5 * camera.getZoom()), 0);
 		}
 		for (Tile tile : tiles) {
 			if (tile != null) {
@@ -68,21 +67,16 @@ public class Map {
 			}
 		}
 	}
-	
+
 	public void renderTile(Tile tile) {
-		for (Method method : tile.getClass().getMethods()) {
-			if (method.isAnnotationPresent(RenderPriority.class)) {
-				try {
-					method.invoke(null, (Object[]) null);
-					return;
-				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-					e.printStackTrace();
-				}
-			}
+		if (tile instanceof TileConnectedTexture) {
+			TileConnectedTexture tct = (TileConnectedTexture) tile;
+			tct.render();
+		} else {
+			Screen.renderSprite(tile.getSprite(), tile.getLocation(), camera);
 		}
-		Screen.renderSprite(tile.getSprite(), tile.getLocation(), camera);
 	}
-	
+
 	public void render() {
 		bg.render();
 		for (Tile tile : tiles) {
@@ -91,7 +85,7 @@ public class Map {
 			}
 		}
 	}
-	
+
 	public void loadMap(String mapPath) {
 		BufferedImage image = Main.screen.loadImage(mapPath);
 		if (image != null) {
