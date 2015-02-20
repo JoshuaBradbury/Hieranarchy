@@ -4,14 +4,32 @@ import uk.co.newagedev.hieranarchy.map.Map;
 import uk.co.newagedev.hieranarchy.util.Location;
 
 public class Background {
-	private String spriteName;
-	private Map map;
-	private int startX, x, y, z;
+	/**
+	 * The sprite variable for the background;
+	 */
+	private String sprite;
 	
-	public Background(String spriteName, int startX, int startY, int z) {
-		this.spriteName = spriteName;
+	/**
+	 * The map the background is a part of.
+	 */
+	private Map map;
+	
+	/**
+	 * The location variables for the background.
+	 */
+	private int startX, startY, x, y, z;
+	
+	/**
+	 * The constructor of Background.
+	 * @param sprite - the sprite of the background.
+	 * @param startX - the starting x of the background.
+	 * @param startY - the starting y of the background.
+	 * @param z - the factor the cameras offset is divided by.
+	 */
+	public Background(String sprite, int startX, int startY, int z) {
+		this.sprite = sprite;
 		this.startX = startX;
-		this.y = startY;
+		this.startY = startY;
 		this.z = z;
 	}
 	
@@ -21,14 +39,15 @@ public class Background {
 	
 	public void update() {
 		x = (int) ((map.getCurrentCamera().getX() / z) + startX);
+		y = (int) (startY + (map.getCurrentCamera().getY() / z));
 	}
 	
 	public void render() {
-		if (SpriteRegistry.doesSpriteExist(spriteName)) {
-			int width = SpriteRegistry.getSprite(spriteName).getWidth();
-			Screen.renderSpriteIgnoringCamera(spriteName, new Location(((x + map.getCurrentCamera().getX()) % width) - width, y));
-			Screen.renderSpriteIgnoringCamera(spriteName, new Location(((x + map.getCurrentCamera().getX()) % width), y));
-			Screen.renderSpriteIgnoringCamera(spriteName, new Location(((x + map.getCurrentCamera().getX()) % width) + width, y));
+		if (SpriteRegistry.doesSpriteExist(sprite)) {
+			int width = SpriteRegistry.getSprite(sprite).getWidth();
+			Screen.renderSpriteIgnoringCamera(sprite, new Location(((x + map.getCurrentCamera().getX()) % width) - width, y));
+			Screen.renderSpriteIgnoringCamera(sprite, new Location(((x + map.getCurrentCamera().getX()) % width), y));
+			Screen.renderSpriteIgnoringCamera(sprite, new Location(((x + map.getCurrentCamera().getX()) % width) + width, y));
 		}
 	}
 }

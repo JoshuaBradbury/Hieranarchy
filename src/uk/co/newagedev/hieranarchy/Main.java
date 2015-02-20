@@ -9,36 +9,85 @@ import uk.co.newagedev.hieranarchy.map.Map;
 import uk.co.newagedev.hieranarchy.util.KeyBinding;
 
 public class Main {
+	
+	/**
+	 * 	The title of the application.
+	 */
 	public static final String TITLE = "Hieranarchy";
-	public static final int WIDTH = 720, HEIGHT = 480, SPRITE_WIDTH = 64, SPRITE_HEIGHT = 64;
+	
+	/**
+	 * The width and height of the window.
+	 */
+	public static final int WIDTH = 720, HEIGHT = 480;
+	
+	/**
+	 * The default width and height of sprites.
+	 */
+	public static final int SPRITE_WIDTH = 64, SPRITE_HEIGHT = 64;
+	
+	/**
+	 * The default scale of the application.
+	 */
 	public static float SCALE = 1;
+	
+	/**
+	 * The screen variable of the application.
+	 */
 	public static Screen screen;
+	
+	/**
+	 * The thread of the application.
+	 */
 	private Thread thread;
+	
+	/**
+	 * Whether the application is running or not.
+	 */
 	private boolean running;
+	
+	/**
+	 * The current map being displayed.
+	 */
 	public static Map map;
 	
+	/**
+	 * Bundle of init methods.
+	 */
 	public void init() {
 		initResources();
-		initWorld();
+		initMap();
 		initBindings();
 	}
 	
+	/**
+	 * Initialises the resources for the game.
+	 */
 	public void initResources() {
 		SpriteRegistry.registerSprite("bg", "assets/textures/background.png");
 		SpriteRegistry.registerSprite("flooring", "assets/textures/flooring.png");
 		SpriteRegistry.registerSprite("icetile", "assets/textures/icesheet.png");
 	}
 	
+	/**
+	 * Binds the initial keys for the engine.
+	 */
 	public void initBindings() {
 		KeyBinding.bindKey("Left", Keyboard.KEY_LEFT);
 		KeyBinding.bindKey("Right", Keyboard.KEY_RIGHT);
 	}
 	
-	public void initWorld() {
+	/**
+	 * Initialises the original map.
+	 */
+	public void initMap() {
 		map = new Map("assets/maps/test.png");
 		map.setBackground(new Background("bg", 0, 0, 2));
 	}
 	
+	/**
+	 * Main method for the program.
+	 * @param args - Command line arguments.
+	 */
 	public static void main(String[] args) {
 		Main hieranarchy = new Main();
 		screen = new Screen();
@@ -46,12 +95,18 @@ public class Main {
 		hieranarchy.start();
 	}
 	
+	/**
+	 * Starts the thread and the engine.
+	 */
 	public synchronized void start() {
 		thread = new Thread("Hieranarchy");
 		running = true;
 		run();
 	}
 	
+	/**
+	 * Stops the engine and calls for the resources to be cleaned up.
+	 */
 	public synchronized void stop() {
 		cleanup();
 		try {
@@ -62,16 +117,25 @@ public class Main {
 		running = false;
 	}
 	
+	/**
+	 * Updates the map.
+	 */
 	public void update() {
 		map.update();
 	}
 	
+	/**
+	 * Prepares the screen for rendering and then renders the current map.
+	 */
 	public void render() {
 		screen.renderInit();
 		map.render();
 		screen.postRender();
 	}
 	
+	/**
+	 * Main loop for the program.
+	 */
 	public void run() {
 		long secondTime = System.currentTimeMillis();
 		int fps = 0;
@@ -90,6 +154,9 @@ public class Main {
 		}
 	}
 	
+	/**
+	 * Clears the sprite registry and destroys the display.
+	 */
 	public void cleanup() {
 		SpriteRegistry.clear();
 		screen.cleanup();
