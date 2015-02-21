@@ -8,6 +8,8 @@ import uk.co.newagedev.hieranarchy.Main;
 import uk.co.newagedev.hieranarchy.graphics.Background;
 import uk.co.newagedev.hieranarchy.graphics.Camera;
 import uk.co.newagedev.hieranarchy.graphics.Screen;
+import uk.co.newagedev.hieranarchy.state.State;
+import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.tile.Tile;
 import uk.co.newagedev.hieranarchy.tile.TileConnectedTexture;
 import uk.co.newagedev.hieranarchy.tile.TileType;
@@ -20,11 +22,11 @@ public class Map {
 
 	private Background bg;
 	private Tile[] tiles;
-	private Camera camera;
+	private String state;
 
-	public Map(String mapPath) {
+	public Map(String mapPath, String state) {
 		loadMap(mapPath);
-		switchCamera(new Camera(100, 0));
+		this.state = state;
 	}
 
 	public Tile getTileAt(Location loc) {
@@ -39,22 +41,19 @@ public class Map {
 		}
 		return tile;
 	}
+	
+	public State getState() {
+		return StateManager.getState(state);
+	}
 
 	public void setBackground(Background background) {
 		bg = background;
 		bg.setMap(this);
 	}
 
-	public Camera getCurrentCamera() {
-		return camera;
-	}
-
-	public void switchCamera(Camera camera) {
-		this.camera = camera;
-	}
-
 	public void update() {
 		bg.update();
+		Camera camera = getState().getCurrentCamera();
 		if (KeyBinding.isKeyDown("Left")) {
 			camera.move((int) (5 * camera.getZoom()), 0);
 		}
@@ -73,7 +72,7 @@ public class Map {
 			TileConnectedTexture tct = (TileConnectedTexture) tile;
 			tct.render();
 		} else {
-			Screen.renderSprite(tile.getSprite(), tile.getLocation(), camera);
+			Screen.renderSprite(tile.getSprite(), tile.getLocation(), getState().getCurrentCamera());
 		}
 	}
 

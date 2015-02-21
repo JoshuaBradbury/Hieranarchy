@@ -3,9 +3,12 @@ package uk.co.newagedev.hieranarchy;
 import org.lwjgl.input.Keyboard;
 
 import uk.co.newagedev.hieranarchy.graphics.Background;
+import uk.co.newagedev.hieranarchy.graphics.Camera;
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
 import uk.co.newagedev.hieranarchy.map.Map;
+import uk.co.newagedev.hieranarchy.state.GameState;
+import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.util.KeyBinding;
 
 public class Main {
@@ -46,16 +49,16 @@ public class Main {
 	private boolean running;
 	
 	/**
-	 * The current map being displayed.
+	 * The current state being displayed.
 	 */
-	public static Map map;
+	public static String currentState;
 	
 	/**
 	 * Bundle of init methods.
 	 */
 	public void init() {
 		initResources();
-		initMap();
+		initStates();
 		initBindings();
 	}
 	
@@ -77,11 +80,16 @@ public class Main {
 	}
 	
 	/**
-	 * Initialises the original map.
+	 * Initialises the states.
 	 */
-	public void initMap() {
-		map = new Map("assets/maps/test.png");
+	public void initStates() {
+		Map map = new Map("assets/maps/test.png", "game");
 		map.setBackground(new Background("bg", 0, 0, 2));
+		GameState state = new GameState(map);
+		state.registerCamera("start", new Camera(100, 0));
+		state.switchCamera("start");
+		currentState = "game";
+		StateManager.registerState(currentState, state);
 	}
 	
 	/**
@@ -118,18 +126,18 @@ public class Main {
 	}
 	
 	/**
-	 * Updates the map.
+	 * Updates the current state.
 	 */
 	public void update() {
-		map.update();
+		StateManager.getState(currentState).update();
 	}
 	
 	/**
-	 * Prepares the screen for rendering and then renders the current map.
+	 * Prepares the screen for rendering and then renders the current state.
 	 */
 	public void render() {
 		screen.renderInit();
-		map.render();
+		StateManager.getState(currentState).render();
 		screen.postRender();
 	}
 	

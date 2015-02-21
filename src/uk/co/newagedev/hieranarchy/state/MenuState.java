@@ -5,7 +5,7 @@ import java.util.List;
 
 import uk.co.newagedev.hieranarchy.ui.Component;
 
-public class MenuState implements State {
+public class MenuState extends State {
 
 	public List<Component> components = new ArrayList<Component>();
 	

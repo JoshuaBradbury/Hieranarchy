@@ -38,16 +38,16 @@ public class Background {
 	}
 	
 	public void update() {
-		x = (int) ((map.getCurrentCamera().getX() / z) + startX);
-		y = (int) (startY + (map.getCurrentCamera().getY() / z));
+		x = (int) ((map.getState().getCurrentCamera().getX() / z) + startX);
+		y = (int) (startY + (map.getState().getCurrentCamera().getY() / z));
 	}
 	
 	public void render() {
 		if (SpriteRegistry.doesSpriteExist(sprite)) {
 			int width = SpriteRegistry.getSprite(sprite).getWidth();
-			Screen.renderSpriteIgnoringCamera(sprite, new Location(((x + map.getCurrentCamera().getX()) % width) - width, y));
-			Screen.renderSpriteIgnoringCamera(sprite, new Location(((x + map.getCurrentCamera().getX()) % width), y));
-			Screen.renderSpriteIgnoringCamera(sprite, new Location(((x + map.getCurrentCamera().getX()) % width) + width, y));
+			Screen.renderSpriteIgnoringCamera(sprite, new Location(((x + map.getState().getCurrentCamera().getX()) % width) - width, y));
+			Screen.renderSpriteIgnoringCamera(sprite, new Location(((x + map.getState().getCurrentCamera().getX()) % width), y));
+			Screen.renderSpriteIgnoringCamera(sprite, new Location(((x + map.getState().getCurrentCamera().getX()) % width) + width, y));
 		}
 	}
 }

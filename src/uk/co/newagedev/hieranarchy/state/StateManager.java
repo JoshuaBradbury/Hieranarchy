@@ -7,11 +7,15 @@ public class StateManager {
 
 	private static Map<String, State> states = new HashMap<String, State>();
 	
-	public static void addState(String name, State state) {
+	public static void registerState(String name, State state) {
 		states.put(name, state);
 	}
 	
 	public static void removeState(String name) {
 		states.remove(name);
+	}
+	
+	public static State getState(String name) {
+		return states.get(name);
 	}
 }
