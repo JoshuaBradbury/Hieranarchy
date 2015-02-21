@@ -1,13 +1,11 @@
-package uk.co.newagedev.hieranarchy;
+package uk.co.newagedev.hieranarchy.testing;
 
 import org.lwjgl.input.Keyboard;
 
 import uk.co.newagedev.hieranarchy.graphics.Background;
-import uk.co.newagedev.hieranarchy.graphics.Camera;
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
 import uk.co.newagedev.hieranarchy.map.Map;
-import uk.co.newagedev.hieranarchy.state.GameState;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.util.KeyBinding;
 
@@ -85,10 +83,14 @@ public class Main {
 	public void initStates() {
 		Map map = new Map("assets/maps/test.png", "game");
 		map.setBackground(new Background("bg", 0, 0, 2));
-		GameState state = new GameState(map);
-		state.registerCamera("start", new Camera(100, 0));
-		state.switchCamera("start");
-		currentState = "game";
+		//GameState state = new GameState(map);
+		//state.registerCamera("start", new Camera(100, 0));
+		//state.switchCamera("start");
+		//currentState = "game";
+		//StateManager.registerState(currentState, state);
+		
+		StartMenuState state = new StartMenuState();
+		currentState = "start menu";
 		StateManager.registerState(currentState, state);
 	}
 	
