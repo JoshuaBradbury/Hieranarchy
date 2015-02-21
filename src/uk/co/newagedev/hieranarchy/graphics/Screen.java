@@ -7,6 +7,7 @@ import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glColor3f;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
@@ -28,8 +29,9 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
+import org.newdawn.slick.util.BufferedImageUtil;
 
-import uk.co.newagedev.hieranarchy.Main;
+import uk.co.newagedev.hieranarchy.testing.Main;
 import uk.co.newagedev.hieranarchy.util.FileUtil;
 import uk.co.newagedev.hieranarchy.util.Location;
 import uk.co.newagedev.hieranarchy.util.Logger;
@@ -92,9 +94,9 @@ public class Screen {
 		}
 	}
 
-	public static void renderSprite(String texture, float x, float y, float width, float height, float[] texCoords) {
-		if (SpriteRegistry.doesSpriteExist(texture)) {
-			SpriteRegistry.getSprite(texture).bind();
+	public static void renderSprite(String spriteName, float x, float y, float width, float height, float[] texCoords) {
+		if (SpriteRegistry.doesSpriteExist(spriteName)) {
+			SpriteRegistry.getSprite(spriteName).bind();
 			glBegin(GL_QUADS);
 			{
 				glTexCoord2f(texCoords[1], texCoords[3]);
@@ -149,8 +151,60 @@ public class Screen {
 		}
 		loadSpritesFromImage(image, width, height, names);
 	}
-	
+
 	public void loadSpritesFromImage(String image, int width, int height, String[] names) {
-		
+
+	}
+
+	public static Texture getTextureFromImage(BufferedImage image) {
+		try {
+			return BufferedImageUtil.getTexture("", image);
+		} catch (IOException e) {
+			Logger.error(e.getMessage());
+		}
+		return null;
+	}
+
+	public static void renderQuad(int x, int y, int width, int height, float[] colour) {
+		renderQuad(x, y, width, height, new float[][] { colour, colour, colour, colour });
+	}
+
+	public static void renderQuad(int x, int y, int width, int height, float[][] colours) {
+		glBegin(GL_QUADS);
+		{
+			glColor3f(colours[0][0], colours[0][1], colours[0][2]);
+			glVertex2f(x + width, y + height);
+			glColor3f(colours[1][0], colours[1][1], colours[1][2]);
+			glVertex2f(x + width, y);
+			glColor3f(colours[2][0], colours[2][1], colours[2][2]);
+			glVertex2f(x, y);
+			glColor3f(colours[3][0], colours[3][1], colours[3][2]);
+			glVertex2f(x, y + height);
+		}
+		glEnd();
+	}
+
+	public static void renderLine(int[] point1, int[] point2, float thickness, float[] colour) {
+		glColor3f(colour[0], colour[1], colour[2]);
+		float t = thickness / 2;
+		int x = point1[0], x2 = point2[0], y = point1[1], y2 = point2[1];
+		float hyp = (float) Math.sqrt(((x2 - x) * (x2 - x)) + ((y2 - y) * (y2 - y)));
+		float angle = (float) Math.acos(((x2 - x) / hyp) % 1);
+		float[][] points = new float[4][2];
+		points[0] = new float[] {(float) (x + (Math.cos(angle + (Math.PI / 2)) * t)), (float) (y + (Math.sin(angle + (Math.PI / 2)) * t))};
+		points[1] = new float[] {(float) (x + (Math.cos(angle - (Math.PI / 2)) * t)), (float) (y + (Math.sin(angle - (Math.PI / 2)) * t))};
+		points[2] = new float[] {(float) (x + (Math.cos(angle) * hyp) + (Math.cos(angle + (Math.PI / 2)) * t)), (float) (y + (Math.sin(angle) * hyp) + (Math.sin(angle + (Math.PI / 2)) * t))};
+		points[3] = new float[] {(float) (x + (Math.cos(angle) * hyp) + (Math.cos(angle - (Math.PI / 2)) * t)), (float) (y + (Math.sin(angle) * hyp) + (Math.sin(angle - (Math.PI / 2)) * t))};
+		glBegin(GL_QUADS);
+		{	
+			glVertex2f(points[2][0], points[2][1]);
+			glVertex2f(points[0][0], points[0][1]);
+			glVertex2f(points[1][0], points[1][1]);
+			glVertex2f(points[3][0], points[3][1]);
+		}
+		glEnd();
+	}
+	
+	public static void renderText(String text, int x, int y) {
 	}
 }

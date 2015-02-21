@@ -1,5 +1,6 @@
 package uk.co.newagedev.hieranarchy.graphics;
 
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +19,13 @@ public class SpriteRegistry {
 			Logger.info("\"" + path + "\" loaded as \"" + name + "\"");
 		} else {
 			Logger.error("The path \"" + path + "\" couldn't be loaded.");
+		}
+	}
+	
+	public static void registerImage(String name, BufferedImage image) {
+		Texture texture = Screen.getTextureFromImage(image);
+		if (texture != null) {
+			sprites.put(name, new Sprite(texture));
 		}
 	}
 	
