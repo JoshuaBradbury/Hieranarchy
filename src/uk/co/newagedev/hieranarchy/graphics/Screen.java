@@ -142,4 +142,15 @@ public class Screen {
 		return null;
 	}
 
+	public void loadSpritesFromImage(String image, int width, int height) {
+		String[] names = new String[width * height];
+		for (int i = 0; i < (width * height); i++) {
+			names[i] = FileUtil.getFileNameWithoutExtension(image) + Math.floor(i / width) + (i % width);
+		}
+		loadSpritesFromImage(image, width, height, names);
+	}
+	
+	public void loadSpritesFromImage(String image, int width, int height, String[] names) {
+		
+	}
 }
