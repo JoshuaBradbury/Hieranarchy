@@ -242,9 +242,10 @@ public class Screen {
 	}
 
 	public static void renderText(String text, int x, int y) {
+		text = text.toLowerCase();
 		glColor3f(1.0f, 1.0f, 1.0f);
-		for (int i = (int) -Math.floor(text.length() / 2); i < Math.ceil(text.length() / 2) + 1; i++) {
-			Screen.renderSpriteIgnoringCamera("" + text.charAt((int) (i + Math.floor(text.length() / 2))), new Location(x + (i * 17) - 8, y - 8));
+		for (int i = 0; i < text.length(); i++) {
+			Screen.renderSpriteIgnoringCamera("" + text.charAt(i), new Location(x + (i * 17) - ((text.length() * 17) / 2), y - 8));
 		}
 	}
 }
