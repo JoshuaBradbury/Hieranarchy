@@ -8,6 +8,7 @@ import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
 import uk.co.newagedev.hieranarchy.map.Map;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.util.KeyBinding;
+import uk.co.newagedev.hieranarchy.util.Mouse;
 
 public class Main {
 	
@@ -132,6 +133,7 @@ public class Main {
 	 * Updates the current state.
 	 */
 	public void update() {
+		Mouse.update();
 		StateManager.getState(currentState).update();
 	}
 	
