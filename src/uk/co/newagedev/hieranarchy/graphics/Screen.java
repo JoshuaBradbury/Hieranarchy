@@ -153,16 +153,43 @@ public class Screen {
 		return null;
 	}
 
-	public void loadSpritesFromImage(String image, int width, int height) {
+	public static void loadFont(String fontPath) {
+		loadSpritesFromImage(fontPath, 32, 4, "a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z. ".split("\\."));
+	}
+	
+	public static void loadSpritesFromImage(String imagePath, int width, int height) {
 		String[] names = new String[width * height];
 		for (int i = 0; i < (width * height); i++) {
-			names[i] = FileUtil.getFileNameWithoutExtension(image) + Math.floor(i / width) + (i % width);
+			names[i] = FileUtil.getFileNameWithoutExtension(imagePath) + Math.floor(i / width) + (i % width);
 		}
-		loadSpritesFromImage(image, width, height, names);
+		loadSpritesFromImage(imagePath, width, height, names);
 	}
 
-	public void loadSpritesFromImage(String image, int width, int height, String[] names) {
-
+	public static void loadSpritesFromImage(String imagePath, int width, int height, String[] names) {
+		String[] finalNames = new String[width * height];
+		for (int i = 0; i < (width * height); i++) {
+			if (i < names.length) {
+				finalNames[i] = names[i];
+			} else {
+				finalNames[i] = FileUtil.getFileNameWithoutExtension(imagePath) + Math.floor(i / width) + (i % width);
+			}
+		}
+		if (FileUtil.doesFileExist(imagePath)) {
+			BufferedImage image;
+			try {
+				image = ImageIO.read(FileUtil.load(imagePath));
+				int tileWidth = (image.getWidth() / width);
+				int tileHeight = (image.getHeight() / height);
+				for (int y = 0; y < height; y++) {
+					for (int x = 0; x < width; x++) {
+						SpriteRegistry.registerImage(finalNames[x + (y * width)], image.getSubimage(x * tileWidth, y * tileHeight, tileWidth, tileHeight));
+					}
+				}
+				Logger.info("\"" + imagePath + "\"", "loaded as current font", "width:", width, "height:", height, "letter width:", tileWidth, "letter height:", tileHeight);
+			} catch (IOException e) {
+				Logger.error(e.getMessage());
+			}
+		}
 	}
 
 	public static Texture getTextureFromImage(BufferedImage image) {
@@ -200,12 +227,12 @@ public class Screen {
 		float hyp = (float) Math.sqrt(((x2 - x) * (x2 - x)) + ((y2 - y) * (y2 - y)));
 		float angle = (float) Math.acos(((x2 - x) / hyp) % 1);
 		float[][] points = new float[4][2];
-		points[0] = new float[] {(float) (x + (Math.cos(angle + (Math.PI / 2)) * t)), (float) (y + (Math.sin(angle + (Math.PI / 2)) * t))};
-		points[1] = new float[] {(float) (x + (Math.cos(angle - (Math.PI / 2)) * t)), (float) (y + (Math.sin(angle - (Math.PI / 2)) * t))};
-		points[2] = new float[] {(float) (x + (Math.cos(angle) * hyp) + (Math.cos(angle + (Math.PI / 2)) * t)), (float) (y + (Math.sin(angle) * hyp) + (Math.sin(angle + (Math.PI / 2)) * t))};
-		points[3] = new float[] {(float) (x + (Math.cos(angle) * hyp) + (Math.cos(angle - (Math.PI / 2)) * t)), (float) (y + (Math.sin(angle) * hyp) + (Math.sin(angle - (Math.PI / 2)) * t))};
+		points[0] = new float[] { (float) (x + (Math.cos(angle + (Math.PI / 2)) * t)), (float) (y + (Math.sin(angle + (Math.PI / 2)) * t)) };
+		points[1] = new float[] { (float) (x + (Math.cos(angle - (Math.PI / 2)) * t)), (float) (y + (Math.sin(angle - (Math.PI / 2)) * t)) };
+		points[2] = new float[] { (float) (x + (Math.cos(angle) * hyp) + (Math.cos(angle + (Math.PI / 2)) * t)), (float) (y + (Math.sin(angle) * hyp) + (Math.sin(angle + (Math.PI / 2)) * t)) };
+		points[3] = new float[] { (float) (x + (Math.cos(angle) * hyp) + (Math.cos(angle - (Math.PI / 2)) * t)), (float) (y + (Math.sin(angle) * hyp) + (Math.sin(angle - (Math.PI / 2)) * t)) };
 		glBegin(GL_QUADS);
-		{	
+		{
 			glVertex2f(points[2][0], points[2][1]);
 			glVertex2f(points[0][0], points[0][1]);
 			glVertex2f(points[1][0], points[1][1]);
@@ -213,7 +240,11 @@ public class Screen {
 		}
 		glEnd();
 	}
-	
+
 	public static void renderText(String text, int x, int y) {
+		glColor3f(1.0f, 1.0f, 1.0f);
+		for (int i = (int) -Math.floor(text.length() / 2); i < Math.ceil(text.length() / 2) + 1; i++) {
+			Screen.renderSpriteIgnoringCamera("" + text.charAt((int) (i + Math.floor(text.length() / 2))), new Location(x + (i * 17) - 8, y - 8));
+		}
 	}
 }
