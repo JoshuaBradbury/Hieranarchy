@@ -8,6 +8,7 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glColor3f;
+import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
@@ -95,6 +96,7 @@ public class Screen {
 	}
 
 	public static void renderSprite(String spriteName, float x, float y, float width, float height, float[] texCoords) {
+		glEnable(GL_TEXTURE_2D);
 		if (SpriteRegistry.doesSpriteExist(spriteName)) {
 			SpriteRegistry.getSprite(spriteName).bind();
 			glBegin(GL_QUADS);
@@ -110,6 +112,7 @@ public class Screen {
 			}
 			glEnd();
 		}
+		glDisable(GL_TEXTURE_2D);
 	}
 
 	public void setTitle(String title) {
@@ -117,7 +120,6 @@ public class Screen {
 	}
 
 	public void renderInit() {
-		glEnable(GL_TEXTURE_2D);
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		glOrtho(0, Main.WIDTH, Main.HEIGHT, 0, 1, -1);
