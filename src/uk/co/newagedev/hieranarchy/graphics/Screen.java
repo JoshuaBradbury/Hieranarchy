@@ -43,6 +43,8 @@ import uk.co.newagedev.hieranarchy.util.Logger;
 
 public class Screen {
 
+	private static boolean close = false;
+	
 	public Screen() {
 		try {
 			PixelFormat pixelFormat = new PixelFormat();
@@ -62,7 +64,7 @@ public class Screen {
 	}
 
 	public boolean shouldClose() {
-		return Display.isCloseRequested();
+		return Display.isCloseRequested() || close;
 	}
 
 	public static Texture loadTexture(String path) {
@@ -247,5 +249,9 @@ public class Screen {
 		for (int i = 0; i < text.length(); i++) {
 			Screen.renderSpriteIgnoringCamera("" + text.charAt(i), new Location(x + (i * 17) - ((text.length() * 17) / 2), y - 8));
 		}
+	}
+	
+	public static void close() {
+		close = true;
 	}
 }
