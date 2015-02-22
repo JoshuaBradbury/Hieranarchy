@@ -9,7 +9,7 @@ public class StartMenuState extends MenuState {
 	private int count, offset;
 	
 	public StartMenuState() {
-		registerComponent(new Button("Test", 100, 100, 200, 50));
+		registerComponent(new Button("test button", 100, 100, 200, 50));
 	}
 	
 	@Override
