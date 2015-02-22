@@ -1,5 +1,7 @@
 package uk.co.newagedev.hieranarchy.util;
 
+import java.io.File;
+
 public class FileUtil {
 
 	public static String getExtension(String filePath) {
@@ -23,5 +25,17 @@ public class FileUtil {
 	public static String getFileNameWithoutExtension(String filePath) {
 		String fileName = getFileName(filePath);
 		return fileName.substring(0, fileName.length() - getExtension(fileName).length() - 1);
+	}
+
+	public static boolean doesFileExist(String filePath) {
+		return (new File(filePath)).exists();
+	}
+
+	public static File load(String filePath) {
+		File file = new File(filePath);
+		if (file.exists()) {
+			return file;
+		}
+		return null;
 	}
 }
