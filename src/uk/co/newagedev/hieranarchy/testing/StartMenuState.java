@@ -26,9 +26,9 @@ public class StartMenuState extends MenuState {
 	
 	@Override
 	public void render() {
-		Screen.renderQuad(0, 0, Main.WIDTH, Main.HEIGHT, new float[] {0.6f, 0.6f, 0.75f});
+		Screen.renderQuad(0, 0, Main.WIDTH, Main.HEIGHT, Component.LIGHT);
 		for (int i = -200; i < Main.WIDTH; i += 20) {
-			Screen.renderLine(new int[] {200 + i + offset, -10}, new int[] {i + offset, Main.HEIGHT + 10}, 10.0f, new float[] {0.4f, 0.4f, 0.55f});
+			Screen.renderLine(new int[] {200 + i + offset, -10}, new int[] {i + offset, Main.HEIGHT + 10}, 10.0f, Component.DARK);
 		}
 		super.render();
 	}
