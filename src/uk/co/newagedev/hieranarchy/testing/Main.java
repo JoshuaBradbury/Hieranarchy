@@ -10,6 +10,7 @@ import uk.co.newagedev.hieranarchy.map.Map;
 import uk.co.newagedev.hieranarchy.state.GameState;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.util.KeyBinding;
+import uk.co.newagedev.hieranarchy.util.Logger;
 import uk.co.newagedev.hieranarchy.util.Mouse;
 
 public class Main {
@@ -68,7 +69,7 @@ public class Main {
 	 */
 	public void initResources() {
 		SpriteRegistry.registerSprite("bg", "assets/textures/background.png");
-		SpriteRegistry.registerSprite("flooring", "assets/textures/flooring.png");
+		SpriteRegistry.registerSprite("flooring", "assets/textures/crate.png");
 		SpriteRegistry.registerSprite("icetile", "assets/textures/icesheet.png");
 		Screen.loadFont("assets/textures/font.png");
 	}
@@ -125,7 +126,7 @@ public class Main {
 		try {
 			thread.join();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			Logger.error(e.getMessage());
 		}
 		running = false;
 	}
@@ -175,7 +176,11 @@ public class Main {
 		SpriteRegistry.clear();
 		screen.cleanup();
 	}
-
+	
+	/**
+	 * Sets the current state. 
+	 * @param state - The state to change to.
+	 */
 	public static void setCurrentState(String state) {
 		currentState = state;
 	}
