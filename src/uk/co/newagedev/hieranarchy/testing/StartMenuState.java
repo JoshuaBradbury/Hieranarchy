@@ -12,6 +12,7 @@ public class StartMenuState extends MenuState {
 	public StartMenuState() {
 		registerComponent(new Button("Start Game", 50, 200, 200, 50, new Runnable() {
 			public void run() {
+				Main.setCurrentState("game");
 				Logger.info("Start Game!");
 			}
 		}));
