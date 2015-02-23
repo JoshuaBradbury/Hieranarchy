@@ -2,23 +2,24 @@ package uk.co.newagedev.hieranarchy.testing;
 
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.state.MenuState;
+import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.ui.Button;
-import uk.co.newagedev.hieranarchy.util.Logger;
+import uk.co.newagedev.hieranarchy.ui.Component;
 
 public class StartMenuState extends MenuState {
 
 	private int count, offset;
 	
 	public StartMenuState() {
-		registerComponent(new Button("Start Game", 50, 200, 200, 50, new Runnable() {
+		registerComponent(new Button("Load Map", 50, 200, 200, 50, new Runnable() {
 			public void run() {
-				Main.setCurrentState("game");
-				Logger.info("Start Game!");
+				MapLoaderState state = new MapLoaderState();
+				StateManager.registerState("load map", state);
+				Main.setCurrentState("load map");
 			}
 		}));
 		registerComponent(new Button("Quit Game", 50, 300, 200, 50, new Runnable() {
 			public void run() {
-				Logger.info("Quit Game!");
 				Screen.close();
 			}
 		}));
