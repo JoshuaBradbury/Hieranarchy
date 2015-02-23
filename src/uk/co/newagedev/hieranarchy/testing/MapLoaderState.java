@@ -2,7 +2,9 @@ package uk.co.newagedev.hieranarchy.testing;
 
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.state.MenuState;
+import uk.co.newagedev.hieranarchy.ui.Button;
 import uk.co.newagedev.hieranarchy.ui.Component;
+import uk.co.newagedev.hieranarchy.ui.Container;
 import uk.co.newagedev.hieranarchy.ui.ScrollBar;
 import uk.co.newagedev.hieranarchy.ui.ScrollPane;
 
@@ -11,7 +13,44 @@ public class MapLoaderState extends MenuState {
 	private int count, offset;
 	
 	public MapLoaderState() {
-		registerComponent(new ScrollPane(50, 50, Main.WIDTH - 100, Main.HEIGHT - 100, ScrollBar.VERTICAL));
+		ScrollPane pane = new ScrollPane(50, 50, Main.WIDTH - 100, Main.HEIGHT - 100, ScrollBar.VERTICAL);
+		Container container = pane.getPane();
+		container.addComponent(new Button("Map", 100, 100, 200, 50, new Runnable() {
+			public void run() {
+				
+			}
+		}));
+		container.addComponent(new Button("Map", 100, 200, 200, 50, new Runnable() {
+			public void run() {
+				
+			}
+		}));
+		container.addComponent(new Button("Map", 100, 300, 200, 50, new Runnable() {
+			public void run() {
+				
+			}
+		}));
+		container.addComponent(new Button("Map", 100, 400, 200, 50, new Runnable() {
+			public void run() {
+				
+			}
+		}));
+		container.addComponent(new Button("Map", 100, 500, 200, 50, new Runnable() {
+			public void run() {
+				
+			}
+		}));
+		container.addComponent(new Button("Map", 100, 600, 200, 50, new Runnable() {
+			public void run() {
+				
+			}
+		}));
+		container.addComponent(new Button("Map", 100, 700, 200, 50, new Runnable() {
+			public void run() {
+				
+			}
+		}));
+		registerComponent(pane);
 	}
 	
 	@Override
