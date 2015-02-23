@@ -20,6 +20,12 @@ public class Component {
 		this.visible = true;
 	}
 	
+	public Component(int x, int y) {
+		this.x = x;
+		this.y = y;
+		this.visible = true;
+	}
+	
 	public void setVisible(boolean visible) {
 		this.visible = visible;
 	}
