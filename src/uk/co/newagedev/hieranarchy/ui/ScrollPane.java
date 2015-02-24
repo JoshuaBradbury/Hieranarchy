@@ -3,6 +3,8 @@ package uk.co.newagedev.hieranarchy.ui;
 import java.awt.Rectangle;
 
 import uk.co.newagedev.hieranarchy.graphics.Screen;
+import uk.co.newagedev.hieranarchy.util.Location;
+import uk.co.newagedev.hieranarchy.util.Logger;
 
 public class ScrollPane extends Component {
 	private ScrollBar[] scrollBars = new ScrollBar[2];
@@ -39,6 +41,12 @@ public class ScrollPane extends Component {
 				bar.render();
 			}
 		}
+		Location location = new Location(0, 0);
+		if (scrollBars[1] != null) {
+			Logger.info(scrollBars[1].calculateYOffset());
+			location.setY(getPane().getHeight() * scrollBars[1].calculateYOffset());
+		}
+		pane.setLocation((int) location.getX(), (int) location.getY());
 		pane.render(getAsRectangle());
 	}
 }

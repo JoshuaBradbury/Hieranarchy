@@ -3,6 +3,7 @@ package uk.co.newagedev.hieranarchy.ui;
 import org.lwjgl.util.Rectangle;
 
 import uk.co.newagedev.hieranarchy.graphics.Screen;
+import uk.co.newagedev.hieranarchy.util.Logger;
 import uk.co.newagedev.hieranarchy.util.Mouse;
 
 public class ScrollBar {
@@ -19,7 +20,7 @@ public class ScrollBar {
 		y = 0;
 		x = 0;
 		maxHeight = (int) parent.getDimensions().getHeight() - 30;
-		height = maxHeight;
+		height = 0;
 		maxWidth = (int) parent.getDimensions().getWidth() - 30;
 		width = 13;
 	}
@@ -58,6 +59,10 @@ public class ScrollBar {
 	
 	public Rectangle getBar() {
 		return new Rectangle((int) (parent.getLocation().getX() + parent.getDimensions().getWidth()) - 13, (int) (parent.getLocation().getY()) + y + 15, width, height);
+	}
+	
+	public float calculateYOffset() {
+		return (float) y / (float) (parent.getPane().getHeight() - parent.getDimensions().getHeight());
 	}
 
 	public void render() {
