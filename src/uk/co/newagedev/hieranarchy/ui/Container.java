@@ -1,9 +1,11 @@
 package uk.co.newagedev.hieranarchy.ui;
 
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.Rectangle;
+
+import uk.co.newagedev.hieranarchy.util.Logger;
 
 public class Container extends Component {
 	private List<Component> components = new ArrayList<Component>();
@@ -51,13 +53,15 @@ public class Container extends Component {
 	public void update() {
 		for (Component component : components) {
 			component.update();
+			component.setOffset((int) getLocation().getX(), (int) getLocation().getY());
 		}
 	}
 	
 	public void render(Rectangle view) {
 		for (Component component : components) {
 			if (view.intersects(component.getAsRectangle())) {
-				component.render((Rectangle) view.createIntersection(component.getAsRectangle()));
+				Logger.info(component.getOffset());
+				component.render(view);
 			}
 		}
 	}

@@ -46,7 +46,7 @@ public class ScrollPane extends Component {
 			Logger.info(scrollBars[1].calculateYOffset());
 			location.setY(getPane().getHeight() * scrollBars[1].calculateYOffset());
 		}
-		pane.setLocation((int) location.getX(), (int) location.getY());
+		pane.setLocation((int) location.getX(), (int) -location.getY());
 		pane.render(getAsRectangle());
 	}
 }
