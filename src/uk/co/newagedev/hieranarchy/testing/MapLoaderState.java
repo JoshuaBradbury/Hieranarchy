@@ -30,22 +30,22 @@ public class MapLoaderState extends MenuState {
 				
 			}
 		}));
+		container.addComponent(new Button("Map", 100, 350, 200, 50, new Runnable() {
+			public void run() {
+				
+			}
+		}));
 		container.addComponent(new Button("Map", 100, 400, 200, 50, new Runnable() {
 			public void run() {
 				
 			}
 		}));
+		container.addComponent(new Button("Map", 100, 450, 200, 50, new Runnable() {
+			public void run() {
+				
+			}
+		}));
 		container.addComponent(new Button("Map", 100, 500, 200, 50, new Runnable() {
-			public void run() {
-				
-			}
-		}));
-		container.addComponent(new Button("Map", 100, 600, 200, 50, new Runnable() {
-			public void run() {
-				
-			}
-		}));
-		container.addComponent(new Button("Map", 100, 700, 200, 50, new Runnable() {
 			public void run() {
 				
 			}
