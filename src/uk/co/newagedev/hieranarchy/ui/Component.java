@@ -1,10 +1,11 @@
 package uk.co.newagedev.hieranarchy.ui;
 
 import java.awt.Dimension;
+import java.awt.Rectangle;
 
 import uk.co.newagedev.hieranarchy.util.Location;
 
-public class Component {
+public abstract class Component {
 	
 	private int x, y, width, height;
 	private boolean visible;
@@ -52,11 +53,11 @@ public class Component {
 		this.y = y;
 	}
 	
-	public void render() {
-		
+	public Rectangle getAsRectangle() {
+		return new Rectangle((int) getLocation().getX(), (int) getLocation().getY(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight());
 	}
 	
-	public void update() {
-		
-	}
+	public abstract void render(Rectangle view);
+	
+	public abstract void update();
 }

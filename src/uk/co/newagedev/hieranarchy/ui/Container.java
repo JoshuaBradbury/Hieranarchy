@@ -3,6 +3,7 @@ package uk.co.newagedev.hieranarchy.ui;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.Rectangle;
 
 public class Container extends Component {
 	private List<Component> components = new ArrayList<Component>();
@@ -48,16 +49,16 @@ public class Container extends Component {
 	}
 	
 	public void update() {
-		super.update();
 		for (Component component : components) {
 			component.update();
 		}
 	}
 	
-	public void render() {
-		super.render();
+	public void render(Rectangle view) {
 		for (Component component : components) {
-			component.render();
+			if (view.intersects(component.getAsRectangle())) {
+				component.render((Rectangle) view.createIntersection(component.getAsRectangle()));
+			}
 		}
 	}
 }

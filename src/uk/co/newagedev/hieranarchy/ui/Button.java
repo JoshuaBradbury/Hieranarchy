@@ -1,5 +1,7 @@
 package uk.co.newagedev.hieranarchy.ui;
 
+import java.awt.Rectangle;
+
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.util.Mouse;
 
@@ -15,7 +17,7 @@ public class Button extends Component {
 		this.task = task;
 	}
 
-	public void render() {
+	public void render(Rectangle view) {
 		Screen.renderQuad((int) getLocation().getX(), (int) getLocation().getY(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Component.DARK);
 		Screen.renderQuad((int) getLocation().getX() + 5, (int) getLocation().getY() + 5, (int) getDimensions().getWidth() - 10, (int) getDimensions().getHeight() - 10, (hover ? Component.VERY_LIGHT : Component.LIGHT));
 		Screen.renderText(text, (int) (getLocation().getX() + (getDimensions().getWidth() / 2)), (int) (getLocation().getY() + (getDimensions().getHeight() / 2)));

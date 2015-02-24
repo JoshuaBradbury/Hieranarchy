@@ -12,7 +12,7 @@ public class MenuState extends State {
 	@Override
 	public void render() {
 		for (Component component : components) {
-			component.render();
+			component.render(component.getAsRectangle());
 		}
 	}
 

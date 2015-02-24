@@ -1,5 +1,7 @@
 package uk.co.newagedev.hieranarchy.ui;
 
+import java.awt.Rectangle;
+
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 
 public class ScrollPane extends Component {
@@ -22,7 +24,6 @@ public class ScrollPane extends Component {
 	}
 	
 	public void update() {
-		super.update();
 		for (ScrollBar bar : scrollBars) {
 			if (bar != null) {
 				bar.update();
@@ -31,14 +32,13 @@ public class ScrollPane extends Component {
 		pane.update();
 	}
 	
-	public void render() {
-		super.render();
+	public void render(Rectangle view) {
 		Screen.renderQuad((int) getLocation().getX(), (int) getLocation().getY(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Component.LIGHT);
 		for (ScrollBar bar : scrollBars) {
 			if (bar != null) {
 				bar.render();
 			}
 		}
-		pane.render();
+		pane.render(getAsRectangle());
 	}
 }
