@@ -17,9 +17,23 @@ public class Location {
 		return y;
 	}
 	
+	public void setX(float x) {
+		this.x = x;
+	}
+	
+	public void setY(float y) {
+		this.y = y;
+	}
+	
 	public Location add(Location loc) {
 		x += loc.x;
 		y += loc.y;
+		return this;
+	}
+	
+	public Location add(float x, float y) {
+		this.x += x;
+		this.y += y;
 		return this;
 	}
 	
@@ -29,15 +43,33 @@ public class Location {
 		return this;
 	}
 	
+	public Location subtract(float x, float y) {
+		this.x -= x;
+		this.y -= y;
+		return this;
+	}
+	
 	public Location multiply(Location loc) {
 		x *= loc.x;
 		y *= loc.y;
 		return this;
 	}
 	
+	public Location multiply(int x, int y) {
+		this.x *= x;
+		this.y *= y;
+		return this;
+	}
+	
 	public Location divide(Location loc) {
 		x /= loc.x;
 		y /= loc.y;
+		return this;
+	}
+	
+	public Location divide(int x, int y) {
+		this.x /= x;
+		this.y /= y;
 		return this;
 	}
 	
