@@ -3,7 +3,6 @@ package uk.co.newagedev.hieranarchy.ui;
 import java.awt.Rectangle;
 
 import uk.co.newagedev.hieranarchy.graphics.Screen;
-import uk.co.newagedev.hieranarchy.util.Location;
 import uk.co.newagedev.hieranarchy.util.Mouse;
 
 public class Button extends Component {

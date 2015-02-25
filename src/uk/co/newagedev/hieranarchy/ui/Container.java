@@ -5,8 +5,6 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.co.newagedev.hieranarchy.util.Logger;
-
 public class Container extends Component {
 	private List<Component> components = new ArrayList<Component>();
 	
@@ -60,7 +58,6 @@ public class Container extends Component {
 	public void render(Rectangle view) {
 		for (Component component : components) {
 			if (view.intersects(component.getAsRectangle())) {
-				Logger.info(component.getOffset());
 				component.render(view);
 			}
 		}
