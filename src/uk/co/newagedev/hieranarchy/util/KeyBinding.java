@@ -43,7 +43,7 @@ public class KeyBinding {
 		return Keyboard.isKeyDown(id);
 	}
 	
-	public static boolean isKeyPrssing(String function) {
+	public static boolean isKeyPressing(String function) {
 		int id = getBinding(function);
 		while(Keyboard.next()) {
 			if(Keyboard.getEventKey() == id) {
