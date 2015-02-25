@@ -1,7 +1,6 @@
 package uk.co.newagedev.hieranarchy.ui;
 
 import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,11 +54,9 @@ public class Container extends Component {
 		}
 	}
 	
-	public void render(Rectangle view) {
+	public void render() {
 		for (Component component : components) {
-			if (view.intersects(component.getAsRectangle())) {
-				component.render(view);
-			}
+			component.render();
 		}
 	}
 }
