@@ -23,9 +23,11 @@ public class Map {
 	private Background bg;
 	private Tile[] tiles;
 	private String state;
+	private String mapPath;
 
 	public Map(String mapPath, String state) {
 		loadMap(mapPath);
+		this.mapPath = mapPath;
 		this.state = state;
 	}
 
@@ -51,6 +53,10 @@ public class Map {
 		bg.setMap(this);
 	}
 
+	public void reload() {
+		loadMap(mapPath);
+	}
+	
 	public void update() {
 		bg.update();
 		Camera camera = getState().getCurrentCamera();

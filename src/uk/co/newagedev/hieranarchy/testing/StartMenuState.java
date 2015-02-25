@@ -1,5 +1,6 @@
 package uk.co.newagedev.hieranarchy.testing;
 
+import uk.co.newagedev.hieranarchy.editor.EditorState;
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.state.MenuState;
 import uk.co.newagedev.hieranarchy.state.StateManager;
@@ -11,11 +12,11 @@ public class StartMenuState extends MenuState {
 	private int count, offset;
 	
 	public StartMenuState() {
-		registerComponent(new Button("Load Map", 50, 200, 200, 50, new Runnable() {
+		registerComponent(new Button("Edit Map", 50, 200, 200, 50, new Runnable() {
 			public void run() {
-				MapLoaderState state = new MapLoaderState();
-				StateManager.registerState("load map", state);
-				Main.setCurrentState("load map");
+				EditorState state = new EditorState();
+				StateManager.registerState("edit map", state);
+				Main.setCurrentState("edit map");
 			}
 		}));
 		registerComponent(new Button("Quit Game", 50, 300, 200, 50, new Runnable() {
