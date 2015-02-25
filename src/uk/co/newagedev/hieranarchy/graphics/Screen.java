@@ -12,6 +12,7 @@ import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glBlendFunc;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glColor3f;
+import static org.lwjgl.opengl.GL11.glColor4f;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glEnd;
@@ -105,6 +106,7 @@ public class Screen {
 		glEnable(GL_TEXTURE_2D);
 		if (SpriteRegistry.doesSpriteExist(spriteName)) {
 			SpriteRegistry.getSprite(spriteName).bind();
+			glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 			glBegin(GL_QUADS);
 			{
 				glTexCoord2f(texCoords[1], texCoords[3]);
@@ -208,18 +210,33 @@ public class Screen {
 	}
 
 	public static void renderQuad(int x, int y, int width, int height, float[][] colours) {
-		glBegin(GL_QUADS);
-		{
-			glColor3f(colours[0][0], colours[0][1], colours[0][2]);
-			glVertex2f(x + width, y + height);
-			glColor3f(colours[1][0], colours[1][1], colours[1][2]);
-			glVertex2f(x + width, y);
-			glColor3f(colours[2][0], colours[2][1], colours[2][2]);
-			glVertex2f(x, y);
-			glColor3f(colours[3][0], colours[3][1], colours[3][2]);
-			glVertex2f(x, y + height);
+		if (colours[0].length == 4) {
+			glBegin(GL_QUADS);
+			{
+				glColor4f(colours[0][0], colours[0][1], colours[0][2], colours[0][3]);
+				glVertex2f(x + width, y + height);
+				glColor4f(colours[1][0], colours[1][1], colours[1][2], colours[1][3]);
+				glVertex2f(x + width, y);
+				glColor4f(colours[2][0], colours[2][1], colours[2][2], colours[1][3]);
+				glVertex2f(x, y);
+				glColor4f(colours[3][0], colours[3][1], colours[3][2], colours[1][3]);
+				glVertex2f(x, y + height);
+			}
+			glEnd();
+		} else {
+			glBegin(GL_QUADS);
+			{
+				glColor3f(colours[0][0], colours[0][1], colours[0][2]);
+				glVertex2f(x + width, y + height);
+				glColor3f(colours[1][0], colours[1][1], colours[1][2]);
+				glVertex2f(x + width, y);
+				glColor3f(colours[2][0], colours[2][1], colours[2][2]);
+				glVertex2f(x, y);
+				glColor3f(colours[3][0], colours[3][1], colours[3][2]);
+				glVertex2f(x, y + height);
+			}
+			glEnd();
 		}
-		glEnd();
 	}
 
 	public static void renderLine(int[] point1, int[] point2, float thickness, float[] colour) {
