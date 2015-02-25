@@ -1,7 +1,10 @@
 package uk.co.newagedev.hieranarchy.testing;
 
 import uk.co.newagedev.hieranarchy.editor.EditorState;
+import uk.co.newagedev.hieranarchy.graphics.Background;
+import uk.co.newagedev.hieranarchy.graphics.Camera;
 import uk.co.newagedev.hieranarchy.graphics.Screen;
+import uk.co.newagedev.hieranarchy.map.Map;
 import uk.co.newagedev.hieranarchy.state.MenuState;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.ui.Button;
@@ -14,7 +17,11 @@ public class StartMenuState extends MenuState {
 	public StartMenuState() {
 		registerComponent(new Button("Edit Map", 50, 200, 200, 50, new Runnable() {
 			public void run() {
-				EditorState state = new EditorState();
+				Map map = new Map("assets/maps/test.png", "edit map");
+				map.setBackground(new Background("bg", 0, 0, 2));
+				EditorState state = new EditorState(map);
+				state.registerCamera("start", new Camera(100, 0));
+				state.switchCamera("start");
 				StateManager.registerState("edit map", state);
 				Main.setCurrentState("edit map");
 			}
