@@ -67,6 +67,7 @@ public class Main {
 		SpriteRegistry.registerSprite("bg", "assets/textures/background.png");
 		SpriteRegistry.registerSprite("flooring", "assets/textures/crate.png");
 		SpriteRegistry.registerSprite("icetile", "assets/textures/icesheet.png");
+		SpriteRegistry.registerSprite("play", "assets/textures/play.png");
 		Screen.loadFont("assets/textures/font.png");
 	}
 	

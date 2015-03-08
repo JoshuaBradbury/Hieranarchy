@@ -4,15 +4,25 @@ import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.map.Map;
 import uk.co.newagedev.hieranarchy.state.State;
 import uk.co.newagedev.hieranarchy.testing.Main;
+import uk.co.newagedev.hieranarchy.ui.Button;
 import uk.co.newagedev.hieranarchy.ui.Component;
+import uk.co.newagedev.hieranarchy.ui.Container;
 import uk.co.newagedev.hieranarchy.util.KeyBinding;
 
 public class EditorState extends State {
 	private Map currentMap;
 	private boolean playing = false;
+	private Container toolbar = new Container(0, 0);
 
 	public EditorState(Map map) {
 		currentMap = map;
+		Button button = new Button("", 5, 5, 30, 30, new Runnable() {
+			public void run() {
+				playing = !playing;
+			}
+		});
+		button.setImage("play");
+		toolbar.addComponent(button);
 	}
 	
 	@Override
@@ -22,6 +32,7 @@ public class EditorState extends State {
 			Screen.renderQuad(0, 0, Main.WIDTH, Main.HEIGHT, Component.DARK_ALPHA);
 		}
 		Screen.renderQuad(0, 0, Main.WIDTH, 40, Component.DARK);
+		toolbar.render();
 	}
 	
 	public void restartMap() {
@@ -35,12 +46,9 @@ public class EditorState extends State {
 
 	@Override
 	public void update() {
+		toolbar.update();
 		if (KeyBinding.isKeyReleasing("editmapplay")) {
-			if (playing) {
-				playing = false;
-			} else {
-				playing = true;
-			}
+			playing = !playing;
 		}
 		if (playing) {
 			currentMap.update();
