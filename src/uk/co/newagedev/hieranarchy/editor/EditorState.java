@@ -24,8 +24,8 @@ public class EditorState extends State {
 			}
 		});
 		Sprite play = SpriteRegistry.getSprite("play");
-		play.setWidth(16);
-		play.setHeight(16);
+		play.setWidth(20);
+		play.setHeight(20);
 		button.setImage("play");
 		toolbar.addComponent(button);
 	}
