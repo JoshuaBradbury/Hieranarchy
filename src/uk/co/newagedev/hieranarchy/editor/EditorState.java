@@ -1,6 +1,8 @@
 package uk.co.newagedev.hieranarchy.editor;
 
 import uk.co.newagedev.hieranarchy.graphics.Screen;
+import uk.co.newagedev.hieranarchy.graphics.Sprite;
+import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
 import uk.co.newagedev.hieranarchy.map.Map;
 import uk.co.newagedev.hieranarchy.state.State;
 import uk.co.newagedev.hieranarchy.testing.Main;
@@ -21,6 +23,9 @@ public class EditorState extends State {
 				playing = !playing;
 			}
 		});
+		Sprite play = SpriteRegistry.getSprite("play");
+		play.setWidth(16);
+		play.setHeight(16);
 		button.setImage("play");
 		toolbar.addComponent(button);
 	}
@@ -31,7 +36,7 @@ public class EditorState extends State {
 		if (!playing) {
 			Screen.renderQuad(0, 0, Main.WIDTH, Main.HEIGHT, Component.DARK_ALPHA);
 		}
-		Screen.renderQuad(0, 0, Main.WIDTH, 40, Component.DARK);
+		Screen.renderQuad(0, 0, Main.WIDTH, 40, Component.VERY_LIGHT);
 		toolbar.render();
 	}
 	
