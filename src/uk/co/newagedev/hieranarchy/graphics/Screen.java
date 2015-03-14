@@ -268,6 +268,14 @@ public class Screen {
 		}
 	}
 	
+	public static int getTextWidth(String text) {
+		return text.length() * 17;
+	}
+	
+	public static int getTextHeight(String text) {
+		return 16;
+	}
+	
 	public static void close() {
 		close = true;
 	}
