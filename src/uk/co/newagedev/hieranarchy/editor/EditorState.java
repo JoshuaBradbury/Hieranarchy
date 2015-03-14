@@ -18,7 +18,7 @@ public class EditorState extends State {
 
 	public EditorState(Map map) {
 		currentMap = map;
-		Button button = new Button("", 5, 5, 30, 30, new Runnable() {
+		Button button = new Button("Play", 5, 5, 30, 30, true, new Runnable() {
 			public void run() {
 				playing = !playing;
 			}
