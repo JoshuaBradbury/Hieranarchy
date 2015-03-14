@@ -9,8 +9,7 @@ public class Mouse {
 	private static boolean[] releasing = new boolean[org.lwjgl.input.Mouse.getButtonCount()];
 	
 	public static final int LEFT_BUTTON = 0, RIGHT_BUTTON = 1, MIDDLE_BUTTON = 2;
-	private static int mx = 0, my = 0, mdx = 0, mdy = 0;
-	private static long lastTimeUpdate = 0, millisSinceLastMovement = 0, millisSinceLastButton = 0;
+	private static int mx = 0, my = 0, mdx = 0, mdy = 0, updatesSinceLastMovement = 0, updatesSinceLastButton = 0;
 	
 	public static int getMouseX() {
 		return mx;
@@ -29,17 +28,15 @@ public class Mouse {
 	}
 	
 	public static long getMillisSinceLastMovement() {
-		return millisSinceLastMovement;
+		return updatesSinceLastMovement;
 	}
 	
 	public static long getMillisSinceLastButton() {
-		return millisSinceLastButton;
+		return updatesSinceLastButton;
 	}
 	
 	public static void update() {
-		boolean[] tpressing = pressing;
-		boolean[] tdown = down;
-		boolean[] treleasing = releasing;
+		int t = 0;
 		for (int i = 0; i < org.lwjgl.input.Mouse.getButtonCount(); i++) {
 			boolean bd = org.lwjgl.input.Mouse.isButtonDown(i);
 			if (!pressing[i] && !down[i] && bd) {
@@ -52,15 +49,15 @@ public class Mouse {
 				releasing[i] = true;
 			} else if (!down[i] && releasing[i] && !bd) {
 				releasing[i] = false;
+			} else {
+				t += 1;
 			}
 		}
 		
-		long currentTimeMillis = System.currentTimeMillis();
-		
-		if (tpressing == pressing && tdown == down && treleasing == releasing) {
-			millisSinceLastButton = (int) (currentTimeMillis - lastTimeUpdate);
+		if (t == org.lwjgl.input.Mouse.getButtonCount()) {
+			updatesSinceLastButton += 1;
 		} else {
-			millisSinceLastButton = 0;
+			updatesSinceLastButton = 0;
 		}
 		
 		int oldmx = mx;
@@ -70,11 +67,10 @@ public class Mouse {
 		mdx = mx - oldmx;
 		mdy = my - oldmy;
 		if (mdx == 0 && mdy == 0) {
-			millisSinceLastMovement = (int) (currentTimeMillis - lastTimeUpdate);
+			updatesSinceLastMovement += 1;
 		} else {
-			millisSinceLastMovement = 0;
+			updatesSinceLastMovement = 0;
 		}
-		lastTimeUpdate = currentTimeMillis;
 	}
 	
 	public static boolean isMousePressing(int index) {
