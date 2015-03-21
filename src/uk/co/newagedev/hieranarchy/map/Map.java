@@ -6,12 +6,10 @@ import java.lang.reflect.InvocationTargetException;
 
 import uk.co.newagedev.hieranarchy.graphics.Background;
 import uk.co.newagedev.hieranarchy.graphics.Camera;
-import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.state.State;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.testing.Main;
 import uk.co.newagedev.hieranarchy.tile.Tile;
-import uk.co.newagedev.hieranarchy.tile.TileConnectedTexture;
 import uk.co.newagedev.hieranarchy.tile.TileType;
 import uk.co.newagedev.hieranarchy.util.FileUtil;
 import uk.co.newagedev.hieranarchy.util.KeyBinding;
@@ -73,20 +71,11 @@ public class Map {
 		}
 	}
 
-	public void renderTile(Tile tile) {
-		if (tile instanceof TileConnectedTexture) {
-			TileConnectedTexture tct = (TileConnectedTexture) tile;
-			tct.render();
-		} else {
-			Screen.renderSprite(tile.getSprite(), tile.getLocation(), getState().getCurrentCamera());
-		}
-	}
-
 	public void render() {
 		bg.render();
 		for (Tile tile : tiles) {
 			if (tile != null) {
-				renderTile(tile);
+				tile.render(StateManager.getState(state).getCurrentCamera());
 			}
 		}
 	}
