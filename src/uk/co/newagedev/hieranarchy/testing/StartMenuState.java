@@ -8,6 +8,7 @@ import uk.co.newagedev.hieranarchy.map.Map;
 import uk.co.newagedev.hieranarchy.state.MenuState;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.ui.Button;
+import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
 import uk.co.newagedev.hieranarchy.ui.Component;
 
 public class StartMenuState extends MenuState {
@@ -15,7 +16,7 @@ public class StartMenuState extends MenuState {
 	private int count, offset;
 	
 	public StartMenuState() {
-		registerComponent(new Button("Edit Map", 50, 200, 200, 50, false,  new Runnable() {
+		registerComponent(new Button("Edit Map", 50, 200, 200, 50, false,  new ButtonRunnable() {
 			public void run() {
 				Map map = new Map("assets/maps/test.png", "edit map");
 				map.setBackground(new Background("bg", 0, 0, 2));
@@ -26,7 +27,7 @@ public class StartMenuState extends MenuState {
 				Main.setCurrentState("edit map");
 			}
 		}));
-		registerComponent(new Button("Quit Game", 50, 300, 200, 50, false, new Runnable() {
+		registerComponent(new Button("Quit Game", 50, 300, 200, 50, false, new ButtonRunnable() {
 			public void run() {
 				Screen.close();
 			}

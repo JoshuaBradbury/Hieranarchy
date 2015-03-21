@@ -8,6 +8,7 @@ import uk.co.newagedev.hieranarchy.map.Map;
 import uk.co.newagedev.hieranarchy.state.State;
 import uk.co.newagedev.hieranarchy.testing.Main;
 import uk.co.newagedev.hieranarchy.ui.Button;
+import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
 import uk.co.newagedev.hieranarchy.ui.Component;
 import uk.co.newagedev.hieranarchy.ui.Container;
 import uk.co.newagedev.hieranarchy.util.KeyBinding;
@@ -19,18 +20,28 @@ public class EditorState extends State {
 
 	public EditorState(Map map) {
 		currentMap = map;
-		Button playButton = new Button("Play", 5, 5, 30, 30, true, new Runnable() {
+		Button playButton = new Button("Play", 5, 5, 30, 30, true, new ButtonRunnable() {
 			public void run() {
 				playing = !playing;
+				if (playing) {
+					button.changeText("Pause");
+					button.setImage("pause");
+				} else {
+					button.changeText("Play");
+					button.setImage("play");
+				}
 			}
 		});
 		Sprite play = SpriteRegistry.getSprite("play");
 		play.setWidth(20);
 		play.setHeight(20);
+		Sprite pause = SpriteRegistry.getSprite("pause");
+		pause.setWidth(20);
+		pause.setHeight(20);
 		playButton.setImage("play");
 		toolbar.addComponent(playButton);
 		
-		Button resetButton = new Button("Reset", 45, 5, 30, 30, true, new Runnable() {
+		Button resetButton = new Button("Reset", 45, 5, 30, 30, true, new ButtonRunnable() {
 			public void run() {
 				restartMap();
 			}
@@ -54,7 +65,6 @@ public class EditorState extends State {
 	
 	public void restartMap() {
 		currentMap.reload();
-		playing = true;
 		for (Camera camera : getCameras().values()) {
 			camera.reset();
 		}

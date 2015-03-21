@@ -9,14 +9,19 @@ public class Button extends Component {
 
 	private String text;
 	private boolean hover = false, toolTip = false, toolTipDisplay = false;
-	private Runnable task;
+	private ButtonRunnable task;
 	private String image = "";
 
-	public Button(String text, int x, int y, int width, int height, boolean toolTip, Runnable task) {
+	public Button(String text, int x, int y, int width, int height, boolean toolTip, ButtonRunnable task) {
 		super(x, y, width, height);
 		this.text = text;
 		this.task = task;
+		this.task.setButton(this);
 		this.toolTip = toolTip;
+	}
+	
+	public void changeText(String text) {
+		this.text = text;
 	}
 
 	public void setImage(String sprite) {
