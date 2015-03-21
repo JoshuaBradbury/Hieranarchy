@@ -1,10 +1,12 @@
 package uk.co.newagedev.hieranarchy.graphics;
 
 public class Camera {
-	private int x, y;
+	private int x, y, homeX, homeY;
 	private float zoom = 1.0f;
 	
 	public Camera(int x, int y) {
+		homeX = x;
+		homeY = y;
 		this.x = x;
 		this.y = y;
 	}
@@ -15,6 +17,11 @@ public class Camera {
 	
 	public float getY() {
 		return y;
+	}
+	
+	public void reset() {
+		this.x = homeX;
+		this.y = homeY;
 	}
 	
 	public float getZoom() {
