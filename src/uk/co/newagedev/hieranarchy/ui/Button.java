@@ -33,9 +33,9 @@ public class Button extends Component {
 			Screen.renderText(text, (int) (getLocation().getX() + (getDimensions().getWidth() / 2)), (int) (getLocation().getY() + (getDimensions().getHeight() / 2)));
 		}
 		if (toolTipDisplay && toolTip) {
-			Screen.renderQuad(Mouse.getMouseX(), Mouse.getMouseY(), Screen.getTextWidth(text) + 14, Screen.getTextHeight(text) + 14, Component.DARK);
-			Screen.renderQuad(Mouse.getMouseX() + 2, Mouse.getMouseY() + 2, Screen.getTextWidth(text) + 10, Screen.getTextHeight(text) + 10, Component.LIGHT);
-			Screen.renderText(text, Mouse.getMouseX() + Screen.getTextWidth(text) / 2 + 7, Mouse.getMouseY() + Screen.getTextHeight(text) / 2 + 7);
+			Screen.renderQuad(Mouse.getMouseX(), Mouse.getMouseY() - Screen.getTextHeight(text) - 14, Screen.getTextWidth(text) + 14, Screen.getTextHeight(text) + 14, Component.DARK);
+			Screen.renderQuad(Mouse.getMouseX() + 2, Mouse.getMouseY() - 12 - Screen.getTextHeight(text), Screen.getTextWidth(text) + 10, Screen.getTextHeight(text) + 10, Component.LIGHT);
+			Screen.renderText(text, Mouse.getMouseX() + Screen.getTextWidth(text) / 2 + 7, Mouse.getMouseY() - Screen.getTextHeight(text) / 2 - 7);
 		}
 	}
 
