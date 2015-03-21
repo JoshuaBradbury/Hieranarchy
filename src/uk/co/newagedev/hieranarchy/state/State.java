@@ -30,6 +30,10 @@ public abstract class State {
 		return currentCamera;
 	}
 	
+	public Map<String, Camera> getCameras() {
+		return cameras;
+	}
+	
 	public abstract void render();
 	
 	public abstract void update();

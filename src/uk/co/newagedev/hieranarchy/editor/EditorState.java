@@ -1,5 +1,6 @@
 package uk.co.newagedev.hieranarchy.editor;
 
+import uk.co.newagedev.hieranarchy.graphics.Camera;
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.graphics.Sprite;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
@@ -54,6 +55,9 @@ public class EditorState extends State {
 	public void restartMap() {
 		currentMap.reload();
 		playing = true;
+		for (Camera camera : getCameras().values()) {
+			camera.reset();
+		}
 	}
 	
 	public void continueMap() {
