@@ -18,7 +18,7 @@ public class EditorState extends State {
 
 	public EditorState(Map map) {
 		currentMap = map;
-		Button button = new Button("Play", 5, 5, 30, 30, true, new Runnable() {
+		Button playButton = new Button("Play", 5, 5, 30, 30, true, new Runnable() {
 			public void run() {
 				playing = !playing;
 			}
@@ -26,8 +26,19 @@ public class EditorState extends State {
 		Sprite play = SpriteRegistry.getSprite("play");
 		play.setWidth(20);
 		play.setHeight(20);
-		button.setImage("play");
-		toolbar.addComponent(button);
+		playButton.setImage("play");
+		toolbar.addComponent(playButton);
+		
+		Button resetButton = new Button("Reset", 45, 5, 30, 30, true, new Runnable() {
+			public void run() {
+				restartMap();
+			}
+		});
+		Sprite reset = SpriteRegistry.getSprite("reset");
+		reset.setWidth(20);
+		reset.setHeight(20);
+		resetButton.setImage("reset");
+		toolbar.addComponent(resetButton);
 	}
 	
 	@Override
