@@ -5,6 +5,7 @@ import uk.co.newagedev.hieranarchy.util.Location;
 public class TileFlooring extends Tile {
 
 	public TileFlooring(Location loc) {
-		super(loc, "flooring");
+		super(loc);
+		setProperty("sprite", "flooring");
 	}
 }
