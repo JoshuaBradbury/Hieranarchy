@@ -2,7 +2,6 @@ package uk.co.newagedev.hieranarchy.map;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +11,7 @@ import uk.co.newagedev.hieranarchy.state.State;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.testing.Main;
 import uk.co.newagedev.hieranarchy.tile.Tile;
+import uk.co.newagedev.hieranarchy.tile.TileMap;
 import uk.co.newagedev.hieranarchy.tile.TileType;
 import uk.co.newagedev.hieranarchy.util.FileUtil;
 import uk.co.newagedev.hieranarchy.util.KeyBinding;
@@ -19,7 +19,7 @@ import uk.co.newagedev.hieranarchy.util.Location;
 import uk.co.newagedev.hieranarchy.util.Logger;
 
 public class Map {
-
+	private TileMap tileMap;
 	private Background bg;
 	private List<Tile> tiles;
 	private String state;
@@ -27,6 +27,13 @@ public class Map {
 	private int width, height;
 
 	public Map(String mapPath, String state) {
+		tileMap = new TileMap();
+		tileMap.registerTile("ice");
+		tileMap.setProperty("ice", "sprite", "icetile");
+		tileMap.setProperty("ice", "connected-textures", true);
+		tileMap.registerTile("flooring");
+		tileMap.setProperty("flooring", "sprite", "flooring");
+
 		loadMap(mapPath);
 		this.mapPath = mapPath;
 		this.state = state;
@@ -44,7 +51,7 @@ public class Map {
 		}
 		return tile;
 	}
-	
+
 	public State getState() {
 		return StateManager.getState(state);
 	}
@@ -57,7 +64,7 @@ public class Map {
 	public void reload() {
 		loadMap(mapPath);
 	}
-	
+
 	public void update() {
 		bg.update();
 		Camera camera = getState().getCurrentCamera();
@@ -96,10 +103,14 @@ public class Map {
 					TileType type = TileType.getTileTypeByColour(colour);
 					if (type != null) {
 						try {
-							Tile tile = type.getTileClass().getConstructor(Location.class).newInstance(new Location(x, y));
+							Tile tile = new Tile(new Location(x, y));
+							java.util.Map<String, Object> props = tileMap.getTileProperties(type.name().toLowerCase());
+							for (String prop : props.keySet()) {
+								tile.setProperty(prop, props.get(prop));
+							}
 							tiles.add(tile);
 							tile.setMap(this);
-						} catch (IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException e) {
+						} catch (IllegalArgumentException | SecurityException e) {
 							Logger.error(e.getMessage());
 						}
 					}

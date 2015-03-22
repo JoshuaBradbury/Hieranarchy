@@ -4,15 +4,13 @@ import java.awt.Color;
 
 public enum TileType {
 
-	ICE(new Color(0, 0x88, 0x88), TileIce.class),
-	FLOORING(new Color(0xaa, 0x44, 0), TileFlooring.class);
+	ICE(new Color(0, 0x88, 0x88)),
+	FLOORING(new Color(0xaa, 0x44, 0));
 	
 	private Color colour;
-	private Class<? extends Tile> tileClass;
 	
-	TileType(Color colour, Class<? extends Tile> tileClass) {
+	TileType(Color colour) {
 		this.colour = colour;
-		this.tileClass = tileClass;
 	}
 	
 	public static TileType getTileTypeByColour(Color colour) {
@@ -22,9 +20,5 @@ public enum TileType {
 			}
 		}
 		return null;
-	}
-	
-	public Class<? extends Tile> getTileClass() {
-		return tileClass;
 	}
 }
