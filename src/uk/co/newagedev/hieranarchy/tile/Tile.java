@@ -10,12 +10,10 @@ import uk.co.newagedev.hieranarchy.util.Location;
 public class Tile {
 	private Location loc;
 	private Map map;
-	protected String sprite;
 	private java.util.Map<String, Object> properties = new HashMap<String, Object>();
 
-	public Tile(Location loc, String sprite) {
+	public Tile(Location loc) {
 		this.loc = loc;
-		this.sprite = sprite;
 	}
 
 	public Location getLocation() {
@@ -43,7 +41,7 @@ public class Tile {
 	}
 
 	public String getSprite() {
-		return sprite;
+		return (String) getProperty("sprite");
 	}
 	
 	public boolean doesPropertyExist(String name) {
@@ -117,7 +115,7 @@ public class Tile {
 					tyma = 1.0f;
 				}
 
-				Screen.renderSprite(sprite, getLocation(), getMap().getState().getCurrentCamera(), new float[] { txmi, txma, tymi, tyma });
+				Screen.renderSprite(getSprite(), getLocation(), getMap().getState().getCurrentCamera(), new float[] { txmi, txma, tymi, tyma });
 				return;
 			}
 		}
