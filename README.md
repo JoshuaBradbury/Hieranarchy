@@ -1,1 +1,17 @@
 # Hieranarchy
+
+#What is it?
+
+Hieranarchy is the name of the game I made for LD 28 that inspired me to make this engine. That was the original aim of the engine, to be used to rewrite the game, but it took a different turn to be a tool for anyone to easily create games with no coding necessary.
+
+#How does it work?
+
+It works as sort of a level editor. Pretty much you have a map, which holds all the different tiles that are used in that map, and then you can place them where ever and it will work. The tiles are stored per map as you create the tiles for that map. This works through a fairly dynamic system of properties that you can set when creating a tile.
+
+#What is left to do?
+
+Currently, a lot. It only has the basic map loading and dynamic tile property system solidly in place. What is left to come is:
+- File loading and saving for maps
+- Tile creation and editing in the editor
+- Entities as a whole
+- and whatever anyone else wants to suggest!
