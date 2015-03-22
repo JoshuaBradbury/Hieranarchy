@@ -2,7 +2,7 @@
 
 #What is it?
 
-Hieranarchy is the name of the game I made for LD 28 that inspired me to make this engine. That was the original aim of the engine, to be used to rewrite the game, but it took a different turn to be a tool for anyone to easily create games with no coding necessary.
+Hieranarchy is the name of the game I made for LD 29 that inspired me to make this engine. That was the original aim of the engine, to be used to rewrite the game, but it took a different turn to be a tool for anyone to easily create games with no coding necessary.
 
 #How does it work?
 
