@@ -3,6 +3,8 @@ package uk.co.newagedev.hieranarchy.map;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 import uk.co.newagedev.hieranarchy.graphics.Background;
 import uk.co.newagedev.hieranarchy.graphics.Camera;
@@ -19,9 +21,10 @@ import uk.co.newagedev.hieranarchy.util.Logger;
 public class Map {
 
 	private Background bg;
-	private Tile[] tiles;
+	private List<Tile> tiles;
 	private String state;
 	private String mapPath;
+	private int width, height;
 
 	public Map(String mapPath, String state) {
 		loadMap(mapPath);
@@ -83,9 +86,9 @@ public class Map {
 	public void loadMap(String mapPath) {
 		BufferedImage image = Main.screen.loadImage(mapPath);
 		if (image != null) {
-			int tileCounter = 0;
-			int width = image.getWidth(), height = image.getHeight();
-			tiles = new Tile[width * height];
+			width = image.getWidth();
+			height = image.getHeight();
+			tiles = new ArrayList<Tile>();
 			for (int x = 0; x < width; x++) {
 				for (int y = 0; y < height; y++) {
 					int pix = image.getRGB(x, y);
@@ -94,16 +97,15 @@ public class Map {
 					if (type != null) {
 						try {
 							Tile tile = type.getTileClass().getConstructor(Location.class).newInstance(new Location(x, y));
-							tiles[tileCounter] = tile;
+							tiles.add(tile);
 							tile.setMap(this);
-							tileCounter += 1;
 						} catch (IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException e) {
 							Logger.error(e.getMessage());
 						}
 					}
 				}
 			}
-			Logger.info("\"" + mapPath + "\"", "loaded as", "\"" + FileUtil.getFileNameWithoutExtension(mapPath) + "\"", "Width:", width, "Height:", height, "tileCount:", tileCounter);
+			Logger.info("\"" + mapPath + "\"", "loaded as", "\"" + FileUtil.getFileNameWithoutExtension(mapPath) + "\"", "Width:", width, "Height:", height, "tileCount:", tiles.size());
 		}
 	}
 }
