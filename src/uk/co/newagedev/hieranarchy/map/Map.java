@@ -12,7 +12,6 @@ import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.testing.Main;
 import uk.co.newagedev.hieranarchy.tile.Tile;
 import uk.co.newagedev.hieranarchy.tile.TileMap;
-import uk.co.newagedev.hieranarchy.tile.TileType;
 import uk.co.newagedev.hieranarchy.util.FileUtil;
 import uk.co.newagedev.hieranarchy.util.KeyBinding;
 import uk.co.newagedev.hieranarchy.util.Location;
@@ -28,11 +27,15 @@ public class Map {
 
 	public Map(String mapPath, String state) {
 		tileMap = new TileMap();
+
 		tileMap.registerTile("ice");
 		tileMap.setProperty("ice", "sprite", "icetile");
 		tileMap.setProperty("ice", "connected-textures", true);
+		tileMap.setProperty("ice", "colour", new Color(0, 0x88, 0x88));
+
 		tileMap.registerTile("flooring");
 		tileMap.setProperty("flooring", "sprite", "flooring");
+		tileMap.setProperty("flooring", "colour", new Color(0xaa, 0x44, 0));
 
 		loadMap(mapPath);
 		this.mapPath = mapPath;
@@ -100,18 +103,15 @@ public class Map {
 				for (int y = 0; y < height; y++) {
 					int pix = image.getRGB(x, y);
 					Color colour = new Color(pix);
-					TileType type = TileType.getTileTypeByColour(colour);
-					if (type != null) {
-						try {
+					for (String tileName : tileMap.getTilesWithProperty("colour")) {
+						if (((Color) tileMap.getTileProperty(tileName, "colour")).equals(colour)) {
 							Tile tile = new Tile(new Location(x, y));
-							java.util.Map<String, Object> props = tileMap.getTileProperties(type.name().toLowerCase());
+							java.util.Map<String, Object> props = tileMap.getTileProperties(tileName);
 							for (String prop : props.keySet()) {
 								tile.setProperty(prop, props.get(prop));
 							}
 							tiles.add(tile);
 							tile.setMap(this);
-						} catch (IllegalArgumentException | SecurityException e) {
-							Logger.error(e.getMessage());
 						}
 					}
 				}
