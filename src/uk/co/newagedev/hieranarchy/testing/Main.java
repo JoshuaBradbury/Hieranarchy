@@ -70,6 +70,7 @@ public class Main {
 		SpriteRegistry.registerSprite("play", "assets/textures/play.png");
 		SpriteRegistry.registerSprite("reset", "assets/textures/reset.png");
 		SpriteRegistry.registerSprite("pause", "assets/textures/pause.png");
+		SpriteRegistry.registerSprite("edit", "assets/textures/edit.png");
 		Screen.loadFont("assets/textures/font.png");
 	}
 	

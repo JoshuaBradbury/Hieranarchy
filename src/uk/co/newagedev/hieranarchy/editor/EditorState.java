@@ -15,7 +15,7 @@ import uk.co.newagedev.hieranarchy.util.KeyBinding;
 
 public class EditorState extends State {
 	private Map currentMap;
-	private boolean playing = false;
+	private boolean playing = false, editing = false;
 	private Button playButton;
 	private Container toolbar = new Container(0, 0);
 
@@ -30,6 +30,9 @@ public class EditorState extends State {
 		Sprite reset = SpriteRegistry.getSprite("reset");
 		reset.setWidth(20);
 		reset.setHeight(20);
+		Sprite edit = SpriteRegistry.getSprite("edit");
+		edit.setWidth(20);
+		edit.setHeight(20);
 		playButton = new Button("Play", 5, 5, 30, 30, true, new ButtonRunnable() {
 			public void run() {
 				changePlaying();
@@ -44,6 +47,17 @@ public class EditorState extends State {
 		});
 		resetButton.setImage("reset");
 		toolbar.addComponent(resetButton);
+		Button editButton = new Button("Edit", 85, 5, 30, 30, true, new ButtonRunnable() {
+			public void run() {
+				if (editing) {
+					enableEditing();
+				} else {
+					disableEditing();
+				}
+			}
+		});
+		editButton.setImage("edit");
+		toolbar.addComponent(editButton);
 	}
 	
 	@Override
@@ -72,6 +86,14 @@ public class EditorState extends State {
 		for (Camera camera : getCameras().values()) {
 			camera.reset();
 		}
+	}
+	
+	public void enableEditing() {
+		editing = true;
+	}
+	
+	public void disableEditing() {
+		editing = false;
 	}
 	
 	public void continueMap() {
