@@ -56,28 +56,28 @@ public class Tile {
 
 				Tile up = getMap().getTileAt(getLocation().getRelative(0, 1));
 				if (up != null) {
-					if (up.getClass() == this.getClass()) {
+					if (up.doesPropertyExist("connected-textures") && (boolean) up.getProperty("connected-textures")) {
 						top = true;
 					}
 				}
 
 				Tile down = getMap().getTileAt(getLocation().getRelative(0, -1));
 				if (down != null) {
-					if (down.getClass() == this.getClass()) {
+					if (down.doesPropertyExist("connected-textures") && (boolean) down.getProperty("connected-textures")) {
 						bottom = true;
 					}
 				}
 
 				Tile leftSide = getMap().getTileAt(getLocation().getRelative(-1, 0));
 				if (leftSide != null) {
-					if (leftSide.getClass() == this.getClass()) {
+					if (leftSide.doesPropertyExist("connected-textures") && (boolean) leftSide.getProperty("connected-textures")) {
 						left = true;
 					}
 				}
 
 				Tile rightSide = getMap().getTileAt(getLocation().getRelative(1, 0));
 				if (rightSide != null) {
-					if (rightSide.getClass() == this.getClass()) {
+					if (rightSide.doesPropertyExist("connected-textures") && (boolean) rightSide.getProperty("connected-textures")) {
 						right = true;
 					}
 				}
