@@ -16,39 +16,32 @@ import uk.co.newagedev.hieranarchy.util.KeyBinding;
 public class EditorState extends State {
 	private Map currentMap;
 	private boolean playing = false;
+	private Button playButton;
 	private Container toolbar = new Container(0, 0);
 
 	public EditorState(Map map) {
 		currentMap = map;
-		Button playButton = new Button("Play", 5, 5, 30, 30, true, new ButtonRunnable() {
-			public void run() {
-				playing = !playing;
-				if (playing) {
-					button.changeText("Pause");
-					button.setImage("pause");
-				} else {
-					button.changeText("Play");
-					button.setImage("play");
-				}
-			}
-		});
 		Sprite play = SpriteRegistry.getSprite("play");
 		play.setWidth(20);
 		play.setHeight(20);
 		Sprite pause = SpriteRegistry.getSprite("pause");
 		pause.setWidth(20);
 		pause.setHeight(20);
+		Sprite reset = SpriteRegistry.getSprite("reset");
+		reset.setWidth(20);
+		reset.setHeight(20);
+		playButton = new Button("Play", 5, 5, 30, 30, true, new ButtonRunnable() {
+			public void run() {
+				changePlaying();
+			}
+		});
 		playButton.setImage("play");
 		toolbar.addComponent(playButton);
-		
 		Button resetButton = new Button("Reset", 45, 5, 30, 30, true, new ButtonRunnable() {
 			public void run() {
 				restartMap();
 			}
 		});
-		Sprite reset = SpriteRegistry.getSprite("reset");
-		reset.setWidth(20);
-		reset.setHeight(20);
 		resetButton.setImage("reset");
 		toolbar.addComponent(resetButton);
 	}
@@ -61,6 +54,17 @@ public class EditorState extends State {
 		}
 		Screen.renderQuad(0, 0, Main.WIDTH, 40, Component.VERY_LIGHT);
 		toolbar.render();
+	}
+	
+	public void changePlaying() {
+		playing = !playing;
+		if (playing) {
+			playButton.changeText("Pause");
+			playButton.setImage("pause");
+		} else {
+			playButton.changeText("Play");
+			playButton.setImage("play");
+		}
 	}
 	
 	public void restartMap() {
@@ -78,7 +82,7 @@ public class EditorState extends State {
 	public void update() {
 		toolbar.update();
 		if (KeyBinding.isKeyReleasing("editmapplay")) {
-			playing = !playing;
+			changePlaying();
 		}
 		if (playing) {
 			currentMap.update();
