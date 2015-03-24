@@ -69,9 +69,6 @@ public class EditorState extends State {
 	public void render() {
 		currentMap.render();
 		selection.render(getCurrentCamera());
-		if (!playing) {
-			Screen.renderQuad(0, 0, Main.WIDTH, Main.HEIGHT, Component.DARK_ALPHA);
-		}
 		Screen.renderQuad(0, 0, Main.WIDTH, 40, Component.VERY_LIGHT);
 		toolbar.render();
 	}
