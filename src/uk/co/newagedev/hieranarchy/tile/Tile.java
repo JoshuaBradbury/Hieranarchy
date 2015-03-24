@@ -23,6 +23,10 @@ public class Tile {
 	public void setProperty(String name, Object value) {
 		properties.put(name, value);
 	}
+	
+	public void removeProperty(String name) {
+		properties.remove(name);
+	}
 
 	public Object getProperty(String name) {
 		return properties.get(name);

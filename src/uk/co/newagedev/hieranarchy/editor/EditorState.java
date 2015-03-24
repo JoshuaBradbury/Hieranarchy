@@ -14,7 +14,6 @@ import uk.co.newagedev.hieranarchy.ui.Component;
 import uk.co.newagedev.hieranarchy.ui.Container;
 import uk.co.newagedev.hieranarchy.util.KeyBinding;
 import uk.co.newagedev.hieranarchy.util.Location;
-import uk.co.newagedev.hieranarchy.util.Logger;
 import uk.co.newagedev.hieranarchy.util.Mouse;
 
 public class EditorState extends State {
@@ -116,7 +115,17 @@ public class EditorState extends State {
 		}
 		if (editing) {
 			selectionLocation = new Location((int) ((Mouse.getMouseX() + getCurrentCamera().getX()) / (Main.SPRITE_WIDTH * getCurrentCamera().getZoom())), (int) ((Mouse.getMouseY() + getCurrentCamera().getY()) / (Main.SPRITE_HEIGHT * getCurrentCamera().getZoom())));
-			Logger.info(getCurrentCamera().getX(), selectionLocation);
+			
+			currentMap.removeTile(selection);
+			
+			if (Mouse.isButtonReleasing(Mouse.LEFT_BUTTON)) {
+				if (currentMap.getTileAt(selectionLocation) != null) {
+					currentMap.removeTile(currentMap.getTileAt(selectionLocation));
+				}
+				selection.removeProperty("selection");
+				currentMap.addTile(selection);
+			}
+			
 			selection = new Tile(selectionLocation);
 			selection.setProperty("sprite", "icetile");
 
@@ -126,10 +135,6 @@ public class EditorState extends State {
 
 			selection.setProperty("selection", null);
 			currentMap.addTile(selection);
-			
-			if (Mouse.isButtonReleasing(Mouse.LEFT_BUTTON)) {
-				
-			}
 		}
 		if (playing) {
 			currentMap.update();
