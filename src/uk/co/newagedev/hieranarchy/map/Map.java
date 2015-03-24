@@ -41,6 +41,10 @@ public class Map {
 		this.mapPath = mapPath;
 		this.state = state;
 	}
+	
+	public TileMap getTileMap() {
+		return tileMap;
+	}
 
 	public Tile getTileAt(Location loc) {
 		Tile tile = null;
@@ -72,10 +76,10 @@ public class Map {
 		bg.update();
 		Camera camera = getState().getCurrentCamera();
 		if (KeyBinding.isKeyDown("Left")) {
-			camera.move((int) (5 * camera.getZoom()), 0);
+			camera.move((int) (-5 * camera.getZoom()), 0);
 		}
 		if (KeyBinding.isKeyDown("Right")) {
-			camera.move((int) (-5 * camera.getZoom()), 0);
+			camera.move((int) (5 * camera.getZoom()), 0);
 		}
 		for (Tile tile : tiles) {
 			if (tile != null) {
@@ -118,5 +122,23 @@ public class Map {
 			}
 			Logger.info("\"" + mapPath + "\"", "loaded as", "\"" + FileUtil.getFileNameWithoutExtension(mapPath) + "\"", "Width:", width, "Height:", height, "tileCount:", tiles.size());
 		}
+	}
+	
+	public void addTile(Tile tile) {
+		tiles.add(tile);
+	}
+
+	public void removeTile(Tile tile) {
+		tiles.remove(tile);
+	}
+	
+	public List<Tile> getPlacedTilesWithProperty(String name) {
+		List<Tile> tilesWithProps = new ArrayList<Tile>();
+		for (Tile tile : tiles) {
+			if (tile.doesPropertyExist(name)) {
+				tilesWithProps.add(tile);
+			}
+		}
+		return tilesWithProps;
 	}
 }

@@ -86,7 +86,7 @@ public class Screen {
 		if (SpriteRegistry.doesSpriteExist(spriteName)) {
 			int width = Main.SPRITE_WIDTH;
 			int height = Main.SPRITE_HEIGHT;
-			Location tloc = location.clone().multiply(new Location(width * camera.getZoom(), height * camera.getZoom())).add(new Location(camera.getX(), camera.getY()));
+			Location tloc = location.clone().multiply(new Location(width * camera.getZoom(), height * camera.getZoom())).add(new Location(-camera.getX(), camera.getY()));
 			renderSprite(spriteName, tloc.getX(), tloc.getY(), width, height, texCoords);
 		}
 	}

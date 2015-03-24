@@ -1,5 +1,7 @@
 package uk.co.newagedev.hieranarchy.editor;
 
+import org.lwjgl.input.Mouse;
+
 import uk.co.newagedev.hieranarchy.graphics.Camera;
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.graphics.Sprite;
@@ -7,15 +9,20 @@ import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
 import uk.co.newagedev.hieranarchy.map.Map;
 import uk.co.newagedev.hieranarchy.state.State;
 import uk.co.newagedev.hieranarchy.testing.Main;
+import uk.co.newagedev.hieranarchy.tile.Tile;
 import uk.co.newagedev.hieranarchy.ui.Button;
 import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
 import uk.co.newagedev.hieranarchy.ui.Component;
 import uk.co.newagedev.hieranarchy.ui.Container;
 import uk.co.newagedev.hieranarchy.util.KeyBinding;
+import uk.co.newagedev.hieranarchy.util.Location;
+import uk.co.newagedev.hieranarchy.util.Logger;
 
 public class EditorState extends State {
 	private Map currentMap;
 	private boolean playing = false, editing = false;
+	private Location selectionLocation = new Location(0, 0);
+	private Tile selection = new Tile(selectionLocation);
 	private Button playButton;
 	private Container toolbar = new Container(0, 0);
 
@@ -49,7 +56,7 @@ public class EditorState extends State {
 		toolbar.addComponent(resetButton);
 		Button editButton = new Button("Edit", 85, 5, 30, 30, true, new ButtonRunnable() {
 			public void run() {
-				if (editing) {
+				if (!editing) {
 					enableEditing();
 				} else {
 					disableEditing();
@@ -59,17 +66,18 @@ public class EditorState extends State {
 		editButton.setImage("edit");
 		toolbar.addComponent(editButton);
 	}
-	
+
 	@Override
 	public void render() {
 		currentMap.render();
+		selection.render(getCurrentCamera());
 		if (!playing) {
 			Screen.renderQuad(0, 0, Main.WIDTH, Main.HEIGHT, Component.DARK_ALPHA);
 		}
 		Screen.renderQuad(0, 0, Main.WIDTH, 40, Component.VERY_LIGHT);
 		toolbar.render();
 	}
-	
+
 	public void changePlaying() {
 		playing = !playing;
 		if (playing) {
@@ -80,22 +88,23 @@ public class EditorState extends State {
 			playButton.setImage("play");
 		}
 	}
-	
+
 	public void restartMap() {
 		currentMap.reload();
 		for (Camera camera : getCameras().values()) {
 			camera.reset();
 		}
 	}
-	
+
 	public void enableEditing() {
 		editing = true;
 	}
-	
+
 	public void disableEditing() {
 		editing = false;
+		selection = null;
 	}
-	
+
 	public void continueMap() {
 		playing = true;
 	}
@@ -105,6 +114,21 @@ public class EditorState extends State {
 		toolbar.update();
 		if (KeyBinding.isKeyReleasing("editmapplay")) {
 			changePlaying();
+		}
+		if (editing) {
+			selectionLocation = new Location((int) ((Mouse.getX() + getCurrentCamera().getX()) / (Main.SPRITE_WIDTH * getCurrentCamera().getZoom())), (int) (((Main.HEIGHT - Mouse.getY()) + getCurrentCamera().getY()) / (Main.SPRITE_HEIGHT * getCurrentCamera().getZoom())));
+			Logger.info(getCurrentCamera().getX(), selectionLocation);
+			if (currentMap.getTileAt(selectionLocation) == null) {
+				selection = new Tile(selectionLocation);
+				selection.setProperty("sprite", "icetile");
+
+				for (Tile tile : currentMap.getPlacedTilesWithProperty("selection")) {
+					currentMap.removeTile(tile);
+				}
+
+				selection.setProperty("selection", true);
+				currentMap.addTile(selection);
+			}
 		}
 		if (playing) {
 			currentMap.update();
