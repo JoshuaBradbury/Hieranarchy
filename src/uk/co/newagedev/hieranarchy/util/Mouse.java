@@ -73,15 +73,15 @@ public class Mouse {
 		}
 	}
 	
-	public static boolean isMousePressing(int index) {
+	public static boolean isButtonPressing(int index) {
 		return pressing[index];
 	}
 	
-	public static boolean isMouseDown(int index) {
+	public static boolean isButtonDown(int index) {
 		return down[index];
 	}
 	
-	public static boolean isMouseReleasing(int index) {
+	public static boolean isButtonReleasing(int index) {
 		return releasing[index];
 	}
 }

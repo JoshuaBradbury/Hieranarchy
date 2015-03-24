@@ -1,7 +1,5 @@
 package uk.co.newagedev.hieranarchy.editor;
 
-import org.lwjgl.input.Mouse;
-
 import uk.co.newagedev.hieranarchy.graphics.Camera;
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.graphics.Sprite;
@@ -17,6 +15,7 @@ import uk.co.newagedev.hieranarchy.ui.Container;
 import uk.co.newagedev.hieranarchy.util.KeyBinding;
 import uk.co.newagedev.hieranarchy.util.Location;
 import uk.co.newagedev.hieranarchy.util.Logger;
+import uk.co.newagedev.hieranarchy.util.Mouse;
 
 public class EditorState extends State {
 	private Map currentMap;
@@ -116,18 +115,20 @@ public class EditorState extends State {
 			changePlaying();
 		}
 		if (editing) {
-			selectionLocation = new Location((int) ((Mouse.getX() + getCurrentCamera().getX()) / (Main.SPRITE_WIDTH * getCurrentCamera().getZoom())), (int) (((Main.HEIGHT - Mouse.getY()) + getCurrentCamera().getY()) / (Main.SPRITE_HEIGHT * getCurrentCamera().getZoom())));
+			selectionLocation = new Location((int) ((Mouse.getMouseX() + getCurrentCamera().getX()) / (Main.SPRITE_WIDTH * getCurrentCamera().getZoom())), (int) ((Mouse.getMouseY() + getCurrentCamera().getY()) / (Main.SPRITE_HEIGHT * getCurrentCamera().getZoom())));
 			Logger.info(getCurrentCamera().getX(), selectionLocation);
-			if (currentMap.getTileAt(selectionLocation) == null) {
-				selection = new Tile(selectionLocation);
-				selection.setProperty("sprite", "icetile");
+			selection = new Tile(selectionLocation);
+			selection.setProperty("sprite", "icetile");
 
-				for (Tile tile : currentMap.getPlacedTilesWithProperty("selection")) {
-					currentMap.removeTile(tile);
-				}
+			for (Tile tile : currentMap.getPlacedTilesWithProperty("selection")) {
+				currentMap.removeTile(tile);
+			}
 
-				selection.setProperty("selection", true);
-				currentMap.addTile(selection);
+			selection.setProperty("selection", null);
+			currentMap.addTile(selection);
+			
+			if (Mouse.isButtonReleasing(Mouse.LEFT_BUTTON)) {
+				
 			}
 		}
 		if (playing) {

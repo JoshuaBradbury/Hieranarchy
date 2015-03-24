@@ -60,7 +60,7 @@ public class Button extends Component {
 				toolTipDisplay = false;
 			}
 		}
-		if (Mouse.isMouseReleasing(Mouse.LEFT_BUTTON)) {
+		if (Mouse.isButtonReleasing(Mouse.LEFT_BUTTON)) {
 			if (hover) {
 				task.run();
 			}

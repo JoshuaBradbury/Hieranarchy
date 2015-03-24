@@ -78,35 +78,35 @@ public class Screen {
 		return texture;
 	}
 
-	public static void renderSprite(String spriteName, Location location, Camera camera) {
-		renderSprite(spriteName, location, camera, new float[] { 0.0f, 1.0f, 0.0f, 1.0f });
+	public static void renderSprite(String spriteName, Location location, Camera camera, float alpha) {
+		renderSprite(spriteName, location, camera, new float[] { 0.0f, 1.0f, 0.0f, 1.0f }, alpha);
 	}
 
-	public static void renderSprite(String spriteName, Location location, Camera camera, float[] texCoords) {
+	public static void renderSprite(String spriteName, Location location, Camera camera, float[] texCoords, float alpha) {
 		if (SpriteRegistry.doesSpriteExist(spriteName)) {
 			int width = Main.SPRITE_WIDTH;
 			int height = Main.SPRITE_HEIGHT;
 			Location tloc = location.clone().multiply(new Location(width * camera.getZoom(), height * camera.getZoom())).add(new Location(-camera.getX(), camera.getY()));
-			renderSprite(spriteName, tloc.getX(), tloc.getY(), width, height, texCoords);
+			renderSprite(spriteName, tloc.getX(), tloc.getY(), width, height, texCoords, alpha);
 		}
 	}
 
 	public static void renderSpriteIgnoringCamera(String spriteName, Location location) {
-		renderSpriteIgnoringCamera(spriteName, location, new float[] { 0.0f, 1.0f, 0.0f, 1.0f });
+		renderSpriteIgnoringCamera(spriteName, location, new float[] { 0.0f, 1.0f, 0.0f, 1.0f }, 1.0f);
 	}
 
-	public static void renderSpriteIgnoringCamera(String spriteName, Location location, float[] texCoords) {
+	public static void renderSpriteIgnoringCamera(String spriteName, Location location, float[] texCoords, float alpha) {
 		if (SpriteRegistry.doesSpriteExist(spriteName)) {
 			Sprite sprite = SpriteRegistry.getSprite(spriteName);
-			renderSprite(spriteName, location.getX(), location.getY(), sprite.getWidth(), sprite.getHeight(), texCoords);
+			renderSprite(spriteName, location.getX(), location.getY(), sprite.getWidth(), sprite.getHeight(), texCoords, alpha);
 		}
 	}
 
-	public static void renderSprite(String spriteName, float x, float y, float width, float height, float[] texCoords) {
-		glEnable(GL_TEXTURE_2D);
+	public static void renderSprite(String spriteName, float x, float y, float width, float height, float[] texCoords, float alpha) {
 		if (SpriteRegistry.doesSpriteExist(spriteName)) {
+			glEnable(GL_TEXTURE_2D);
 			SpriteRegistry.getSprite(spriteName).bind();
-			glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+			glColor4f(1.0f, 1.0f, 1.0f, alpha);
 			glBegin(GL_QUADS);
 			{
 				glTexCoord2f(texCoords[1], texCoords[3]);
@@ -119,8 +119,8 @@ public class Screen {
 				glVertex2f(x, y + height);
 			}
 			glEnd();
+			glDisable(GL_TEXTURE_2D);
 		}
-		glDisable(GL_TEXTURE_2D);
 	}
 
 	public void setTitle(String title) {

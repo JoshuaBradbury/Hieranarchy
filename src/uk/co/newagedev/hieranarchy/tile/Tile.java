@@ -115,10 +115,10 @@ public class Tile {
 					tyma = 1.0f;
 				}
 
-				Screen.renderSprite(getSprite(), getLocation(), getMap().getState().getCurrentCamera(), new float[] { txmi, txma, tymi, tyma });
+				Screen.renderSprite(getSprite(), getLocation(), getMap().getState().getCurrentCamera(), new float[] { txmi, txma, tymi, tyma }, doesPropertyExist("selection") ? 0.2f : 1.0f);
 				return;
 			}
 		}
-		Screen.renderSprite(getSprite(), getLocation(), camera);
+		Screen.renderSprite(getSprite(), getLocation(), camera, doesPropertyExist("selection") ? 0.2f : 1.0f);
 	}
 }
