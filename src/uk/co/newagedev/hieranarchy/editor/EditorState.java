@@ -124,7 +124,9 @@ public class EditorState extends State {
 			}
 			
 			selection = new Tile(selectionLocation);
+			selection.setMap(currentMap);
 			selection.setProperty("sprite", "icetile");
+			selection.setProperty("connected-textures", true);
 
 			for (Tile tile : currentMap.getPlacedTilesWithProperty("selection")) {
 				currentMap.removeTile(tile);
