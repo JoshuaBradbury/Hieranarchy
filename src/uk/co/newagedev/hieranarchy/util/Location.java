@@ -26,9 +26,7 @@ public class Location {
 	}
 	
 	public Location add(Location loc) {
-		x += loc.x;
-		y += loc.y;
-		return this;
+		return add(loc.x, loc.y);
 	}
 	
 	public Location add(float x, float y) {
@@ -38,9 +36,7 @@ public class Location {
 	}
 	
 	public Location subtract(Location loc) {
-		x -= loc.x;
-		y -= loc.y;
-		return this;
+		return subtract(loc.x, loc.y);
 	}
 	
 	public Location subtract(float x, float y) {
@@ -50,29 +46,35 @@ public class Location {
 	}
 	
 	public Location multiply(Location loc) {
-		x *= loc.x;
-		y *= loc.y;
-		return this;
+		return multiply(loc.x, loc.y);
 	}
 	
-	public Location multiply(int x, int y) {
+	public Location multiply(float x, float y) {
 		this.x *= x;
 		this.y *= y;
 		return this;
 	}
 	
 	public Location divide(Location loc) {
-		x /= loc.x;
-		y /= loc.y;
-		return this;
+		return divide(loc.x, loc.y);
 	}
 	
-	public Location divide(int x, int y) {
+	public Location divide(float x, float y) {
 		this.x /= x;
 		this.y /= y;
 		return this;
 	}
 	
+	public float distance(Location loc) {
+		return distance(loc.x, loc.y);
+	}
+	
+	public float distance(float x, float y) {
+		float xDiff = Math.abs(x - this.x);
+		float yDiff = Math.abs(y - this.y);
+		return (float) Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
+	}
+
 	public Location clone() {
 		return new Location(x, y);
 	}

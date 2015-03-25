@@ -1,12 +1,24 @@
 package uk.co.newagedev.hieranarchy.entities;
 
-import uk.co.newagedev.hieranarchy.util.Location;
+import java.util.List;
 
-public class Entity {
+import uk.co.newagedev.hieranarchy.graphics.Sprite;
+import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
+import uk.co.newagedev.hieranarchy.map.Map;
+import uk.co.newagedev.hieranarchy.util.Location;
+import uk.co.newagedev.hieranarchy.util.LocationContainer;
+
+public class Entity implements LocationContainer {
 	/**
 	 * The location variable of the entity.
 	 */
 	private Location loc;
+	
+	/**
+	 * The map variable that the entity is a part of.
+	 */
+	private Map map;
+	
 	/**
 	 * The sprite variable of the entity.
 	 */
@@ -14,18 +26,37 @@ public class Entity {
 	
 	/**
 	 * The constructor of Entity.
+	 * @param sprite - The sprite of the entity.
 	 * @param loc - The initial location for the entity.
 	 */
-	public Entity(Location loc) {
+	public Entity(String sprite, Location loc) {
 		this.loc = loc;
+		this.sprite = sprite;
+		Sprite sp = SpriteRegistry.getSprite(sprite);
+	}
+	
+	/**
+	 * Sets the Map of the Entity.
+	 * @param map - the Map the Entity is a part of.
+	 */
+	public void setMap(Map map) {
+		this.map = map;
 	}
 	
 	/**
 	 * Returns the entity's location.
-	 * @return The entity's location.
+	 * @return loc - The entity's location.
 	 */
 	public Location getLocation() {
 		return loc;
+	}
+	
+	/**
+	 * Sets the Entity's location
+	 * @param location - The new location for the entity.
+	 */
+	public void setLocation(Location location) {
+		loc = location;
 	}
 	
 	/**
@@ -54,7 +85,7 @@ public class Entity {
 	
 	/**
 	 * Returns the entity's current sprite.
-	 * @return the sprite of the entity.
+	 * @return sprite - the sprite of the entity.
 	 */
 	public String getSprite() {
 		return sprite;

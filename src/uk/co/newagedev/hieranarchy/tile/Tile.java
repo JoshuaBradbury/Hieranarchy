@@ -6,8 +6,9 @@ import uk.co.newagedev.hieranarchy.graphics.Camera;
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.map.Map;
 import uk.co.newagedev.hieranarchy.util.Location;
+import uk.co.newagedev.hieranarchy.util.LocationContainer;
 
-public class Tile {
+public class Tile implements LocationContainer {
 	private Location loc;
 	private Map map;
 	private java.util.Map<String, Object> properties = new HashMap<String, Object>();
@@ -18,6 +19,10 @@ public class Tile {
 
 	public Location getLocation() {
 		return loc;
+	}
+	
+	public void setLocation(Location loc) {
+		this.loc = loc;
 	}
 
 	public void setProperty(String name, Object value) {
@@ -33,7 +38,7 @@ public class Tile {
 	}
 
 	public void update() {
-
+		
 	}
 
 	public void setMap(Map map) {
