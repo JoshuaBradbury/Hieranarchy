@@ -70,9 +70,7 @@ public class Location {
 	}
 	
 	public float distance(float x, float y) {
-		float xDiff = Math.abs(x - this.x);
-		float yDiff = Math.abs(y - this.y);
-		return (float) Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
+		return (float) Math.sqrt(Math.pow(x - this.x, 2) + Math.pow(y - this.y, 2));
 	}
 
 	public Location clone() {
