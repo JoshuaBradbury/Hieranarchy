@@ -70,7 +70,9 @@ public class EditorState extends State {
 	@Override
 	public void render() {
 		currentMap.render();
-		selection.render(getCurrentCamera());
+		if (editing) {
+			selection.render(getCurrentCamera());
+		}
 		Screen.renderQuad(0, 0, Main.WIDTH, 40, Component.VERY_LIGHT);
 		toolbar.render();
 	}
