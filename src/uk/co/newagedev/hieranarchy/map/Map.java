@@ -36,7 +36,11 @@ public class Map {
 
 		tileMap.registerTile("flooring");
 		tileMap.setProperty("flooring", "sprite", "flooring");
-		tileMap.setProperty("flooring", "colour", new Color(0xaa, 0x44, 0));
+		tileMap.setProperty("flooring", "colour", new Color(0xaa, 0x44, 0x22));
+		
+		tileMap.registerTile("crate");
+		tileMap.setProperty("crate", "sprite", "crate");
+		tileMap.setProperty("crate", "colour", new Color(0xaa, 0x44, 0));
 
 		loadMap(mapPath);
 		this.mapPath = mapPath;

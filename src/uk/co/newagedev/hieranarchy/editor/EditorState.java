@@ -24,6 +24,7 @@ public class EditorState extends State {
 	private Location selectionLocation = new Location(0, 0);
 	private Tile selection = new Tile(selectionLocation);
 	private Button playButton;
+	private String currentTileName;
 	private Container toolbar = new Container(0, 0);
 
 	public EditorState(Map map) {
@@ -65,6 +66,7 @@ public class EditorState extends State {
 		});
 		editButton.setImage("edit");
 		toolbar.addComponent(editButton);
+		currentTileName = currentMap.getTileMap().getNextTile(currentTileName);
 	}
 
 	@Override
@@ -137,14 +139,27 @@ public class EditorState extends State {
 				if (currentMap.getTileAt(selectionLocation) != null) {
 					currentMap.removeTile(currentMap.getTileAt(selectionLocation));
 				}
-				selection.removeProperty("selection");
+				if (selection != null) {
+					selection.removeProperty("selection");
+				}
 				currentMap.addTile(selection);
+			}
+			
+			if (KeyBinding.isKeyReleasing("SelectNextTile")) {
+				currentTileName = currentMap.getTileMap().getNextTile(currentTileName);
+			}
+			
+			if (KeyBinding.isKeyReleasing("SelectPrevTile")) {
+				currentTileName = currentMap.getTileMap().getPrevTile(currentTileName);
 			}
 
 			selection = new Tile(selectionLocation);
+			
 			selection.setMap(currentMap);
-			selection.setProperty("sprite", "icetile");
-			selection.setProperty("connected-textures", true);
+			java.util.Map<String, Object> props = currentMap.getTileMap().getTileProperties(currentTileName);
+			for (String prop : props.keySet()) {
+				selection.setProperty(prop, props.get(prop));
+			}
 
 			for (Tile tile : currentMap.getPlacedTilesWithProperty("selection")) {
 				currentMap.removeTile(tile);
