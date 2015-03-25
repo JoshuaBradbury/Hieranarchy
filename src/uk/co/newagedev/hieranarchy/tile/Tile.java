@@ -5,16 +5,20 @@ import java.util.HashMap;
 import uk.co.newagedev.hieranarchy.graphics.Camera;
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.map.Map;
+import uk.co.newagedev.hieranarchy.testing.Main;
+import uk.co.newagedev.hieranarchy.util.CollisionBox;
 import uk.co.newagedev.hieranarchy.util.Location;
 import uk.co.newagedev.hieranarchy.util.LocationContainer;
 
 public class Tile implements LocationContainer {
 	private Location loc;
 	private Map map;
+	private CollisionBox box;
 	private java.util.Map<String, Object> properties = new HashMap<String, Object>();
 
 	public Tile(Location loc) {
 		this.loc = loc;
+		box = new CollisionBox(this, Main.SPRITE_WIDTH, Main.SPRITE_HEIGHT);
 	}
 
 	public Location getLocation() {
@@ -39,6 +43,10 @@ public class Tile implements LocationContainer {
 
 	public void update() {
 		
+	}
+	
+	public CollisionBox getCollisionBox() {
+		return box;
 	}
 
 	public void setMap(Map map) {

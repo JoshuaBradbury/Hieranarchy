@@ -12,6 +12,7 @@ import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.testing.Main;
 import uk.co.newagedev.hieranarchy.tile.Tile;
 import uk.co.newagedev.hieranarchy.tile.TileMap;
+import uk.co.newagedev.hieranarchy.util.CollisionBox;
 import uk.co.newagedev.hieranarchy.util.FileUtil;
 import uk.co.newagedev.hieranarchy.util.KeyBinding;
 import uk.co.newagedev.hieranarchy.util.Location;
@@ -140,5 +141,23 @@ public class Map {
 			}
 		}
 		return tilesWithProps;
+	}
+
+	public List<Tile> getTilesWithinRadius(Location loc, float radius) {
+		List<Tile> tilesWithinRadius = new ArrayList<Tile>();
+		for (Tile tile : tiles) {
+			if (tile.getLocation().distance(loc) < radius) {
+				tilesWithinRadius.add(tile);
+			}
+		}
+		return tilesWithinRadius;
+	}
+	
+	public List<CollisionBox> getTileCollisionBoxesWithinRadius(Location loc, float radius) {
+		List<CollisionBox> boxes = new ArrayList<CollisionBox>();
+		for (Tile tile : getTilesWithinRadius(loc, radius)) {
+			boxes.add(tile.getCollisionBox());
+		}
+		return boxes;
 	}
 }

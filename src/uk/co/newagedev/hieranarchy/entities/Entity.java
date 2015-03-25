@@ -5,6 +5,7 @@ import java.util.List;
 import uk.co.newagedev.hieranarchy.graphics.Sprite;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
 import uk.co.newagedev.hieranarchy.map.Map;
+import uk.co.newagedev.hieranarchy.util.CollisionBox;
 import uk.co.newagedev.hieranarchy.util.Location;
 import uk.co.newagedev.hieranarchy.util.LocationContainer;
 
@@ -13,6 +14,11 @@ public class Entity implements LocationContainer {
 	 * The location variable of the entity.
 	 */
 	private Location loc;
+	
+	/**
+	 * The collision box variable of the entity.
+	 */
+	private CollisionBox box;
 	
 	/**
 	 * The map variable that the entity is a part of.
@@ -33,6 +39,7 @@ public class Entity implements LocationContainer {
 		this.loc = loc;
 		this.sprite = sprite;
 		Sprite sp = SpriteRegistry.getSprite(sprite);
+		box = new CollisionBox(this, sp.getWidth(), sp.getHeight());
 	}
 	
 	/**
@@ -41,6 +48,19 @@ public class Entity implements LocationContainer {
 	 */
 	public void setMap(Map map) {
 		this.map = map;
+	}
+	
+	public boolean isCollidingWithTiles() {
+		List<CollisionBox> collisionBoxes = map.getTileCollisionBoxesWithinRadius(loc, 3);
+		boolean colliding = false;
+		
+		for (CollisionBox colBox : collisionBoxes) {
+			if (colBox.isColliding(box)) {
+				colliding = true;
+			}
+		}
+		
+		return colliding;
 	}
 	
 	/**
