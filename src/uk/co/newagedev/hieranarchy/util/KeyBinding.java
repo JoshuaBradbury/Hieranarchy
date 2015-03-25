@@ -1,6 +1,8 @@
 package uk.co.newagedev.hieranarchy.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.input.Keyboard;
@@ -8,6 +10,7 @@ import org.lwjgl.input.Keyboard;
 public class KeyBinding {
 
 	private static Map<String, Integer> keyBindings = new HashMap<String, Integer>();
+	private static List<Object[]> events = new ArrayList<Object[]>();
 	
 	public static void bindKey(String function, int key) {
 		keyBindings.put(function, key);
@@ -38,6 +41,18 @@ public class KeyBinding {
 		return keyBindings.get(function);
 	}
 	
+	public static void update() {
+		events = new ArrayList<Object[]>();
+		Keyboard.poll();
+		while (Keyboard.next()) {
+			events.add(new Object[] { Keyboard.getEventKey(), Keyboard.getEventKeyState() });
+		}
+	}
+	
+	public static void cleanup() {
+		Keyboard.destroy();
+	}
+	
 	public static boolean isKeyDown(String function) {
 		int id = getBinding(function);
 		return Keyboard.isKeyDown(id);
@@ -45,9 +60,9 @@ public class KeyBinding {
 	
 	public static boolean isKeyPressing(String function) {
 		int id = getBinding(function);
-		while(Keyboard.next()) {
-			if(Keyboard.getEventKey() == id) {
-				return Keyboard.getEventKeyState();
+		for(Object[] event : events) {
+			if((int) event[0] == id) {
+				return (boolean) event[1];
 			}
 		}
 		return false;
@@ -55,9 +70,9 @@ public class KeyBinding {
 	
 	public static boolean isKeyReleasing(String function) {
 		int id = getBinding(function);
-		while(Keyboard.next()) {
-			if(Keyboard.getEventKey() == id) {
-				return !Keyboard.getEventKeyState();
+		for(Object[] event : events) {
+			if((int) event[0] == id) {
+				return !((boolean) event[1]);
 			}
 		}
 		return false;

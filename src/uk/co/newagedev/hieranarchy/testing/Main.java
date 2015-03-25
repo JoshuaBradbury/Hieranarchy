@@ -65,7 +65,8 @@ public class Main {
 	 */
 	public void initResources() {
 		SpriteRegistry.registerSprite("bg", "assets/textures/background.png");
-		SpriteRegistry.registerSprite("flooring", "assets/textures/crate.png");
+		SpriteRegistry.registerSprite("crate", "assets/textures/crate.png");
+		SpriteRegistry.registerSprite("flooring", "assets/textures/flooring.png");
 		SpriteRegistry.registerSprite("icetile", "assets/textures/icesheet.png");
 		SpriteRegistry.registerSprite("play", "assets/textures/play.png");
 		SpriteRegistry.registerSprite("reset", "assets/textures/reset.png");
@@ -81,6 +82,8 @@ public class Main {
 		KeyBinding.bindKey("Left", Keyboard.KEY_LEFT);
 		KeyBinding.bindKey("Right", Keyboard.KEY_RIGHT);
 		KeyBinding.bindKey("editmapplay", Keyboard.KEY_RETURN);
+		KeyBinding.bindKey("SelectPrevTile", Keyboard.KEY_DOWN);
+		KeyBinding.bindKey("SelectNextTile", Keyboard.KEY_UP);
 	}
 	
 	/**
@@ -130,6 +133,7 @@ public class Main {
 	 */
 	public void update() {
 		Mouse.update();
+		KeyBinding.update();
 		StateManager.getState(currentState).update();
 	}
 	
@@ -168,6 +172,7 @@ public class Main {
 	 */
 	public void cleanup() {
 		SpriteRegistry.clear();
+		KeyBinding.cleanup();
 		screen.cleanup();
 	}
 	
