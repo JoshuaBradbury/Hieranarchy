@@ -37,7 +37,7 @@ public class Map {
 		tileMap.registerTile("flooring");
 		tileMap.setProperty("flooring", "sprite", "flooring");
 		tileMap.setProperty("flooring", "colour", new Color(0xaa, 0x44, 0x22));
-		
+
 		tileMap.registerTile("crate");
 		tileMap.setProperty("crate", "sprite", "crate");
 		tileMap.setProperty("crate", "colour", new Color(0xaa, 0x44, 0));
@@ -46,7 +46,7 @@ public class Map {
 		this.mapPath = mapPath;
 		this.state = state;
 	}
-	
+
 	public TileMap getTileMap() {
 		return tileMap;
 	}
@@ -128,20 +128,24 @@ public class Map {
 			Logger.info("\"" + mapPath + "\"", "loaded as", "\"" + FileUtil.getFileNameWithoutExtension(mapPath) + "\"", "Width:", width, "Height:", height, "tileCount:", tiles.size());
 		}
 	}
-	
+
 	public void addTile(Tile tile) {
 		tiles.add(tile);
+		tile.setMap(this);
 	}
 
 	public void removeTile(Tile tile) {
 		tiles.remove(tile);
+		tile.setMap(null);
 	}
-	
+
 	public List<Tile> getPlacedTilesWithProperty(String name) {
 		List<Tile> tilesWithProps = new ArrayList<Tile>();
 		for (Tile tile : tiles) {
-			if (tile.doesPropertyExist(name)) {
-				tilesWithProps.add(tile);
+			if (tile != null) {
+				if (tile.doesPropertyExist(name)) {
+					tilesWithProps.add(tile);
+				}
 			}
 		}
 		return tilesWithProps;
@@ -156,7 +160,7 @@ public class Map {
 		}
 		return tilesWithinRadius;
 	}
-	
+
 	public List<CollisionBox> getTileCollisionBoxesWithinRadius(Location loc, float radius) {
 		List<CollisionBox> boxes = new ArrayList<CollisionBox>();
 		for (Tile tile : getTilesWithinRadius(loc, radius)) {

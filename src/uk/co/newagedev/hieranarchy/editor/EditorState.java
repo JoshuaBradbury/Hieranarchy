@@ -20,7 +20,7 @@ import uk.co.newagedev.hieranarchy.util.Mouse;
 
 public class EditorState extends State {
 	private Map currentMap;
-	private boolean playing = false, editing = false;
+	private boolean playing = false, editing = false, placing = false, deleting = false;
 	private Location selectionLocation = new Location(0, 0);
 	private Tile selection = new Tile(selectionLocation);
 	private Button playButton;
@@ -103,6 +103,7 @@ public class EditorState extends State {
 
 	public void disableEditing() {
 		editing = false;
+		currentMap.removeTile(selection);
 		selection = null;
 	}
 
@@ -121,28 +122,38 @@ public class EditorState extends State {
 
 			currentMap.removeTile(selection);
 
-			if (Mouse.isButtonDown(Mouse.RIGHT_BUTTON)) {
+			if (Mouse.isButtonDown(Mouse.RIGHT_BUTTON) && !placing) {
+				deleting = true;
 				Tile tile = currentMap.getTileAt(selectionLocation);
 				if (tile != null) {
-					tile.setProperty("delete", null);
+					if (!tile.doesPropertyExist("delete")) {
+						tile.setProperty("delete", null);
+					}
 				}
 			}
 
-			if (Mouse.isButtonReleasing(Mouse.RIGHT_BUTTON)) {
+			if (Mouse.isButtonReleasing(Mouse.RIGHT_BUTTON) && !placing) {
+				deleting = false;
 				List<Tile> tiles = currentMap.getPlacedTilesWithProperty("delete");
 				for (Tile tile : tiles) {
 					currentMap.removeTile(tile);
 				}
 			}
 
-			if (Mouse.isButtonReleasing(Mouse.LEFT_BUTTON)) {
+			if (Mouse.isButtonDown(Mouse.LEFT_BUTTON) && !deleting) {
+				placing = true;
 				if (currentMap.getTileAt(selectionLocation) != null) {
 					currentMap.removeTile(currentMap.getTileAt(selectionLocation));
 				}
 				if (selection != null) {
 					selection.removeProperty("selection");
 				}
+				
 				currentMap.addTile(selection);
+			}
+			
+			if (Mouse.isButtonReleasing(Mouse.LEFT_BUTTON) && !deleting) {
+				placing = false;
 			}
 			
 			if (KeyBinding.isKeyReleasing("SelectNextTile")) {
@@ -154,8 +165,7 @@ public class EditorState extends State {
 			}
 
 			selection = new Tile(selectionLocation);
-			
-			selection.setMap(currentMap);
+		
 			java.util.Map<String, Object> props = currentMap.getTileMap().getTileProperties(currentTileName);
 			for (String prop : props.keySet()) {
 				selection.setProperty(prop, props.get(prop));
