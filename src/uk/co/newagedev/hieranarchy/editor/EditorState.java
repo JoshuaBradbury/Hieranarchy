@@ -1,5 +1,7 @@
 package uk.co.newagedev.hieranarchy.editor;
 
+import java.util.List;
+
 import uk.co.newagedev.hieranarchy.graphics.Camera;
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.graphics.Sprite;
@@ -112,9 +114,23 @@ public class EditorState extends State {
 		}
 		if (editing) {
 			selectionLocation = new Location((int) ((Mouse.getMouseX() + getCurrentCamera().getX()) / (Main.SPRITE_WIDTH * getCurrentCamera().getZoom())), (int) ((Mouse.getMouseY() + getCurrentCamera().getY()) / (Main.SPRITE_HEIGHT * getCurrentCamera().getZoom())));
-			
+
 			currentMap.removeTile(selection);
-			
+
+			if (Mouse.isButtonDown(Mouse.RIGHT_BUTTON)) {
+				Tile tile = currentMap.getTileAt(selectionLocation);
+				if (tile != null) {
+					tile.setProperty("delete", null);
+				}
+			}
+
+			if (Mouse.isButtonReleasing(Mouse.RIGHT_BUTTON)) {
+				List<Tile> tiles = currentMap.getPlacedTilesWithProperty("delete");
+				for (Tile tile : tiles) {
+					currentMap.removeTile(tile);
+				}
+			}
+
 			if (Mouse.isButtonReleasing(Mouse.LEFT_BUTTON)) {
 				if (currentMap.getTileAt(selectionLocation) != null) {
 					currentMap.removeTile(currentMap.getTileAt(selectionLocation));
@@ -122,7 +138,7 @@ public class EditorState extends State {
 				selection.removeProperty("selection");
 				currentMap.addTile(selection);
 			}
-			
+
 			selection = new Tile(selectionLocation);
 			selection.setMap(currentMap);
 			selection.setProperty("sprite", "icetile");
