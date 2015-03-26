@@ -52,6 +52,16 @@ public class Mouse {
 			} else {
 				t += 1;
 			}
+			
+			if (pressing[i] && releasing[i]) {
+				releasing[i] = false;
+			}
+			if(releasing[i] && down[i]) {
+				down[i] = false;
+			}
+			if (pressing[i] && down[i]) {
+				down[i] = false;
+			}
 		}
 		
 		if (t == org.lwjgl.input.Mouse.getButtonCount()) {
@@ -83,5 +93,9 @@ public class Mouse {
 	
 	public static boolean isButtonReleasing(int index) {
 		return releasing[index];
+	}
+
+	public static String getButtonStates(int index) {
+		return "Pressing: " + String.valueOf(pressing[index]) + ", Down: " + String.valueOf(down[index]) + ", Releasing: " + String.valueOf(releasing[index]);
 	}
 }
