@@ -24,7 +24,7 @@ public class Tile implements LocationContainer {
 	public Location getLocation() {
 		return loc;
 	}
-	
+
 	public void setLocation(Location loc) {
 		this.loc = loc;
 	}
@@ -32,7 +32,7 @@ public class Tile implements LocationContainer {
 	public void setProperty(String name, Object value) {
 		properties.put(name, value);
 	}
-	
+
 	public void removeProperty(String name) {
 		properties.remove(name);
 	}
@@ -42,9 +42,9 @@ public class Tile implements LocationContainer {
 	}
 
 	public void update() {
-		
+
 	}
-	
+
 	public CollisionBox getCollisionBox() {
 		return box;
 	}
@@ -60,7 +60,7 @@ public class Tile implements LocationContainer {
 	public String getSprite() {
 		return (String) getProperty("sprite");
 	}
-	
+
 	public boolean doesPropertyExist(String name) {
 		return properties.containsKey(name);
 	}
@@ -75,72 +75,74 @@ public class Tile implements LocationContainer {
 		}
 		if (doesPropertyExist("connected-textures")) {
 			if ((boolean) getProperty("connected-textures")) {
-				float txmi = 0.0f, tymi = 0.0f, txma = 1.0f, tyma = 1.0f;
-				boolean top = false, bottom = false, left = false, right = false;
+				if (getMap() != null) {
+					float txmi = 0.0f, tymi = 0.0f, txma = 1.0f, tyma = 1.0f;
+					boolean top = false, bottom = false, left = false, right = false;
 
-				Tile up = getMap().getTileAt(getLocation().getRelative(0, 1));
-				if (up != null) {
-					if (up.doesPropertyExist("connected-textures") && (boolean) up.getProperty("connected-textures")) {
-						top = true;
+					Tile up = getMap().getTileAt(getLocation().getRelative(0, 1));
+					if (up != null) {
+						if (up.doesPropertyExist("connected-textures") && (boolean) up.getProperty("connected-textures")) {
+							top = true;
+						}
 					}
-				}
 
-				Tile down = getMap().getTileAt(getLocation().getRelative(0, -1));
-				if (down != null) {
-					if (down.doesPropertyExist("connected-textures") && (boolean) down.getProperty("connected-textures")) {
-						bottom = true;
+					Tile down = getMap().getTileAt(getLocation().getRelative(0, -1));
+					if (down != null) {
+						if (down.doesPropertyExist("connected-textures") && (boolean) down.getProperty("connected-textures")) {
+							bottom = true;
+						}
 					}
-				}
 
-				Tile leftSide = getMap().getTileAt(getLocation().getRelative(-1, 0));
-				if (leftSide != null) {
-					if (leftSide.doesPropertyExist("connected-textures") && (boolean) leftSide.getProperty("connected-textures")) {
-						left = true;
+					Tile leftSide = getMap().getTileAt(getLocation().getRelative(-1, 0));
+					if (leftSide != null) {
+						if (leftSide.doesPropertyExist("connected-textures") && (boolean) leftSide.getProperty("connected-textures")) {
+							left = true;
+						}
 					}
-				}
 
-				Tile rightSide = getMap().getTileAt(getLocation().getRelative(1, 0));
-				if (rightSide != null) {
-					if (rightSide.doesPropertyExist("connected-textures") && (boolean) rightSide.getProperty("connected-textures")) {
-						right = true;
+					Tile rightSide = getMap().getTileAt(getLocation().getRelative(1, 0));
+					if (rightSide != null) {
+						if (rightSide.doesPropertyExist("connected-textures") && (boolean) rightSide.getProperty("connected-textures")) {
+							right = true;
+						}
 					}
-				}
 
-				if (top && !bottom) {
-					tyma = 0.8f;
-				}
+					if (top && !bottom) {
+						tyma = 0.8f;
+					}
 
-				if (bottom && !top) {
-					tymi = 0.2f;
-				}
+					if (bottom && !top) {
+						tymi = 0.2f;
+					}
 
-				if (top && bottom) {
-					tymi = 0.2f;
-					tyma = 0.8f;
-				}
+					if (top && bottom) {
+						tymi = 0.2f;
+						tyma = 0.8f;
+					}
 
-				if (left && !right) {
-					txmi = 0.2f;
-				}
+					if (left && !right) {
+						txmi = 0.2f;
+					}
 
-				if (right && !left) {
-					txma = 0.8f;
-				}
+					if (right && !left) {
+						txma = 0.8f;
+					}
 
-				if (left && right) {
-					txmi = 0.2f;
-					txma = 0.8f;
-				}
+					if (left && right) {
+						txmi = 0.2f;
+						txma = 0.8f;
+					}
 
-				if (!left && !right && !top && !bottom) {
-					txmi = 0.0f;
-					txma = 1.0f;
-					tymi = 0.0f;
-					tyma = 1.0f;
-				}
+					if (!left && !right && !top && !bottom) {
+						txmi = 0.0f;
+						txma = 1.0f;
+						tymi = 0.0f;
+						tyma = 1.0f;
+					}
 
-				Screen.renderSprite(getSprite(), getLocation(), getMap().getState().getCurrentCamera(), new float[] { txmi, txma, tymi, tyma }, col);
-				return;
+					Screen.renderSprite(getSprite(), getLocation(), getMap().getState().getCurrentCamera(), new float[] { txmi, txma, tymi, tyma }, col);
+					return;
+				}
 			}
 		}
 		Screen.renderSprite(getSprite(), getLocation(), camera, col);
