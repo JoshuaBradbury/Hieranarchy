@@ -176,7 +176,6 @@ public class EditorState extends State {
 			}
 
 			selection.setProperty("selection", null);
-			currentMap.addTile(selection);
 		}
 		if (playing) {
 			currentMap.update();

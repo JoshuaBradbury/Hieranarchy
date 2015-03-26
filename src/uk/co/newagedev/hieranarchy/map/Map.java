@@ -130,13 +130,23 @@ public class Map {
 	}
 
 	public void addTile(Tile tile) {
+		List<Tile> ts = new ArrayList<Tile>();
+		for(Tile t : tiles) {
+			if (t.getLocation().equals(tile.getLocation())) {
+				ts.add(t);
+			}
+		}
+		for (Tile t : ts) {
+			removeTile(t);
+		}
 		tiles.add(tile);
 		tile.setMap(this);
 	}
 
 	public void removeTile(Tile tile) {
-		tiles.remove(tile);
-		tile.setMap(null);
+		if (tile != null) {
+			tiles.remove(tile);
+		}
 	}
 
 	public List<Tile> getPlacedTilesWithProperty(String name) {
