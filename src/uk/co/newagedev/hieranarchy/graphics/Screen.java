@@ -22,6 +22,7 @@ import static org.lwjgl.opengl.GL11.glOrtho;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex2f;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -261,10 +262,13 @@ public class Screen {
 	}
 
 	public static void renderText(String text, int x, int y) {
+		renderText(text, x, y, new Color(0x00, 0x00, 0x00));
+	}
+	
+	public static void renderText(String text, int x, int y, Color colour) {
 		text = text.toLowerCase();
-		glColor3f(1.0f, 1.0f, 1.0f);
 		for (int i = 0; i < text.length(); i++) {
-			Screen.renderSpriteIgnoringCamera("" + text.charAt(i), new Location(x + (i * 17) - ((text.length() * 17) / 2), y - 8));
+			Screen.renderSpriteIgnoringCamera("" + text.charAt(i), new Location(x + (i * 17) - ((text.length() * 17) / 2), y - 8), new float[] { 0.0f, 1.0f, 0.0f, 1.0f }, new float[] {colour.getRed() / 255.0f, colour.getGreen() / 255.0f, colour.getBlue() / 255.0f, colour.getAlpha() / 255.0f });
 		}
 	}
 	

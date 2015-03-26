@@ -1,5 +1,6 @@
 package uk.co.newagedev.hieranarchy.editor;
 
+import java.awt.Color;
 import java.util.List;
 
 import uk.co.newagedev.hieranarchy.graphics.Camera;
@@ -77,6 +78,9 @@ public class EditorState extends State {
 		}
 		Screen.renderQuad(0, 0, Main.WIDTH, 40, Component.VERY_LIGHT);
 		toolbar.render();
+		if (editing) {
+			Screen.renderText("Edit Mode", 10 + Screen.getTextWidth("Edit Mode") / 2, 50 + Screen.getTextHeight("Edit Mode") / 2, new Color(0xff, 0xff, 0xff));
+		}
 	}
 
 	public void changePlaying() {
@@ -148,24 +152,24 @@ public class EditorState extends State {
 				if (selection != null) {
 					selection.removeProperty("selection");
 				}
-				
+
 				currentMap.addTile(selection);
 			}
-			
+
 			if (Mouse.isButtonReleasing(Mouse.LEFT_BUTTON) && !deleting) {
 				placing = false;
 			}
-			
+
 			if (KeyBinding.isKeyReleasing("SelectNextTile")) {
 				currentTileName = currentMap.getTileMap().getNextTile(currentTileName);
 			}
-			
+
 			if (KeyBinding.isKeyReleasing("SelectPrevTile")) {
 				currentTileName = currentMap.getTileMap().getPrevTile(currentTileName);
 			}
 
 			selection = new Tile(selectionLocation);
-		
+
 			java.util.Map<String, Object> props = currentMap.getTileMap().getTileProperties(currentTileName);
 			for (String prop : props.keySet()) {
 				selection.setProperty(prop, props.get(prop));
