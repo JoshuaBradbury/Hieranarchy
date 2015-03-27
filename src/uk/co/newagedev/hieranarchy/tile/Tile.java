@@ -68,7 +68,7 @@ public class Tile implements LocationContainer {
 	public void render(Camera camera) {
 		float[] col = new float[] { 1.0f, 1.0f, 1.0f, 1.0f };
 		if (doesPropertyExist("selection"))
-			col[3] = 0.2f;
+			col[3] = 0.6f;
 		if (doesPropertyExist("delete")) {
 			col[1] = 0.4f;
 			col[2] = 0.4f;

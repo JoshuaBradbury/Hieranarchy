@@ -180,6 +180,10 @@ public class EditorState extends State {
 			}
 
 			selection.setProperty("selection", null);
+			
+			if (deleting) {
+				selection.setProperty("delete", null);
+			}
 		}
 		if (playing) {
 			currentMap.update();
