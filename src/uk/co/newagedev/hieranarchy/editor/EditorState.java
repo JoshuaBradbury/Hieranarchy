@@ -84,13 +84,15 @@ public class EditorState extends State {
 	}
 
 	public void changePlaying() {
-		playing = !playing;
-		if (playing) {
-			playButton.changeText("Pause");
-			playButton.setImage("pause");
-		} else {
-			playButton.changeText("Play");
-			playButton.setImage("play");
+		if (!editing) {
+			playing = !playing;
+			if (playing) {
+				playButton.changeText("Pause");
+				playButton.setImage("pause");
+			} else {
+				playButton.changeText("Play");
+				playButton.setImage("play");
+			}
 		}
 	}
 
@@ -102,7 +104,9 @@ public class EditorState extends State {
 	}
 
 	public void enableEditing() {
-		editing = true;
+		if (!playing) {
+			editing = true;
+		}
 	}
 
 	public void disableEditing() {
@@ -180,7 +184,7 @@ public class EditorState extends State {
 			}
 
 			selection.setProperty("selection", null);
-			
+
 			if (deleting) {
 				selection.setProperty("delete", null);
 			}
