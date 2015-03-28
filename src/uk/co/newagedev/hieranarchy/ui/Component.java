@@ -7,7 +7,7 @@ import uk.co.newagedev.hieranarchy.util.Location;
 public abstract class Component {
 	
 	private int x, y, width, height, offsetX, offsetY;
-	private boolean visible;
+	private Component parent;
 	
 	public static final float[] VERY_LIGHT = new float[] { 0.7f, 0.7f, 0.85f }, LIGHT = new float[] { 0.6f, 0.6f, 0.75f }, DARK = new float[] { 0.4f, 0.4f, 0.55f }, DARK_ALPHA = new float[] { 0.2f, 0.2f, 0.35f, 0.75f };
 	
@@ -16,26 +16,26 @@ public abstract class Component {
 		this.y = y;
 		this.width = width;
 		this.height = height;
-		this.visible = true;
+		parent = null;
+	}
+	
+	public void setParent(Component parent) {
+		this.parent = parent;
+	}
+	
+	public Component getParent() {
+		return parent;
 	}
 	
 	public Component(int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.visible = true;
+		parent = null;
 	}
 	
 	public void setOffset(int x, int y) {
 		offsetX = x;
 		offsetY = y;
-	}
-	
-	public void setVisible(boolean visible) {
-		this.visible = visible;
-	}
-	
-	public boolean isVisible() {
-		return visible;
 	}
 	
 	public Dimension getDimensions() {

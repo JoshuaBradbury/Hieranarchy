@@ -13,10 +13,12 @@ public class Container extends Component {
 	
 	public void addComponent(Component component) {
 		components.add(component);
+		component.setParent(this);
 	}
 	
 	public void removeComponent(Component component) {
 		components.remove(component);
+		component.setParent(null);
 	}
 
 	public List<Component> getComponents() {
