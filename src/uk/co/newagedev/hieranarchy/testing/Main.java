@@ -81,9 +81,11 @@ public class Main {
 	public void initBindings() {
 		KeyBinding.bindKey("Left", Keyboard.KEY_LEFT);
 		KeyBinding.bindKey("Right", Keyboard.KEY_RIGHT);
+		KeyBinding.bindKey("Up", Keyboard.KEY_UP);
+		KeyBinding.bindKey("Down", Keyboard.KEY_DOWN);
 		KeyBinding.bindKey("editmapplay", Keyboard.KEY_RETURN);
-		KeyBinding.bindKey("SelectPrevTile", Keyboard.KEY_DOWN);
-		KeyBinding.bindKey("SelectNextTile", Keyboard.KEY_UP);
+		KeyBinding.bindKey("SelectPrevTile", Keyboard.KEY_Z);
+		KeyBinding.bindKey("SelectNextTile", Keyboard.KEY_X);
 	}
 	
 	/**
