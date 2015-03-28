@@ -126,7 +126,7 @@ public class EditorState extends State {
 			changePlaying();
 		}
 		if (editing) {
-			selectionLocation = new Location((int) ((Mouse.getMouseX() + getCurrentCamera().getX()) / (Main.SPRITE_WIDTH * getCurrentCamera().getZoom())), (int) ((Mouse.getMouseY() + getCurrentCamera().getY()) / (Main.SPRITE_HEIGHT * getCurrentCamera().getZoom())));
+			selectionLocation = new Location((int) ((Mouse.getMouseX() + getCurrentCamera().getX()) / (Main.SPRITE_WIDTH * getCurrentCamera().getZoom())), (int) ((Mouse.getMouseY() - getCurrentCamera().getY()) / (Main.SPRITE_HEIGHT * getCurrentCamera().getZoom())));
 
 			currentMap.removeTile(selection);
 
@@ -188,6 +188,17 @@ public class EditorState extends State {
 			if (deleting) {
 				selection.setProperty("delete", null);
 			}
+			
+			Camera camera = getCurrentCamera();
+			
+			if (KeyBinding.isKeyDown("Up")) {
+				camera.move(0, (int) (5 * camera.getZoom()));
+			}
+			
+			if (KeyBinding.isKeyDown("Down")) {
+				camera.move(0, (int) (-5 * camera.getZoom()));
+			}
+			currentMap.updateCamera();
 		}
 		if (playing) {
 			currentMap.update();
