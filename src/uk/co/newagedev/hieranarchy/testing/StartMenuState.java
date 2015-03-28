@@ -19,7 +19,9 @@ public class StartMenuState extends MenuState {
 		registerComponent(new Button("Edit Map", 50, 200, 200, 50, false,  new ButtonRunnable() {
 			public void run() {
 				Map map = new Map("assets/maps/test.png", "edit map");
-				map.setBackground(new Background("bg", 0, 0, 2));
+				Background bg = new Background("bg", 0, 0, 2);
+				bg.setScrollDirections(true, false);
+				map.setBackground(bg);
 				EditorState state = new EditorState(map);
 				state.registerCamera("start", new Camera(100, 0));
 				state.switchCamera("start");

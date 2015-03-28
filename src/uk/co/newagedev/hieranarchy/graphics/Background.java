@@ -19,6 +19,8 @@ public class Background {
 	 */
 	private int startX, startY, x, y, z;
 	
+	private boolean scrollsX = true, scrollsY = true;
+	
 	/**
 	 * The constructor of Background.
 	 * @param sprite - the sprite of the background.
@@ -33,13 +35,26 @@ public class Background {
 		this.z = z;
 	}
 	
+	public void setScrollDirections(boolean x, boolean y) {
+		scrollsX = x;
+		scrollsY = y;
+	}
+	
+	public boolean getScrollsX() {
+		return scrollsX;
+	}
+	
+	public boolean getScrollsY() {
+		return scrollsY;
+	}
+	
 	public void setMap(Map map) {
 		this.map = map;
 	}
 	
 	public void update() {
-		x = (int) ((-map.getState().getCurrentCamera().getX() / z) + startX);
-		y = (int) (startY + (map.getState().getCurrentCamera().getY() / z));
+		if (scrollsX) x = (int) ((-map.getState().getCurrentCamera().getX() / z) + startX);
+		if (scrollsY) y = (int) (startY + (map.getState().getCurrentCamera().getY() / z));
 	}
 	
 	public void render() {
