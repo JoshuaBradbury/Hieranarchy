@@ -33,15 +33,23 @@ public class EditorState extends State {
 		Sprite play = SpriteRegistry.getSprite("play");
 		play.setWidth(20);
 		play.setHeight(20);
+		
 		Sprite pause = SpriteRegistry.getSprite("pause");
 		pause.setWidth(20);
 		pause.setHeight(20);
+		
 		Sprite reset = SpriteRegistry.getSprite("reset");
 		reset.setWidth(20);
 		reset.setHeight(20);
+		
 		Sprite edit = SpriteRegistry.getSprite("edit");
 		edit.setWidth(20);
 		edit.setHeight(20);
+		
+		Sprite newTile = SpriteRegistry.getSprite("new tile");
+		newTile.setWidth(20);
+		newTile.setHeight(20);
+		
 		playButton = new Button("Play", 5, 5, 30, 30, true, new ButtonRunnable() {
 			public void run() {
 				changePlaying();
@@ -49,6 +57,7 @@ public class EditorState extends State {
 		});
 		playButton.setImage("play");
 		toolbar.addComponent(playButton);
+		
 		Button resetButton = new Button("Reset", 45, 5, 30, 30, true, new ButtonRunnable() {
 			public void run() {
 				restartMap();
@@ -56,6 +65,7 @@ public class EditorState extends State {
 		});
 		resetButton.setImage("reset");
 		toolbar.addComponent(resetButton);
+		
 		Button editButton = new Button("Edit", 85, 5, 30, 30, true, new ButtonRunnable() {
 			public void run() {
 				if (!editing) {
@@ -67,6 +77,15 @@ public class EditorState extends State {
 		});
 		editButton.setImage("edit");
 		toolbar.addComponent(editButton);
+		
+		Button newTileButton = new Button("Create New Tile", 205, 5, 30, 30, true, new ButtonRunnable() {
+			public void run() {
+				
+			}
+		});
+		newTileButton.setImage("new tile");
+		toolbar.addComponent(newTileButton);
+		
 		currentTileName = currentMap.getTileMap().getNextTile(currentTileName);
 	}
 
