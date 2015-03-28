@@ -76,8 +76,8 @@ public class Map {
 	public void reload() {
 		loadMap(mapPath);
 	}
-
-	public void update() {
+	
+	public void updateCamera() {
 		bg.update();
 		Camera camera = getState().getCurrentCamera();
 		if (KeyBinding.isKeyDown("Left")) {
@@ -86,6 +86,10 @@ public class Map {
 		if (KeyBinding.isKeyDown("Right")) {
 			camera.move((int) (5 * camera.getZoom()), 0);
 		}
+	}
+
+	public void update() {
+		updateCamera();
 		for (Tile tile : tiles) {
 			if (tile != null) {
 				tile.update();
