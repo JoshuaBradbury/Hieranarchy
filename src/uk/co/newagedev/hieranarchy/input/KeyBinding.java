@@ -1,4 +1,4 @@
-package uk.co.newagedev.hieranarchy.util;
+package uk.co.newagedev.hieranarchy.input;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.input.Keyboard;
+
+import uk.co.newagedev.hieranarchy.util.Logger;
 
 public class KeyBinding {
 

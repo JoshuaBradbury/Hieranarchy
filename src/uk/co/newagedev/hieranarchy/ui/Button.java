@@ -3,7 +3,7 @@ package uk.co.newagedev.hieranarchy.ui;
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.graphics.Sprite;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
-import uk.co.newagedev.hieranarchy.util.Mouse;
+import uk.co.newagedev.hieranarchy.input.Mouse;
 
 public class Button extends Component {
 

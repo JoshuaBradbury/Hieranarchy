@@ -7,6 +7,7 @@ import java.util.List;
 
 import uk.co.newagedev.hieranarchy.graphics.Background;
 import uk.co.newagedev.hieranarchy.graphics.Camera;
+import uk.co.newagedev.hieranarchy.input.KeyBinding;
 import uk.co.newagedev.hieranarchy.state.State;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.testing.Main;
@@ -14,7 +15,6 @@ import uk.co.newagedev.hieranarchy.tile.Tile;
 import uk.co.newagedev.hieranarchy.tile.TileMap;
 import uk.co.newagedev.hieranarchy.util.CollisionBox;
 import uk.co.newagedev.hieranarchy.util.FileUtil;
-import uk.co.newagedev.hieranarchy.util.KeyBinding;
 import uk.co.newagedev.hieranarchy.util.Location;
 import uk.co.newagedev.hieranarchy.util.Logger;
 

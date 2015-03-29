@@ -1,7 +1,7 @@
 package uk.co.newagedev.hieranarchy.ui;
 
 import uk.co.newagedev.hieranarchy.graphics.Screen;
-import uk.co.newagedev.hieranarchy.util.Mouse;
+import uk.co.newagedev.hieranarchy.input.Mouse;
 
 public class Window extends Container {
 

@@ -4,10 +4,10 @@ import org.lwjgl.input.Keyboard;
 
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
+import uk.co.newagedev.hieranarchy.input.KeyBinding;
+import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.state.StateManager;
-import uk.co.newagedev.hieranarchy.util.KeyBinding;
 import uk.co.newagedev.hieranarchy.util.Logger;
-import uk.co.newagedev.hieranarchy.util.Mouse;
 
 public class Main {
 	

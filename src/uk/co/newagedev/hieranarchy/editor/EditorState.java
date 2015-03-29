@@ -7,6 +7,8 @@ import uk.co.newagedev.hieranarchy.graphics.Camera;
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.graphics.Sprite;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
+import uk.co.newagedev.hieranarchy.input.KeyBinding;
+import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.map.Map;
 import uk.co.newagedev.hieranarchy.state.State;
 import uk.co.newagedev.hieranarchy.testing.Main;
@@ -16,9 +18,7 @@ import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
 import uk.co.newagedev.hieranarchy.ui.Component;
 import uk.co.newagedev.hieranarchy.ui.Container;
 import uk.co.newagedev.hieranarchy.ui.Window;
-import uk.co.newagedev.hieranarchy.util.KeyBinding;
 import uk.co.newagedev.hieranarchy.util.Location;
-import uk.co.newagedev.hieranarchy.util.Mouse;
 
 public class EditorState extends State {
 	private Map currentMap;
