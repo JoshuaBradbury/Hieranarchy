@@ -9,12 +9,17 @@ public class Window extends Container {
 	
 	public Window(int x, int y, int width, int height) {
 		super(x, y, width, height);
-		Button closeButton = new Button("X", x + width - 30, y - 25, 20, 20, false, new ButtonRunnable() {
+		Button closeButton = new Button("X", width - 30, -25, 20, 20, false, new ButtonRunnable() {
 			public void run() {
 				((Container) getParent()).removeComponent(button.getParent());
 			}
 		});
 		addComponent(closeButton);
+	}
+	
+	public void addComponent(Component component) {
+		component.setLocation((int) (component.getLocation().getX() + getLocation().getX()), (int) (component.getLocation().getY() + getLocation().getY()));
+		super.addComponent(component);
 	}
 
 	@Override
