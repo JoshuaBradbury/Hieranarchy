@@ -15,6 +15,7 @@ import uk.co.newagedev.hieranarchy.ui.Button;
 import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
 import uk.co.newagedev.hieranarchy.ui.Component;
 import uk.co.newagedev.hieranarchy.ui.Container;
+import uk.co.newagedev.hieranarchy.ui.Window;
 import uk.co.newagedev.hieranarchy.util.KeyBinding;
 import uk.co.newagedev.hieranarchy.util.Location;
 import uk.co.newagedev.hieranarchy.util.Mouse;
@@ -27,7 +28,8 @@ public class EditorState extends State {
 	private Button playButton;
 	private String currentTileName;
 	private Container toolbar = new Container(0, 0);
-
+	private Window window;
+	
 	public EditorState(Map map) {
 		currentMap = map;
 		Sprite play = SpriteRegistry.getSprite("play");
@@ -80,7 +82,12 @@ public class EditorState extends State {
 
 		Button newTileButton = new Button("Create New Tile", 205, 5, 30, 30, true, new ButtonRunnable() {
 			public void run() {
-
+				if (!toolbar.getComponents().contains(window)) {
+					window = new Window(100, 100, 100, 100);
+					toolbar.addComponent(window);
+				} else {
+					toolbar.removeComponent(window);
+				}
 			}
 		});
 		newTileButton.setImage("new tile");
