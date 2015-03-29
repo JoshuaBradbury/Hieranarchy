@@ -12,23 +12,26 @@ import uk.co.newagedev.hieranarchy.util.Logger;
 public class KeyBinding {
 
 	private static Map<String, Integer> keyBindings = new HashMap<String, Integer>();
-	private static List<Object[]> events = new ArrayList<Object[]>();
-	
+
+	private static boolean[] pressing = new boolean[Keyboard.KEYBOARD_SIZE];
+	private static boolean[] down = new boolean[Keyboard.KEYBOARD_SIZE];
+	private static boolean[] releasing = new boolean[Keyboard.KEYBOARD_SIZE];
+
 	public static void bindKey(String function, int key) {
 		keyBindings.put(function, key);
 		Logger.info(function, "bound as key", Keyboard.getKeyName(key));
 	}
-	
+
 	public static void removeBinding(String function) {
 		Logger.info(function, "unbound from key", Keyboard.getKeyName(keyBindings.get(function)));
 		keyBindings.remove(function);
 	}
-	
+
 	public static void changeBinding(String function, int newKey) {
 		keyBindings.put(function, newKey);
 		Logger.info(function, "rebound to key", Keyboard.getKeyName(newKey));
 	}
-	
+
 	public static boolean isKeyDuplicated(String function) {
 		int count = 0;
 		for (String key : keyBindings.keySet()) {
@@ -38,45 +41,85 @@ public class KeyBinding {
 		}
 		return count > 1;
 	}
-	
+
 	public static int getBinding(String function) {
 		return keyBindings.get(function);
 	}
-	
+
 	public static void update() {
-		events = new ArrayList<Object[]>();
 		Keyboard.poll();
-		while (Keyboard.next()) {
-			events.add(new Object[] { Keyboard.getEventKey(), Keyboard.getEventKeyState() });
+		for (int i = 0; i < Keyboard.getKeyCount(); i++) {
+			boolean kd = Keyboard.isKeyDown(i);
+			if (!pressing[i] && !down[i] && kd) {
+				pressing[i] = true;
+			} else if (pressing[i] && !down[i] && kd) {
+				pressing[i] = false;
+				down[i] = true;
+			} else if (down[i] && !releasing[i] && !kd) {
+				down[i] = false;
+				releasing[i] = true;
+			} else if (!down[i] && releasing[i] && !kd) {
+				releasing[i] = false;
+			}
+
+			if (pressing[i] && releasing[i]) {
+				releasing[i] = false;
+			}
+			if (releasing[i] && down[i]) {
+				down[i] = false;
+			}
+			if (pressing[i] && down[i]) {
+				down[i] = false;
+			}
 		}
 	}
-	
+
 	public static void cleanup() {
 		Keyboard.destroy();
 	}
-	
+
 	public static boolean isKeyDown(String function) {
 		int id = getBinding(function);
-		return Keyboard.isKeyDown(id);
+		return down[id];
 	}
-	
+
 	public static boolean isKeyPressing(String function) {
 		int id = getBinding(function);
-		for(Object[] event : events) {
-			if((int) event[0] == id) {
-				return (boolean) event[1];
-			}
-		}
-		return false;
+		return pressing[id];
 	}
-	
+
 	public static boolean isKeyReleasing(String function) {
 		int id = getBinding(function);
-		for(Object[] event : events) {
-			if((int) event[0] == id) {
-				return !((boolean) event[1]);
+		return releasing[id];
+	}
+	
+	public static List<Integer> getKeysPressing() {
+		List<Integer> keys = new ArrayList<Integer>();
+		for (int i = 0; i < pressing.length; i++) {
+			if (pressing[i]) {
+				keys.add(i);
 			}
 		}
-		return false;
+		return keys;
+	}
+	
+	public static List<Integer> getKeysDown() {
+		List<Integer> keys = new ArrayList<Integer>();
+		for (int i = 0; i < down.length; i++) {
+			if (down[i]) {
+				keys.add(i);
+			}
+		}
+		return keys;
+	}
+	
+	public static List<Integer> getKeysReleasing() {
+		List<Integer> keys = new ArrayList<Integer>();
+		for (int i = 0; i < releasing.length; i++) {
+			if (releasing[i]) {
+				keys.add(i);
+			}
+		}
+		return keys;
 	}
 }
