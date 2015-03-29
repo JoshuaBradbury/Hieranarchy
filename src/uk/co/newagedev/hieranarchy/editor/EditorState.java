@@ -83,7 +83,7 @@ public class EditorState extends State {
 		Button newTileButton = new Button("Create New Tile", 205, 5, 30, 30, true, new ButtonRunnable() {
 			public void run() {
 				if (!toolbar.getComponents().contains(window)) {
-					window = new Window(100, 100, 100, 100);
+					window = new Window(Main.WIDTH - 250, 70, 250, 300);
 					toolbar.addComponent(window);
 				} else {
 					toolbar.removeComponent(window);
