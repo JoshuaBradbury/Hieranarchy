@@ -17,6 +17,9 @@ import uk.co.newagedev.hieranarchy.ui.Button;
 import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
 import uk.co.newagedev.hieranarchy.ui.Component;
 import uk.co.newagedev.hieranarchy.ui.Container;
+import uk.co.newagedev.hieranarchy.ui.Label;
+import uk.co.newagedev.hieranarchy.ui.TextBox;
+import uk.co.newagedev.hieranarchy.ui.TickBox;
 import uk.co.newagedev.hieranarchy.ui.Window;
 import uk.co.newagedev.hieranarchy.util.Location;
 
@@ -83,7 +86,7 @@ public class EditorState extends State {
 		Button newTileButton = new Button("Create New Tile", 205, 5, 30, 30, true, new ButtonRunnable() {
 			public void run() {
 				if (!toolbar.getComponents().contains(window)) {
-					window = new Window(Main.WIDTH - 250, 70, 250, 300);
+					window = getCreateNewTileWindow();
 					toolbar.addComponent(window);
 				} else {
 					toolbar.removeComponent(window);
@@ -94,6 +97,25 @@ public class EditorState extends State {
 		toolbar.addComponent(newTileButton);
 
 		currentTileName = currentMap.getTileMap().getNextTile(currentTileName);
+	}
+	
+	public Window getCreateNewTileWindow() {
+		Window window = new Window(Main.WIDTH - 250, 70, 250, 300);
+		
+		Label name = new Label("name", 10, 10);
+		
+		TextBox box = new TextBox(10, 30, 10);
+		
+		TickBox tick = new TickBox(10, 100, false);
+		
+		Label conn = new Label("connected textures", 10, 80);
+		
+		window.addComponent(name);
+		window.addComponent(box);
+		window.addComponent(tick);
+		window.addComponent(conn);
+		
+		return window;
 	}
 
 	@Override
