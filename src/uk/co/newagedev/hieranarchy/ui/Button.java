@@ -38,9 +38,10 @@ public class Button extends Component {
 			Screen.renderText(text, (int) (getLocation().getX() + (getDimensions().getWidth() / 2)), (int) (getLocation().getY() + (getDimensions().getHeight() / 2)));
 		}
 		if (toolTipDisplay && toolTip) {
-			Screen.renderQuad(Mouse.getMouseX(), Mouse.getMouseY() - Screen.getTextHeight(text) - 14, Screen.getTextWidth(text) + 14, Screen.getTextHeight(text) + 14, Component.DARK);
-			Screen.renderQuad(Mouse.getMouseX() + 2, Mouse.getMouseY() - 12 - Screen.getTextHeight(text), Screen.getTextWidth(text) + 10, Screen.getTextHeight(text) + 10, Component.LIGHT);
-			Screen.renderText(text, Mouse.getMouseX() + Screen.getTextWidth(text) / 2 + 7, Mouse.getMouseY() - Screen.getTextHeight(text) / 2 - 7);
+			int toolTipX = Mouse.getMouseX(), toolTipY = (int) (getParent().getLocation().getY() + getParent().getDimensions().getHeight() + 10);
+			Screen.renderQuad(toolTipX, toolTipY - Screen.getTextHeight(text) + 14, Screen.getTextWidth(text) + 14, Screen.getTextHeight(text) + 14, Component.DARK);
+			Screen.renderQuad(toolTipX + 2, toolTipY + 16 - Screen.getTextHeight(text), Screen.getTextWidth(text) + 10, Screen.getTextHeight(text) + 10, Component.LIGHT);
+			Screen.renderText(text, toolTipX + Screen.getTextWidth(text) / 2 + 7, toolTipY - Screen.getTextHeight(text) / 2 + 21);
 		}
 	}
 
@@ -52,7 +53,7 @@ public class Button extends Component {
 			}
 		}
 		if (hover) {
-			if (Mouse.getMillisSinceLastMovement() > 60 && !toolTipDisplay) {
+			if (Mouse.getMillisSinceLastMovement() > 30 && !toolTipDisplay) {
 				toolTipDisplay = true;
 			}
 		} else {
