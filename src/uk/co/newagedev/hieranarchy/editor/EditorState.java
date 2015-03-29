@@ -33,23 +33,23 @@ public class EditorState extends State {
 		Sprite play = SpriteRegistry.getSprite("play");
 		play.setWidth(20);
 		play.setHeight(20);
-		
+
 		Sprite pause = SpriteRegistry.getSprite("pause");
 		pause.setWidth(20);
 		pause.setHeight(20);
-		
+
 		Sprite reset = SpriteRegistry.getSprite("reset");
 		reset.setWidth(20);
 		reset.setHeight(20);
-		
+
 		Sprite edit = SpriteRegistry.getSprite("edit");
 		edit.setWidth(20);
 		edit.setHeight(20);
-		
+
 		Sprite newTile = SpriteRegistry.getSprite("new tile");
 		newTile.setWidth(20);
 		newTile.setHeight(20);
-		
+
 		playButton = new Button("Play", 5, 5, 30, 30, true, new ButtonRunnable() {
 			public void run() {
 				changePlaying();
@@ -57,7 +57,7 @@ public class EditorState extends State {
 		});
 		playButton.setImage("play");
 		toolbar.addComponent(playButton);
-		
+
 		Button resetButton = new Button("Reset", 45, 5, 30, 30, true, new ButtonRunnable() {
 			public void run() {
 				restartMap();
@@ -65,7 +65,7 @@ public class EditorState extends State {
 		});
 		resetButton.setImage("reset");
 		toolbar.addComponent(resetButton);
-		
+
 		Button editButton = new Button("Edit", 85, 5, 30, 30, true, new ButtonRunnable() {
 			public void run() {
 				if (!editing) {
@@ -77,15 +77,15 @@ public class EditorState extends State {
 		});
 		editButton.setImage("edit");
 		toolbar.addComponent(editButton);
-		
+
 		Button newTileButton = new Button("Create New Tile", 205, 5, 30, 30, true, new ButtonRunnable() {
 			public void run() {
-				
+
 			}
 		});
 		newTileButton.setImage("new tile");
 		toolbar.addComponent(newTileButton);
-		
+
 		currentTileName = currentMap.getTileMap().getNextTile(currentTileName);
 	}
 
@@ -93,7 +93,9 @@ public class EditorState extends State {
 	public void render() {
 		currentMap.render();
 		if (editing) {
-			selection.render(getCurrentCamera());
+			if (selection != null) {
+				selection.render(getCurrentCamera());
+			}
 		}
 		Screen.renderQuad(0, 0, Main.WIDTH, 40, Component.VERY_LIGHT);
 		toolbar.render();
@@ -145,79 +147,83 @@ public class EditorState extends State {
 			changePlaying();
 		}
 		if (editing) {
-			selectionLocation = new Location((int) ((Mouse.getMouseX() + getCurrentCamera().getX()) / (Main.SPRITE_WIDTH * getCurrentCamera().getZoom())), (int) ((Mouse.getMouseY() - getCurrentCamera().getY()) / (Main.SPRITE_HEIGHT * getCurrentCamera().getZoom())));
+			if (Mouse.getMouseY() > toolbar.getDimensions().getHeight() + toolbar.getLocation().getY()) {
+				selectionLocation = new Location((int) ((Mouse.getMouseX() + getCurrentCamera().getX()) / (Main.SPRITE_WIDTH * getCurrentCamera().getZoom())), (int) ((Mouse.getMouseY() - getCurrentCamera().getY()) / (Main.SPRITE_HEIGHT * getCurrentCamera().getZoom())));
 
-			currentMap.removeTile(selection);
+				currentMap.removeTile(selection);
 
-			if (Mouse.isButtonDown(Mouse.RIGHT_BUTTON) && !placing) {
-				deleting = true;
-				Tile tile = currentMap.getTileAt(selectionLocation);
-				if (tile != null) {
-					if (!tile.doesPropertyExist("delete")) {
-						tile.setProperty("delete", null);
+				if (Mouse.isButtonDown(Mouse.RIGHT_BUTTON) && !placing) {
+					deleting = true;
+					Tile tile = currentMap.getTileAt(selectionLocation);
+					if (tile != null) {
+						if (!tile.doesPropertyExist("delete")) {
+							tile.setProperty("delete", null);
+						}
 					}
 				}
-			}
 
-			if (Mouse.isButtonReleasing(Mouse.RIGHT_BUTTON) && !placing) {
-				deleting = false;
-				List<Tile> tiles = currentMap.getPlacedTilesWithProperty("delete");
-				for (Tile tile : tiles) {
+				if (Mouse.isButtonReleasing(Mouse.RIGHT_BUTTON) && !placing) {
+					deleting = false;
+					List<Tile> tiles = currentMap.getPlacedTilesWithProperty("delete");
+					for (Tile tile : tiles) {
+						currentMap.removeTile(tile);
+					}
+				}
+
+				if (Mouse.isButtonDown(Mouse.LEFT_BUTTON) && !deleting) {
+					placing = true;
+					if (currentMap.getTileAt(selectionLocation) != null) {
+						currentMap.removeTile(currentMap.getTileAt(selectionLocation));
+					}
+					if (selection != null) {
+						selection.removeProperty("selection");
+					}
+
+					currentMap.addTile(selection);
+				}
+
+				if (Mouse.isButtonReleasing(Mouse.LEFT_BUTTON) && !deleting) {
+					placing = false;
+				}
+
+				if (KeyBinding.isKeyReleasing("SelectNextTile")) {
+					currentTileName = currentMap.getTileMap().getNextTile(currentTileName);
+				}
+
+				if (KeyBinding.isKeyReleasing("SelectPrevTile")) {
+					currentTileName = currentMap.getTileMap().getPrevTile(currentTileName);
+				}
+
+				selection = new Tile(selectionLocation);
+
+				java.util.Map<String, Object> props = currentMap.getTileMap().getTileProperties(currentTileName);
+				for (String prop : props.keySet()) {
+					selection.setProperty(prop, props.get(prop));
+				}
+
+				for (Tile tile : currentMap.getPlacedTilesWithProperty("selection")) {
 					currentMap.removeTile(tile);
 				}
-			}
 
-			if (Mouse.isButtonDown(Mouse.LEFT_BUTTON) && !deleting) {
-				placing = true;
-				if (currentMap.getTileAt(selectionLocation) != null) {
-					currentMap.removeTile(currentMap.getTileAt(selectionLocation));
-				}
-				if (selection != null) {
-					selection.removeProperty("selection");
+				selection.setProperty("selection", null);
+
+				if (deleting) {
+					selection.setProperty("delete", null);
 				}
 
-				currentMap.addTile(selection);
-			}
+				Camera camera = getCurrentCamera();
 
-			if (Mouse.isButtonReleasing(Mouse.LEFT_BUTTON) && !deleting) {
-				placing = false;
-			}
+				if (KeyBinding.isKeyDown("Up")) {
+					camera.move(0, (int) (5 * camera.getZoom()));
+				}
 
-			if (KeyBinding.isKeyReleasing("SelectNextTile")) {
-				currentTileName = currentMap.getTileMap().getNextTile(currentTileName);
+				if (KeyBinding.isKeyDown("Down")) {
+					camera.move(0, (int) (-5 * camera.getZoom()));
+				}
+				currentMap.updateCamera();
+			} else {
+				selection = null;
 			}
-
-			if (KeyBinding.isKeyReleasing("SelectPrevTile")) {
-				currentTileName = currentMap.getTileMap().getPrevTile(currentTileName);
-			}
-
-			selection = new Tile(selectionLocation);
-
-			java.util.Map<String, Object> props = currentMap.getTileMap().getTileProperties(currentTileName);
-			for (String prop : props.keySet()) {
-				selection.setProperty(prop, props.get(prop));
-			}
-
-			for (Tile tile : currentMap.getPlacedTilesWithProperty("selection")) {
-				currentMap.removeTile(tile);
-			}
-
-			selection.setProperty("selection", null);
-
-			if (deleting) {
-				selection.setProperty("delete", null);
-			}
-			
-			Camera camera = getCurrentCamera();
-			
-			if (KeyBinding.isKeyDown("Up")) {
-				camera.move(0, (int) (5 * camera.getZoom()));
-			}
-			
-			if (KeyBinding.isKeyDown("Down")) {
-				camera.move(0, (int) (-5 * camera.getZoom()));
-			}
-			currentMap.updateCamera();
 		}
 		if (playing) {
 			currentMap.update();
