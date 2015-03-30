@@ -1,6 +1,7 @@
 package uk.co.newagedev.hieranarchy.editor;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.newagedev.hieranarchy.graphics.Camera;
@@ -31,8 +32,8 @@ public class EditorState extends State {
 	private Button playButton;
 	private String currentTileName;
 	private Container toolbar = new Container(0, 0);
-	private Window window;
-	
+	private List<Window> windows = new ArrayList<Window>();
+
 	public EditorState(Map map) {
 		currentMap = map;
 		Sprite play = SpriteRegistry.getSprite("play");
@@ -85,12 +86,8 @@ public class EditorState extends State {
 
 		Button newTileButton = new Button("Create New Tile", 205, 5, 30, 30, true, new ButtonRunnable() {
 			public void run() {
-				if (!toolbar.getComponents().contains(window)) {
-					window = getCreateNewTileWindow();
-					toolbar.addComponent(window);
-				} else {
-					toolbar.removeComponent(window);
-				}
+				Window window = getCreateNewTileWindow();
+				addWindow(window);
 			}
 		});
 		newTileButton.setImage("new tile");
@@ -98,23 +95,31 @@ public class EditorState extends State {
 
 		currentTileName = currentMap.getTileMap().getNextTile(currentTileName);
 	}
-	
+
+	public void addWindow(Window window) {
+		windows.add(window);
+	}
+
+	public void removeWindow(Window window) {
+		windows.remove(window);
+	}
+
 	public Window getCreateNewTileWindow() {
-		Window window = new Window(Main.WIDTH - 250, 70, 250, 300);
-		
+		Window window = new Window(this, Main.WIDTH - 250, 70, 250, 300);
+
 		Label name = new Label("name", 10, 10);
-		
+
 		TextBox box = new TextBox(10, 30, 10);
-		
+
 		TickBox tick = new TickBox(10, 100, false);
-		
+
 		Label conn = new Label("connected textures", 10, 80);
-		
+
 		window.addComponent(name);
 		window.addComponent(box);
 		window.addComponent(tick);
 		window.addComponent(conn);
-		
+
 		return window;
 	}
 
@@ -130,6 +135,9 @@ public class EditorState extends State {
 		toolbar.render();
 		if (editing) {
 			Screen.renderText("Edit Mode", 10 + Screen.getTextWidth("Edit Mode") / 2, 50 + Screen.getTextHeight("Edit Mode") / 2, new Color(0xff, 0xff, 0xff));
+			for (Window window : windows) {
+				window.render();
+			}
 		}
 	}
 
@@ -176,12 +184,27 @@ public class EditorState extends State {
 			changePlaying();
 		}
 		if (editing) {
+			try {
+				for (Window window : windows) {
+					window.update();
+				}
+			} catch (Exception e) {
+
+			}
+			boolean mouseOverWindow = false;
+			for (Window window : windows) {
+				if (Mouse.getMouseX() > window.getLocation().getX() && Mouse.getMouseX() < window.getLocation().getX() + window.getDimensions().getWidth()) {
+					if (Mouse.getMouseY() > window.getLocation().getY() - 30 && Mouse.getMouseY() < window.getLocation().getY() + window.getDimensions().getHeight() - 30) {
+						mouseOverWindow = true;
+					}
+				}
+			}
 			if (Mouse.getMouseY() > toolbar.getDimensions().getHeight() + toolbar.getLocation().getY()) {
 				selectionLocation = new Location((int) ((Mouse.getMouseX() + getCurrentCamera().getX()) / (Main.SPRITE_WIDTH * getCurrentCamera().getZoom())), (int) ((Mouse.getMouseY() - getCurrentCamera().getY()) / (Main.SPRITE_HEIGHT * getCurrentCamera().getZoom())));
 
 				currentMap.removeTile(selection);
-
-				if (Mouse.isButtonDown(Mouse.RIGHT_BUTTON) && !placing) {
+				
+				if (Mouse.isButtonDown(Mouse.RIGHT_BUTTON) && !placing && !mouseOverWindow) {
 					deleting = true;
 					Tile tile = currentMap.getTileAt(selectionLocation);
 					if (tile != null) {
@@ -199,7 +222,7 @@ public class EditorState extends State {
 					}
 				}
 
-				if (Mouse.isButtonDown(Mouse.LEFT_BUTTON) && !deleting) {
+				if (Mouse.isButtonDown(Mouse.LEFT_BUTTON) && !deleting && !mouseOverWindow) {
 					placing = true;
 					if (currentMap.getTileAt(selectionLocation) != null) {
 						currentMap.removeTile(currentMap.getTileAt(selectionLocation));

@@ -1,5 +1,6 @@
 package uk.co.newagedev.hieranarchy.ui;
 
+import uk.co.newagedev.hieranarchy.editor.EditorState;
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 
@@ -7,11 +8,11 @@ public class Window extends Container {
 
 	private boolean moving = false;
 	
-	public Window(int x, int y, int width, int height) {
+	public Window(EditorState state, int x, int y, int width, int height) {
 		super(x, y, width, height);
 		Button closeButton = new Button("X", width - 30, -25, 20, 20, false, new ButtonRunnable() {
 			public void run() {
-				((Container) getParent()).removeComponent(button.getParent());
+				state.removeWindow((Window) button.getParent());
 			}
 		});
 		addComponent(closeButton);
