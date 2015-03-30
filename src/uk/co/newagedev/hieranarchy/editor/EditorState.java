@@ -26,7 +26,7 @@ import uk.co.newagedev.hieranarchy.util.Location;
 
 public class EditorState extends State {
 	private Map currentMap;
-	private boolean playing = false, editing = false, placing = false, deleting = false;
+	private boolean playing = false, editing = false, placing = false, deleting = false, mouseOverWindow = false, downOverWindow = false;
 	private Location selectionLocation = new Location(0, 0);
 	private Tile selection = new Tile(selectionLocation);
 	private Button playButton;
@@ -191,7 +191,6 @@ public class EditorState extends State {
 			} catch (Exception e) {
 
 			}
-			boolean mouseOverWindow = false;
 			for (Window window : windows) {
 				if (Mouse.getMouseX() > window.getLocation().getX() && Mouse.getMouseX() < window.getLocation().getX() + window.getDimensions().getWidth()) {
 					if (Mouse.getMouseY() > window.getLocation().getY() - 30 && Mouse.getMouseY() < window.getLocation().getY() + window.getDimensions().getHeight() - 30) {
@@ -203,6 +202,18 @@ public class EditorState extends State {
 				selectionLocation = new Location((int) ((Mouse.getMouseX() + getCurrentCamera().getX()) / (Main.SPRITE_WIDTH * getCurrentCamera().getZoom())), (int) ((Mouse.getMouseY() - getCurrentCamera().getY()) / (Main.SPRITE_HEIGHT * getCurrentCamera().getZoom())));
 
 				currentMap.removeTile(selection);
+				
+				if (Mouse.isButtonDown(Mouse.LEFT_BUTTON) || Mouse.isButtonDown(Mouse.RIGHT_BUTTON) || Mouse.isButtonDown(Mouse.MIDDLE_BUTTON)) {
+					if (mouseOverWindow) {
+						downOverWindow = true;
+					}
+				}
+				
+				if (!Mouse.isButtonDown(Mouse.LEFT_BUTTON) && !Mouse.isButtonDown(Mouse.RIGHT_BUTTON) && !Mouse.isButtonDown(Mouse.MIDDLE_BUTTON)) {
+					if (downOverWindow) {
+						downOverWindow = false;
+					}
+				}
 				
 				if (Mouse.isButtonDown(Mouse.RIGHT_BUTTON) && !placing && !mouseOverWindow) {
 					deleting = true;
