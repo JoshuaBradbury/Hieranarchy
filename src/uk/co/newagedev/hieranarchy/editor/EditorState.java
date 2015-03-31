@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.newagedev.hieranarchy.graphics.Camera;
+import uk.co.newagedev.hieranarchy.graphics.Font;
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.graphics.Sprite;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
@@ -25,6 +26,8 @@ import uk.co.newagedev.hieranarchy.ui.Window;
 import uk.co.newagedev.hieranarchy.util.Location;
 
 public class EditorState extends State {
+	
+	private static Font editorFont = new Font("assets/textures/font.png", 15, 2);
 	private Map currentMap;
 	private boolean playing = false, editing = false, placing = false, deleting = false, mouseOverWindow = false, downOverWindow = false;
 	private Location selectionLocation = new Location(0, 0);
@@ -35,6 +38,7 @@ public class EditorState extends State {
 	private List<Window> windows = new ArrayList<Window>();
 
 	public EditorState(Map map) {
+		editorFont.setColour(new Color(0xff, 0xff, 0xff));
 		currentMap = map;
 		Sprite play = SpriteRegistry.getSprite("play");
 		play.setWidth(20);
@@ -134,7 +138,7 @@ public class EditorState extends State {
 		Screen.renderQuad(0, 0, Main.WIDTH, 40, Component.VERY_LIGHT);
 		toolbar.render();
 		if (editing) {
-			Screen.renderText("Edit Mode", 10 + Screen.getTextWidth("Edit Mode") / 2, 50 + Screen.getTextHeight("Edit Mode") / 2, new Color(0xff, 0xff, 0xff));
+			editorFont.renderText("Edit Mode", 10 + editorFont.getTextWidth("Edit Mode") / 2, 50 + editorFont.getTextHeight("Edit Mode") / 2);
 			for (Window window : windows) {
 				window.render();
 			}

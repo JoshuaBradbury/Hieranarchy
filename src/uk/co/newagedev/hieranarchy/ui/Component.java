@@ -2,10 +2,12 @@ package uk.co.newagedev.hieranarchy.ui;
 
 import java.awt.Dimension;
 
+import uk.co.newagedev.hieranarchy.graphics.Font;
 import uk.co.newagedev.hieranarchy.util.Location;
 
 public abstract class Component {
 	
+	public static Font componentFont = new Font("assets/textures/font.png", 10, 2);
 	private int x, y, width, height, offsetX, offsetY;
 	private Component parent;
 	

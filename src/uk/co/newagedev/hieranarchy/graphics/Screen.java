@@ -22,7 +22,6 @@ import static org.lwjgl.opengl.GL11.glOrtho;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex2f;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -46,7 +45,7 @@ import uk.co.newagedev.hieranarchy.util.Logger;
 public class Screen {
 
 	private static boolean close = false;
-	
+
 	public Screen() {
 		try {
 			PixelFormat pixelFormat = new PixelFormat();
@@ -134,9 +133,9 @@ public class Screen {
 		glOrtho(0, Main.WIDTH, Main.HEIGHT, 0, 1, -1);
 		glMatrixMode(GL_MODELVIEW);
 
-		glEnable (GL_BLEND);
-		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		glClear(GL_COLOR_BUFFER_BIT);
 		glLoadIdentity();
 	}
@@ -158,10 +157,6 @@ public class Screen {
 		return null;
 	}
 
-	public static void loadFont(String fontPath) {
-		loadSpritesFromImage(fontPath, 32, 4, "a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z. ".split("\\."));
-	}
-	
 	public static void loadSpritesFromImage(String imagePath, int width, int height) {
 		String[] names = new String[width * height];
 		for (int i = 0; i < (width * height); i++) {
@@ -171,14 +166,7 @@ public class Screen {
 	}
 
 	public static void loadSpritesFromImage(String imagePath, int width, int height, String[] names) {
-		String[] finalNames = new String[width * height];
-		for (int i = 0; i < (width * height); i++) {
-			if (i < names.length) {
-				finalNames[i] = names[i];
-			} else {
-				finalNames[i] = FileUtil.getFileNameWithoutExtension(imagePath) + Math.floor(i / width) + (i % width);
-			}
-		}
+		int max = names.length;
 		if (FileUtil.doesFileExist(imagePath)) {
 			BufferedImage image;
 			try {
@@ -187,10 +175,12 @@ public class Screen {
 				int tileHeight = (image.getHeight() / height);
 				for (int y = 0; y < height; y++) {
 					for (int x = 0; x < width; x++) {
-						SpriteRegistry.registerImage(finalNames[x + (y * width)], image.getSubimage(x * tileWidth, y * tileHeight, tileWidth, tileHeight));
+						if (y * width + x < max) {
+							SpriteRegistry.registerImage(names[x + (y * width)], image.getSubimage(x * tileWidth, y * tileHeight, tileWidth, tileHeight));
+						}
 					}
 				}
-				Logger.info("\"" + imagePath + "\"", "loaded as current font", "width:", width, "height:", height, "letter width:", tileWidth, "letter height:", tileHeight);
+				Logger.info("\"" + imagePath + "\"", "loaded sheet", "width:", width, "height:", height, "tile width:", tileWidth, "tile height:", tileHeight);
 			} catch (IOException e) {
 				Logger.error(e.getMessage());
 			}
@@ -261,25 +251,6 @@ public class Screen {
 		glEnd();
 	}
 
-	public static void renderText(String text, int x, int y) {
-		renderText(text, x, y, new Color(0x00, 0x00, 0x00));
-	}
-	
-	public static void renderText(String text, int x, int y, Color colour) {
-		text = text.toLowerCase();
-		for (int i = 0; i < text.length(); i++) {
-			Screen.renderSpriteIgnoringCamera("" + text.charAt(i), new Location(x + (i * 17) - ((text.length() * 17) / 2), y - 8), new float[] { 0.0f, 1.0f, 0.0f, 1.0f }, new float[] {colour.getRed() / 255.0f, colour.getGreen() / 255.0f, colour.getBlue() / 255.0f, colour.getAlpha() / 255.0f });
-		}
-	}
-	
-	public static int getTextWidth(String text) {
-		return text.length() * 17;
-	}
-	
-	public static int getTextHeight(String text) {
-		return 16;
-	}
-	
 	public static void close() {
 		close = true;
 	}

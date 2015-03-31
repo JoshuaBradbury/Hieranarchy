@@ -14,18 +14,18 @@ public class TextBox extends Component {
 	private int[] keyTimer = new int[Keyboard.KEYBOARD_SIZE];
 
 	public TextBox(int x, int y, int characterWidth) {
-		super(x, y, Screen.getTextWidth("a") * characterWidth, Screen.getTextHeight("a") + 10);
+		super(x, y, componentFont.getTextWidth("a") * characterWidth, componentFont.getTextHeight("a") + 10);
 		this.characterWidth = characterWidth;
 	}
 
 	public void render() {
 		Screen.renderQuad((int) getLocation().getX(), (int) getLocation().getY(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Component.DARK);
 		Screen.renderQuad((int) getLocation().getX() + 5, (int) getLocation().getY() + 5, (int) getDimensions().getWidth() - 10, (int) getDimensions().getHeight() - 10, (hover ? Component.VERY_LIGHT : Component.LIGHT));
-		Screen.renderText(text, (int) (getLocation().getX() + (getDimensions().getWidth() / 2)), (int) (getLocation().getY() + (getDimensions().getHeight() / 2)));
+		componentFont.renderText(text, (int) (getLocation().getX() + (getDimensions().getWidth() / 2)), (int) (getLocation().getY() + (getDimensions().getHeight() / 2)));
 		if (selected) {
 			selectedTimer += 1;
 			if (selectedTimer % 60 < 30) {
-				Screen.renderLine(new int[] { (int) getLocation().getX() + 5 + (int) (getDimensions().getWidth() / 2) + (Screen.getTextWidth(text) / 2), (int) getLocation().getY() + 5 }, new int[] { (int) getLocation().getX() + 5 + (int) (getDimensions().getWidth() / 2) + (Screen.getTextWidth(text) / 2), (int) getDimensions().getHeight() + (int) getLocation().getY() - 5 }, 4, Component.DARK);
+				Screen.renderLine(new int[] { (int) getLocation().getX() + 5 + (int) (getDimensions().getWidth() / 2) + (componentFont.getTextWidth(text) / 2), (int) getLocation().getY() + 5 }, new int[] { (int) getLocation().getX() + 5 + (int) (getDimensions().getWidth() / 2) + (componentFont.getTextWidth(text) / 2), (int) getDimensions().getHeight() + (int) getLocation().getY() - 5 }, 4, Component.DARK);
 			}
 		} else {
 			selectedTimer = 0;

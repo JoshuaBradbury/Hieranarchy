@@ -6,7 +6,7 @@ import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 
 public class Button extends Component {
-
+	
 	private String text;
 	private boolean hover = false, toolTip = false, toolTipDisplay = false;
 	private ButtonRunnable task;
@@ -35,13 +35,13 @@ public class Button extends Component {
 			Sprite sprite = SpriteRegistry.getSprite(image);
 			Screen.renderSpriteIgnoringCamera(image, getLocation().clone().subtract(sprite.getWidth() / 2, sprite.getHeight() / 2).add((int) getDimensions().getWidth() / 2, (int) getDimensions().getHeight() / 2));
 		} else {
-			Screen.renderText(text, (int) (getLocation().getX() + (getDimensions().getWidth() / 2)), (int) (getLocation().getY() + (getDimensions().getHeight() / 2)));
+			componentFont.renderText(text, (int) (getLocation().getX() + (getDimensions().getWidth() / 2)), (int) (getLocation().getY() + (getDimensions().getHeight() / 2)));
 		}
 		if (toolTipDisplay && toolTip) {
 			int toolTipX = Mouse.getMouseX(), toolTipY = (int) (getParent().getLocation().getY() + getParent().getDimensions().getHeight() + 10);
-			Screen.renderQuad(toolTipX, toolTipY - Screen.getTextHeight(text) + 14, Screen.getTextWidth(text) + 14, Screen.getTextHeight(text) + 14, Component.DARK);
-			Screen.renderQuad(toolTipX + 2, toolTipY + 16 - Screen.getTextHeight(text), Screen.getTextWidth(text) + 10, Screen.getTextHeight(text) + 10, Component.LIGHT);
-			Screen.renderText(text, toolTipX + Screen.getTextWidth(text) / 2 + 7, toolTipY - Screen.getTextHeight(text) / 2 + 21);
+			Screen.renderQuad(toolTipX, toolTipY - componentFont.getTextHeight(text) + 14, componentFont.getTextWidth(text) + 14, componentFont.getTextHeight(text) + 14, Component.DARK);
+			Screen.renderQuad(toolTipX + 2, toolTipY + 16 - componentFont.getTextHeight(text), componentFont.getTextWidth(text) + 10, componentFont.getTextHeight(text) + 10, Component.LIGHT);
+			componentFont.renderText(text, toolTipX + componentFont.getTextWidth(text) / 2 + 7, toolTipY - componentFont.getTextHeight(text) / 2 + 21);
 		}
 	}
 
