@@ -49,6 +49,8 @@ public class TextBox extends Component {
 				if (keyTimer[key] == 1 || keyTimer[key] > 30) {
 					if (Keyboard.getKeyName(key).trim().equalsIgnoreCase("back")) {
 						text = text.substring(0, text.length() - 1);
+					} else if (Keyboard.getKeyName(key).trim().equalsIgnoreCase("space")) {
+						text += " ";
 					} else {
 						if (text.length() < characterWidth) {
 							String kt = Keyboard.getKeyName(key);
