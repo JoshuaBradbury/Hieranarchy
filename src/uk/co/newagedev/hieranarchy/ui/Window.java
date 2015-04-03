@@ -25,7 +25,7 @@ public class Window extends Container {
 
 	@Override
 	public void render() {
-		Screen.renderQuad((int) getLocation().getX(), (int) getLocation().getY() - 30, (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Component.DARK);
+		Screen.renderQuad((int) getLocation().getX(), (int) getLocation().getY() - 30, (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Component.VERY_LIGHT);
 		Screen.renderQuad((int) getLocation().getX() + 5, (int) getLocation().getY(), (int) getDimensions().getWidth() - 10, (int) getDimensions().getHeight() - 35, Component.LIGHT);
 		super.render();
 	}

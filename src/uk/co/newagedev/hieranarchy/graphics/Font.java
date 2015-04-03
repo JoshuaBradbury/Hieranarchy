@@ -43,7 +43,7 @@ public class Font {
 	}
 
 	public int getTextWidth(String text) {
-		return text.length() * (size + spacing) - spacing;
+		return text.length() * (size + spacing);
 	}
 
 	public int getTextHeight(String text) {

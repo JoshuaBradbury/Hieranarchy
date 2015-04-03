@@ -14,7 +14,7 @@ public class TextBox extends Component {
 	private int[] keyTimer = new int[Keyboard.KEYBOARD_SIZE];
 
 	public TextBox(int x, int y, int characterWidth) {
-		super(x, y, componentFont.getTextWidth("a") * characterWidth, componentFont.getTextHeight("a") + 10);
+		super(x, y, componentFont.getTextWidth("a") * characterWidth + 10, componentFont.getTextHeight("a") + 10);
 		this.characterWidth = characterWidth;
 	}
 
@@ -25,7 +25,7 @@ public class TextBox extends Component {
 		if (selected) {
 			selectedTimer += 1;
 			if (selectedTimer % 60 < 30) {
-				Screen.renderLine(new int[] { (int) getLocation().getX() + 5 + (int) (getDimensions().getWidth() / 2) + (componentFont.getTextWidth(text) / 2), (int) getLocation().getY() + 5 }, new int[] { (int) getLocation().getX() + 5 + (int) (getDimensions().getWidth() / 2) + (componentFont.getTextWidth(text) / 2), (int) getDimensions().getHeight() + (int) getLocation().getY() - 5 }, 4, Component.DARK);
+				Screen.renderLine(new int[] { (int) getLocation().getX() + 5 + (int) (getDimensions().getWidth() / 2) + (componentFont.getTextWidth(text) / 2), (int) getLocation().getY() + 6 }, new int[] { (int) getLocation().getX() + 5 + (int) (getDimensions().getWidth() / 2) + (componentFont.getTextWidth(text) / 2), (int) getDimensions().getHeight() + (int) getLocation().getY() - 6 }, 4, Component.VERY_LIGHT);
 			}
 		} else {
 			selectedTimer = 0;
