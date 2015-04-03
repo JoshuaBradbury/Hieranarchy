@@ -26,7 +26,7 @@ import uk.co.newagedev.hieranarchy.ui.Window;
 import uk.co.newagedev.hieranarchy.util.Location;
 
 public class EditorState extends State {
-	
+
 	private static Font editorFont = new Font("assets/textures/font.png", 15, 2);
 	private Map currentMap;
 	private boolean playing = false, editing = false, placing = false, deleting = false, mouseOverWindow = false, downOverWindow = false;
@@ -90,8 +90,10 @@ public class EditorState extends State {
 
 		Button newTileButton = new Button("Create New Tile", 205, 5, 30, 30, true, new ButtonRunnable() {
 			public void run() {
-				Window window = getCreateNewTileWindow();
-				addWindow(window);
+				if (editing) {
+					Window window = getCreateNewTileWindow();
+					addWindow(window);
+				}
 			}
 		});
 		newTileButton.setImage("new tile");
@@ -206,19 +208,19 @@ public class EditorState extends State {
 				selectionLocation = new Location((int) ((Mouse.getMouseX() + getCurrentCamera().getX()) / (Main.SPRITE_WIDTH * getCurrentCamera().getZoom())), (int) ((Mouse.getMouseY() - getCurrentCamera().getY()) / (Main.SPRITE_HEIGHT * getCurrentCamera().getZoom())));
 
 				currentMap.removeTile(selection);
-				
+
 				if (Mouse.isButtonDown(Mouse.LEFT_BUTTON) || Mouse.isButtonDown(Mouse.RIGHT_BUTTON) || Mouse.isButtonDown(Mouse.MIDDLE_BUTTON)) {
 					if (mouseOverWindow) {
 						downOverWindow = true;
 					}
 				}
-				
+
 				if (!Mouse.isButtonDown(Mouse.LEFT_BUTTON) && !Mouse.isButtonDown(Mouse.RIGHT_BUTTON) && !Mouse.isButtonDown(Mouse.MIDDLE_BUTTON)) {
 					if (downOverWindow) {
 						downOverWindow = false;
 					}
 				}
-				
+
 				if (Mouse.isButtonDown(Mouse.RIGHT_BUTTON) && !placing && !mouseOverWindow) {
 					deleting = true;
 					Tile tile = currentMap.getTileAt(selectionLocation);
