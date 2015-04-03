@@ -1,6 +1,7 @@
 package uk.co.newagedev.hieranarchy.util;
 
 import java.io.File;
+import java.io.IOException;
 
 public class FileUtil {
 
@@ -28,7 +29,15 @@ public class FileUtil {
 	}
 
 	public static boolean doesFileExist(String filePath) {
-		return (new File(filePath)).exists();
+		return load(filePath) != null;
+	}
+	
+	public static boolean isDirectory(String filePath) {
+		File file = load(filePath);
+		if (file != null) {
+			return file.isDirectory();
+		}
+		return false;
 	}
 
 	public static File load(String filePath) {
@@ -37,5 +46,17 @@ public class FileUtil {
 			return file;
 		}
 		return null;
+	}
+	
+	public static File create(String filePath) {
+		File file = new File(filePath);
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				Logger.error((Object[]) e.getStackTrace());
+			}
+		}
+		return file;
 	}
 }

@@ -28,6 +28,7 @@ public class TileMap {
 	
 	public void registerTile(String name) {
 		Map<String, Object> props = new HashMap<String, Object>();
+		props.put("name", name);
 		map.put(name, props);
 	}
 	
