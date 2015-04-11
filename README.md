@@ -10,8 +10,15 @@ It works as sort of a level editor. Pretty much you have a map, which holds all 
 
 #What is left to do?
 
-Currently, a lot. It only has the basic map loading and dynamic tile property system solidly in place. What is left to come is:
-- File loading and saving for maps
+Currently, a lot.
+
+Features:
+- Map and State system which allows to dynamically load and swap states and maps
+- Dynamic tile system which allows you to create and save different tiles
+- Project system which saves and loads maps
+
+
+What is left to come is:
 - Tile creation and editing in the editor
 - Entities as a whole
 - and whatever anyone else wants to suggest!
