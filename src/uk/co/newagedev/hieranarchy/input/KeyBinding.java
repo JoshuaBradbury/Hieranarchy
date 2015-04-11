@@ -47,8 +47,7 @@ public class KeyBinding {
 	}
 
 	public static void update() {
-		Keyboard.poll();
-		for (int i = 0; i < Keyboard.getKeyCount(); i++) {
+		for (int i = 0; i < Keyboard.KEYBOARD_SIZE; i++) {
 			boolean kd = Keyboard.isKeyDown(i);
 			if (!pressing[i] && !down[i] && kd) {
 				pressing[i] = true;
