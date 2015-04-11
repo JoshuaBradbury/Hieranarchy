@@ -1,4 +1,4 @@
-package uk.co.newagedev.hieranarchy.editor;
+package uk.co.newagedev.hieranarchy.state;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -12,7 +12,6 @@ import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
 import uk.co.newagedev.hieranarchy.input.KeyBinding;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.map.Map;
-import uk.co.newagedev.hieranarchy.state.State;
 import uk.co.newagedev.hieranarchy.testing.Main;
 import uk.co.newagedev.hieranarchy.tile.Tile;
 import uk.co.newagedev.hieranarchy.ui.Button;
@@ -99,7 +98,7 @@ public class EditorState extends State {
 		newTileButton.setImage("new tile");
 		toolbar.addComponent(newTileButton);
 
-		currentTileName = currentMap.getTileMap().getNextTile(currentTileName);
+		currentTileName = currentMap.getMapStore().getNextTile(currentTileName);
 	}
 
 	public void addWindow(Window window) {
@@ -256,16 +255,16 @@ public class EditorState extends State {
 				}
 
 				if (KeyBinding.isKeyReleasing("SelectNextTile")) {
-					currentTileName = currentMap.getTileMap().getNextTile(currentTileName);
+					currentTileName = currentMap.getMapStore().getNextTile(currentTileName);
 				}
 
 				if (KeyBinding.isKeyReleasing("SelectPrevTile")) {
-					currentTileName = currentMap.getTileMap().getPrevTile(currentTileName);
+					currentTileName = currentMap.getMapStore().getPrevTile(currentTileName);
 				}
 
 				selection = new Tile(selectionLocation);
 
-				java.util.Map<String, Object> props = currentMap.getTileMap().getTileProperties(currentTileName);
+				java.util.Map<String, Object> props = currentMap.getMapStore().getTileProperties(currentTileName);
 				for (String prop : props.keySet()) {
 					selection.setProperty(prop, props.get(prop));
 				}
@@ -281,7 +280,7 @@ public class EditorState extends State {
 				}
 
 				Camera camera = getCurrentCamera();
-
+				
 				if (KeyBinding.isKeyDown("Up")) {
 					camera.move(0, (int) (5 * camera.getZoom()));
 				}
@@ -289,7 +288,9 @@ public class EditorState extends State {
 				if (KeyBinding.isKeyDown("Down")) {
 					camera.move(0, (int) (-5 * camera.getZoom()));
 				}
+				
 				currentMap.updateCamera();
+				
 			} else {
 				selection = null;
 			}
