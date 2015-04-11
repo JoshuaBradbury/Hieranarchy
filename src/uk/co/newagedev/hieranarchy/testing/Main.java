@@ -2,10 +2,13 @@ package uk.co.newagedev.hieranarchy.testing;
 
 import org.lwjgl.input.Keyboard;
 
+import com.google.gson.Gson;
+
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
 import uk.co.newagedev.hieranarchy.input.KeyBinding;
 import uk.co.newagedev.hieranarchy.input.Mouse;
+import uk.co.newagedev.hieranarchy.project.Project;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.util.Logger;
 
@@ -15,6 +18,16 @@ public class Main {
 	 * 	The title of the application.
 	 */
 	public static final String TITLE = "Hieranarchy";
+	
+	/**
+	 * The instance of Gson used in multiple locations throughout the engine.
+	 */
+	public static final Gson GSON = new Gson();
+	
+	/**
+	 * The current project in use/
+	 */
+	public static Project project = new Project("testing");
 	
 	/**
 	 * The width and height of the window.
@@ -126,6 +139,9 @@ public class Main {
 			thread.join();
 		} catch (InterruptedException e) {
 			Logger.error(e.getMessage());
+			for (Object obj : e.getStackTrace()) {
+				Logger.error(obj);
+			}
 		}
 		running = false;
 	}
@@ -173,6 +189,7 @@ public class Main {
 	 * Clears the sprite registry and destroys the display.
 	 */
 	public void cleanup() {
+		project.cleanup();
 		SpriteRegistry.clear();
 		KeyBinding.cleanup();
 		screen.cleanup();

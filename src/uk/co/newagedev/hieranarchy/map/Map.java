@@ -1,54 +1,87 @@
 package uk.co.newagedev.hieranarchy.map;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.newagedev.hieranarchy.graphics.Background;
 import uk.co.newagedev.hieranarchy.graphics.Camera;
 import uk.co.newagedev.hieranarchy.input.KeyBinding;
+import uk.co.newagedev.hieranarchy.project.Project;
 import uk.co.newagedev.hieranarchy.state.State;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.testing.Main;
 import uk.co.newagedev.hieranarchy.tile.Tile;
-import uk.co.newagedev.hieranarchy.tile.TileMap;
 import uk.co.newagedev.hieranarchy.util.CollisionBox;
 import uk.co.newagedev.hieranarchy.util.FileUtil;
 import uk.co.newagedev.hieranarchy.util.Location;
 import uk.co.newagedev.hieranarchy.util.Logger;
 
 public class Map {
-	private TileMap tileMap;
+
+	public static final String MAP_FILE = "data.json";
+
+	private Project project;
+	private MapStore store = new MapStore();
 	private Background bg;
 	private List<Tile> tiles;
-	private String state;
-	private String mapPath;
+	private String state, name, mapFolder;
 	private int width, height;
 
-	public Map(String mapPath, String state) {
-		tileMap = new TileMap();
+	public Map(String name, Project project) {
+		this.project = project;
+		this.name = name;
+		mapFolder = name + "/";
 
-		tileMap.registerTile("ice");
-		tileMap.setProperty("ice", "sprite", "icetile");
-		tileMap.setProperty("ice", "connected-textures", true);
-		tileMap.setProperty("ice", "colour", new Color(0, 0x88, 0x88));
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(FileUtil.create(getMapFile())));
 
-		tileMap.registerTile("flooring");
-		tileMap.setProperty("flooring", "sprite", "flooring");
-		tileMap.setProperty("flooring", "colour", new Color(0xaa, 0x44, 0x22));
+			store = Main.GSON.fromJson(reader, MapStore.class);
 
-		tileMap.registerTile("crate");
-		tileMap.setProperty("crate", "sprite", "crate");
-		tileMap.setProperty("crate", "colour", new Color(0xaa, 0x44, 0));
+			reader.close();
+		} catch (IOException e) {
+			Logger.error(e.getMessage());
+			for (Object obj : e.getStackTrace()) {
+				Logger.error(obj);
+			}
+		}
 
-		loadMap(mapPath);
-		this.mapPath = mapPath;
-		this.state = state;
+		if (store == null) {
+			store = new MapStore();
+			store.setName(name);
+		}
+		
+		loadMap();
 	}
 
-	public TileMap getTileMap() {
-		return tileMap;
+	public MapStore getMapStore() {
+		return store;
+	}
+
+	public String getMapFile() {
+		if (!FileUtil.doesFileExist(project.getProjectFolder() + Project.MAPS_DIRECTORY))
+			FileUtil.create(project.getProjectFolder() + Project.MAPS_DIRECTORY);
+		if (!FileUtil.doesFileExist(project.getProjectFolder() + Project.MAPS_DIRECTORY + mapFolder))
+			FileUtil.create(project.getProjectFolder() + Project.MAPS_DIRECTORY + mapFolder);
+		return project.getProjectFolder() + Project.MAPS_DIRECTORY + mapFolder + MAP_FILE;
+	}
+
+	public void save() {
+		store.storeTiles(tiles);
+		try {
+			FileWriter writer = new FileWriter(getMapFile());
+			String json = Main.GSON.toJson(store);
+			writer.write(json);
+			writer.close();
+		} catch (IOException e) {
+			Logger.error(e.getMessage());
+			for (Object obj : e.getStackTrace()) {
+				Logger.error(obj);
+			}
+		}
 	}
 
 	public Tile getTileAt(Location loc) {
@@ -63,6 +96,10 @@ public class Map {
 		}
 		return tile;
 	}
+	
+	public void setState(String state) {
+		this.state = state;
+	}
 
 	public State getState() {
 		return StateManager.getState(state);
@@ -74,9 +111,9 @@ public class Map {
 	}
 
 	public void reload() {
-		loadMap(mapPath);
+		loadMap();
 	}
-	
+
 	public void updateCamera() {
 		bg.update();
 		Camera camera = getState().getCurrentCamera();
@@ -98,44 +135,43 @@ public class Map {
 	}
 
 	public void render() {
-		bg.render();
+		if (bg != null) {
+			bg.render();
+		}
 		for (Tile tile : tiles) {
 			if (tile != null) {
-				tile.render(StateManager.getState(state).getCurrentCamera());
+				tile.render(getState().getCurrentCamera());
 			}
 		}
 	}
 
-	public void loadMap(String mapPath) {
-		BufferedImage image = Main.screen.loadImage(mapPath);
-		if (image != null) {
-			width = image.getWidth();
-			height = image.getHeight();
-			tiles = new ArrayList<Tile>();
-			for (int x = 0; x < width; x++) {
-				for (int y = 0; y < height; y++) {
-					int pix = image.getRGB(x, y);
-					Color colour = new Color(pix);
-					for (String tileName : tileMap.getTilesWithProperty("colour")) {
-						if (((Color) tileMap.getTileProperty(tileName, "colour")).equals(colour)) {
-							Tile tile = new Tile(new Location(x, y));
-							java.util.Map<String, Object> props = tileMap.getTileProperties(tileName);
-							for (String prop : props.keySet()) {
-								tile.setProperty(prop, props.get(prop));
-							}
-							tiles.add(tile);
-							tile.setMap(this);
-						}
+	public void loadMap() {
+		bg = new Background(store.getBGSprite(), store.getBGLocation()[0], store.getBGLocation()[1], store.getBGLocation()[2]);
+		bg.setScrollDirections(store.getBGScrollDirections()[0], store.getBGScrollDirections()[1]);
+		bg.setMap(this);
+		width = store.getWidth();
+		height = store.getHeight();
+		tiles = new ArrayList<Tile>();
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				String tileName = store.getTileAtLocation(x, y);
+				if (tileName != "") {
+					Tile tile = new Tile(new Location(x, y));
+					java.util.Map<String, Object> props = store.getTiles().get(tileName);
+					for (String prop : props.keySet()) {
+						tile.setProperty(prop, props.get(prop));
 					}
+					tiles.add(tile);
+					tile.setMap(this);
 				}
 			}
-			Logger.info("\"" + mapPath + "\"", "loaded as", "\"" + FileUtil.getFileNameWithoutExtension(mapPath) + "\"", "Width:", width, "Height:", height, "tileCount:", tiles.size());
 		}
+		Logger.info("\"" + name + "\"", "loaded with \"", "Width:", width, "Height:", height, "tileCount:", tiles.size());
 	}
 
 	public void addTile(Tile tile) {
 		List<Tile> ts = new ArrayList<Tile>();
-		for(Tile t : tiles) {
+		for (Tile t : tiles) {
 			if (t.getLocation().equals(tile.getLocation())) {
 				ts.add(t);
 			}

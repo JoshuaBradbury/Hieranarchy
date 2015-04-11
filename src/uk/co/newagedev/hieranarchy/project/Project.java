@@ -1,60 +1,97 @@
 package uk.co.newagedev.hieranarchy.project;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
+import uk.co.newagedev.hieranarchy.testing.Main;
 import uk.co.newagedev.hieranarchy.util.FileUtil;
 import uk.co.newagedev.hieranarchy.util.Logger;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
-
 public class Project {
 
-	public static final String DIRECTORY = "Projects/", PROJECT_FILE = "project.json";
+	public static final String DIRECTORY = "Projects/", PROJECT_FILE = "project.json", MAPS_DIRECTORY = "Maps/";
 	
 	private String projectFolder;
-	private File folder;
-	private JsonObject jsonBase;
+	private ProjectData projectData;
+	private Map<String, uk.co.newagedev.hieranarchy.map.Map> maps = new HashMap<String, uk.co.newagedev.hieranarchy.map.Map>();
 	private String name;
 	
 	public Project(String projectName) {
 		name = projectName;
-		projectFolder = Project.DIRECTORY + name + "/";
-		folder = FileUtil.create(projectFolder);
-		FileUtil.create(projectFolder + Project.PROJECT_FILE);
-		JsonParser parser = new JsonParser();
+		projectFolder = DIRECTORY + name + "/";
+		if (!FileUtil.doesFileExist(projectFolder)) {
+			FileUtil.create(projectFolder);
+		}
 		try {
-			JsonElement jsonElement;
-			jsonElement = parser.parse(new FileReader(projectFolder + PROJECT_FILE));
-	        jsonBase = jsonElement.getAsJsonObject();
-		} catch (JsonIOException | JsonSyntaxException | FileNotFoundException e) {
+			BufferedReader reader = new BufferedReader(new FileReader(FileUtil.create(projectFolder + PROJECT_FILE)));
+			
+			projectData = Main.GSON.fromJson(reader, ProjectData.class);
+			
+			reader.close();
+		} catch (IOException e) {
 			Logger.error(e.getMessage());
-			jsonBase = new JsonObject();
+			for (Object obj : e.getStackTrace()) {
+				Logger.error(obj);
+			}
+		}
+		
+		if (projectData == null) {
+			projectData = new ProjectData();
 		}
 	}
 	
-	public void addTileToProject(Map<String, Object> tileProperties) {
-		JsonArray tiles = jsonBase.getAsJsonArray("tiles");
-		JsonObject tileJson = new JsonObject();
-		tileJson.addProperty("name", (String) tileProperties.get("name"));
-		for (String property : tileProperties.keySet()) {
-			Object obj = tileProperties.get(property);
-			if (obj instanceof String) {
-				tileJson.addProperty(property, (String) obj);
-			} else if (obj instanceof Boolean) {
-				tileJson.addProperty(property, (Boolean) obj);
-			} else if (obj instanceof Integer) {
-				tileJson.addProperty(property, (Integer) obj);
-			} else if (obj instanceof Character) {
-				tileJson.addProperty(property, (Character) obj);
+	public void cleanup() {
+		save();
+		for (String map : maps.keySet()) {
+			maps.get(map).save();
+		}
+	}
+	
+	public String getProjectFolder() {
+		return projectFolder;
+	}
+
+	public ProjectData getData() {
+		return projectData;
+	}
+	
+	public void loadMap(String mapName) {
+		maps.put(mapName, new uk.co.newagedev.hieranarchy.map.Map(mapName, this));
+	}
+	
+	public uk.co.newagedev.hieranarchy.map.Map getMap(String mapName) {
+		return maps.get(mapName);
+	}
+	
+	public void saveMap(String mapName) {
+		uk.co.newagedev.hieranarchy.map.Map map = maps.get(mapName);
+		map.save();
+	}
+	
+	public void removeMap(String mapName) {
+		saveMap(mapName);
+		maps.remove(mapName);
+	}
+	
+	public void save() {
+		try {
+			FileWriter writer = new FileWriter(FileUtil.create(projectFolder + PROJECT_FILE));
+			String json = Main.GSON.toJson(projectData);
+			writer.write(json);
+			writer.close();
+		} catch (IOException e) {
+			Logger.error(e.getMessage());
+			for (Object obj : e.getStackTrace()) {
+				Logger.error(obj);
 			}
 		}
+	}
+	
+	public void addTileToMap(String map, Map<String, Object> tileProperties) {
+		maps.get(map).getMapStore().writeTile((String) tileProperties.get("name"), tileProperties);
 	}
 }

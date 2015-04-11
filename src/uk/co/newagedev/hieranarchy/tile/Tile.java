@@ -140,7 +140,7 @@ public class Tile implements LocationContainer {
 						tyma = 1.0f;
 					}
 
-					Screen.renderSprite(getSprite(), getLocation(), getMap().getState().getCurrentCamera(), new float[] { txmi, txma, tymi, tyma }, col);
+					Screen.renderSprite(getSprite(), getLocation(), camera, new float[] { txmi, txma, tymi, tyma }, col);
 					return;
 				}
 			}
