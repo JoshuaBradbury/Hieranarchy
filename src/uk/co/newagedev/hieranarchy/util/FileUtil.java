@@ -18,7 +18,7 @@ public class FileUtil {
 		} else if (filePath.contains("\\")) {
 			parts = filePath.split("\\");
 		} else {
-			parts = new String[] {filePath};
+			parts = new String[] { filePath };
 		}
 		return parts[parts.length - 1];
 	}
@@ -31,7 +31,7 @@ public class FileUtil {
 	public static boolean doesFileExist(String filePath) {
 		return load(filePath) != null;
 	}
-	
+
 	public static boolean isDirectory(String filePath) {
 		File file = load(filePath);
 		if (file != null) {
@@ -47,14 +47,21 @@ public class FileUtil {
 		}
 		return null;
 	}
-	
+
 	public static File create(String filePath) {
 		File file = new File(filePath);
 		if (!file.exists()) {
 			try {
-				file.createNewFile();
+				if (filePath.endsWith("/") || filePath.endsWith("\\")) {
+					file.mkdirs();
+				} else {
+					file.createNewFile();
+				}
 			} catch (IOException e) {
-				Logger.error((Object[]) e.getStackTrace());
+				Logger.error(e.getMessage());
+				for (Object obj : e.getStackTrace()) {
+					Logger.error(obj);
+				}
 			}
 		}
 		return file;
