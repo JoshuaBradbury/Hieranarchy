@@ -2,6 +2,8 @@ package uk.co.newagedev.hieranarchy.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileUtil {
 
@@ -40,6 +42,41 @@ public class FileUtil {
 		return false;
 	}
 
+	public static String[] getAllFilesInFolder(String folder) {
+		List<File> filesToCheck = new ArrayList<File>();
+		File file = load(folder);
+		if (file.exists()) {
+			if (file.isDirectory()) {
+				for (File f : file.listFiles()) {
+					filesToCheck.add(f);
+				}
+			}
+		}
+		boolean foldersInList = true;
+		while (foldersInList) {
+			List<File> remove = new ArrayList<File>();
+			for (File f : filesToCheck) {
+				if (f.isDirectory()) {
+					remove.add(f);
+					for (File fi : f.listFiles()) {
+						filesToCheck.add(fi);
+					}
+				}
+			}
+			for (File f : remove) {
+				filesToCheck.remove(f);
+			}
+			if (remove.size() == 0) {
+				foldersInList = false;
+			}
+		}
+		String[] files = new String[filesToCheck.size()];
+		for (int i = 0; i < files.length; i++) {
+			files[i] = filesToCheck.get(i).getPath();
+		}
+		return files;
+	}
+	
 	public static File load(String filePath) {
 		File file = new File(filePath);
 		if (file.exists()) {
