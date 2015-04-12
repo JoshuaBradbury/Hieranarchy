@@ -152,7 +152,9 @@ public class Main {
 	public void update() {
 		Mouse.update();
 		KeyBinding.update();
-		StateManager.getState(currentState).update();
+		if (StateManager.getState(currentState) != null) {
+			StateManager.getState(currentState).update();
+		}
 	}
 	
 	/**
@@ -160,7 +162,9 @@ public class Main {
 	 */
 	public void render() {
 		screen.renderInit();
-		StateManager.getState(currentState).render();
+		if (StateManager.getState(currentState) != null) {
+			StateManager.getState(currentState).render();
+		}
 		screen.postRender();
 	}
 	
