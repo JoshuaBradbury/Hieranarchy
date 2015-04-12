@@ -12,6 +12,14 @@ public class TickBox extends Component {
 		this.ticked = ticked;
 	}
 
+	public boolean isTicked() {
+		return ticked;
+	}
+	
+	public void setTicked(boolean ticked) {
+		this.ticked = ticked;
+	}
+	
 	@Override
 	public void render() {
 		Screen.renderQuad((int) getLocation().getX(), (int) getLocation().getY(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Component.DARK);
