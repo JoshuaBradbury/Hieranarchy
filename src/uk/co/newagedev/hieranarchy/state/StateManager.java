@@ -8,6 +8,7 @@ public class StateManager {
 	private static Map<String, State> states = new HashMap<String, State>();
 	
 	public static void registerState(String name, State state) {
+		state.setName(name);
 		states.put(name, state);
 	}
 	

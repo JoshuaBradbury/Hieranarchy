@@ -2,13 +2,13 @@ package uk.co.newagedev.hieranarchy.ui;
 
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.input.Mouse;
-import uk.co.newagedev.hieranarchy.state.EditorState;
+import uk.co.newagedev.hieranarchy.state.State;
 
 public class Window extends Container {
 
 	private boolean moving = false;
 	
-	public Window(EditorState state, int x, int y, int width, int height) {
+	public Window(State state, int x, int y, int width, int height) {
 		super(x, y, width, height);
 		Button closeButton = new Button("X", width - 30, -25, 20, 20, false, new ButtonRunnable() {
 			public void run() {

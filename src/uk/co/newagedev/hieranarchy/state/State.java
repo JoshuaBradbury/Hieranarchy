@@ -1,13 +1,30 @@
 package uk.co.newagedev.hieranarchy.state;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import uk.co.newagedev.hieranarchy.graphics.Camera;
+import uk.co.newagedev.hieranarchy.ui.Window;
 
 public abstract class State {
 	private Map<String, Camera> cameras = new HashMap<String, Camera>();
+	private List<Window> windows = new ArrayList<Window>();
 	private Camera currentCamera;
+	private String name;
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public List<Window> getWindows() {
+		return windows;
+	}
 	
 	public void registerCamera(String name, Camera camera) {
 		cameras.put(name, camera);
@@ -34,7 +51,23 @@ public abstract class State {
 		return cameras;
 	}
 	
-	public abstract void render();
+	public void addWindow(Window window) {
+		windows.add(window);
+	}
+
+	public void removeWindow(Window window) {
+		windows.remove(window);
+	}
 	
-	public abstract void update();
+	public void render() {
+		for (Window window : getWindows()) {
+			window.update();
+		}
+	}
+	
+	public void update() {
+		for (Window window : getWindows()) {
+			window.update();
+		}
+	}
 }
