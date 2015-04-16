@@ -9,6 +9,7 @@ import java.util.List;
 
 import uk.co.newagedev.hieranarchy.graphics.Background;
 import uk.co.newagedev.hieranarchy.graphics.Camera;
+import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
 import uk.co.newagedev.hieranarchy.input.KeyBinding;
 import uk.co.newagedev.hieranarchy.project.Project;
 import uk.co.newagedev.hieranarchy.state.State;
@@ -127,6 +128,25 @@ public class Map {
 
 	public void update() {
 		updateCamera();
+		for (String tile : store.getTiles().keySet()) {
+			String sprite = (String) store.getTileProperties(tile).get("sprite");
+			if (!SpriteRegistry.doesSpriteExist(sprite)) {
+				String file = "";
+				Logger.info("");
+				for (String fileName : FileUtil.getAllFilesInFolder(Main.project.getProjectFolder() + Project.TEXTURES_DIRECTORY)) {
+					String temp = FileUtil.getFileNameWithoutExtension(fileName);
+					if (temp.equalsIgnoreCase(sprite)) {
+						file = fileName;
+						break;
+					}
+				}
+				if (file != "") {
+					if (FileUtil.doesFileExist(file) && !FileUtil.isDirectory(file)) {
+						SpriteRegistry.registerSprite(sprite, file);
+					}
+				}
+			}
+		}
 		for (Tile tile : tiles) {
 			if (tile != null) {
 				tile.update();
