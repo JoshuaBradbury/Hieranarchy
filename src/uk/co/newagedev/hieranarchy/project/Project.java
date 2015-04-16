@@ -13,7 +13,7 @@ import uk.co.newagedev.hieranarchy.util.Logger;
 
 public class Project {
 
-	public static final String DIRECTORY = "Projects/", PROJECT_FILE = "project.json", MAPS_DIRECTORY = "Maps/";
+	public static final String DIRECTORY = "Projects/", PROJECT_FILE = "project.json", MAPS_DIRECTORY = "Maps/", TEXTURES_DIRECTORY = "Assets/Textures/", SOUNDS_DIRECTORY = "Assets/Sounds/";
 	
 	private String projectFolder;
 	private ProjectData projectData;
