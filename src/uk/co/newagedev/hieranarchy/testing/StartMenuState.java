@@ -4,6 +4,7 @@ import uk.co.newagedev.hieranarchy.graphics.Camera;
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.state.EditorState;
 import uk.co.newagedev.hieranarchy.state.MenuState;
+import uk.co.newagedev.hieranarchy.state.ProjectLoaderState;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.ui.Button;
 import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
@@ -23,6 +24,13 @@ public class StartMenuState extends MenuState {
 				StateManager.registerState("edit map", state);
 				Main.project.getMap("testing").setState("edit map");
 				Main.setCurrentState("edit map");
+			}
+		}));
+		registerComponent(new Button("Load Project", 450, 200, 200, 50, false, new ButtonRunnable() {
+			public void run() {
+				ProjectLoaderState state = new ProjectLoaderState();
+				StateManager.registerState("project loader", state);
+				Main.setCurrentState("project loader");
 			}
 		}));
 		registerComponent(new Button("Quit Game", 50, 300, 200, 50, false, new ButtonRunnable() {
