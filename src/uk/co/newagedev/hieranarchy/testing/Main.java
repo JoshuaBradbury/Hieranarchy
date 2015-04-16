@@ -77,15 +77,14 @@ public class Main {
 	 * Initialises the resources for the game.
 	 */
 	public void initResources() {
-		SpriteRegistry.registerSprite("bg", "assets/textures/background.png");
-		SpriteRegistry.registerSprite("crate", "assets/textures/crate.png");
-		SpriteRegistry.registerSprite("flooring", "assets/textures/flooring.png");
-		SpriteRegistry.registerSprite("icetile", "assets/textures/icesheet.png");
-		SpriteRegistry.registerSprite("play", "assets/textures/play.png");
-		SpriteRegistry.registerSprite("reset", "assets/textures/reset.png");
-		SpriteRegistry.registerSprite("pause", "assets/textures/pause.png");
-		SpriteRegistry.registerSprite("edit", "assets/textures/edit.png");
-		SpriteRegistry.registerSprite("new tile", "assets/textures/newtile.png");
+		SpriteRegistry.registerSprite("bg", "Projects/testing/Assets/Textures/background.png");
+		SpriteRegistry.registerSprite("play", "Projects/testing/Assets/Textures/gui/play.png");
+		SpriteRegistry.registerSprite("reset", "Projects/testing/Assets/Textures/gui/reset.png");
+		SpriteRegistry.registerSprite("pause", "Projects/testing/Assets/Textures/gui/pause.png");
+		SpriteRegistry.registerSprite("edit", "Projects/testing/Assets/Textures/gui/edit.png");
+		SpriteRegistry.registerSprite("new tile", "Projects/testing/Assets/Textures/gui/newtile.png");
+		SpriteRegistry.registerSprite("arrow", "Projects/testing/Assets/Textures/gui/arrow.png");
+		SpriteRegistry.registerSprite("arrow hover", "Projects/testing/Assets/Textures/gui/arrow hover.png");
 	}
 	
 	/**
