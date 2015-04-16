@@ -22,7 +22,7 @@ import uk.co.newagedev.hieranarchy.util.Location;
 
 public class EditorState extends State {
 
-	private static Font editorFont = new Font("assets/textures/font.png", 15, 2);
+	private static Font editorFont = new Font("Projects/testing/Assets/Textures/font.png", 15, 2);
 	private Map currentMap;
 	private boolean playing = false, editing = false, placing = false, deleting = false, mouseOverWindow = false, downOverWindow = false;
 	private Location selectionLocation = new Location(0, 0);
