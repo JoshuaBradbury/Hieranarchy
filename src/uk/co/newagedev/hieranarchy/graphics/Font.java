@@ -8,15 +8,15 @@ import uk.co.newagedev.hieranarchy.util.StringUtil;
 
 public class Font {
 
-	private static String chars = "abcdefghijklmnopqrstuvwxyz ";
+	private static String chars = "abcdefghijklmnopqrstuvwxyz(),1234567890 ";
 	private int size, spacing;
 	private String fontImg;
 	private Color colour;
 
 	public Font(String fontImg, int size, int spacing) {
 		this.fontImg = FileUtil.getFileNameWithoutExtension(fontImg);
-		String[] letters = new String[27];
-		for (int i = 0; i < 27; i++) {
+		String[] letters = new String[chars.length()];
+		for (int i = 0; i < chars.length(); i++) {
 			letters[i] = this.fontImg + " - " + chars.charAt(i);
 		}
 		Screen.loadSpritesFromImage(fontImg, 32, 4, letters);
