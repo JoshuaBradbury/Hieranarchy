@@ -64,7 +64,7 @@ public class Container extends Component {
 		try {
 			for (Component component : components) {
 				component.update();
-				component.setOffset((int) getLocation().getX(), (int) getLocation().getY());
+				component.setOffset((int) (getLocation().getX() + getOffset().getX()), (int) (getLocation().getY() + getOffset().getY()));
 			}
 		} catch (Exception e) {
 		}
