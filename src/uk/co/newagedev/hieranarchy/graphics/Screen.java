@@ -19,7 +19,11 @@ import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
 import static org.lwjgl.opengl.GL11.glMatrixMode;
 import static org.lwjgl.opengl.GL11.glOrtho;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glRotatef;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
+import static org.lwjgl.opengl.GL11.glTranslatef;
 import static org.lwjgl.opengl.GL11.glVertex2f;
 
 import java.awt.image.BufferedImage;
@@ -37,6 +41,7 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.BufferedImageUtil;
 
+import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.testing.Main;
 import uk.co.newagedev.hieranarchy.util.FileUtil;
 import uk.co.newagedev.hieranarchy.util.Location;
@@ -45,6 +50,8 @@ import uk.co.newagedev.hieranarchy.util.Logger;
 public class Screen {
 
 	private static boolean close = false;
+	public static final boolean DEBUG = false;
+	private Font screenFont;
 
 	public Screen() {
 		try {
@@ -78,16 +85,12 @@ public class Screen {
 		return texture;
 	}
 
-	public static void renderSprite(String spriteName, Location location, Camera camera, float[] colour) {
-		renderSprite(spriteName, location, camera, new float[] { 0.0f, 1.0f, 0.0f, 1.0f }, colour);
-	}
-
 	public static void renderSprite(String spriteName, Location location, Camera camera, float[] texCoords, float[] colour) {
 		if (SpriteRegistry.doesSpriteExist(spriteName)) {
 			int width = Main.SPRITE_WIDTH;
 			int height = Main.SPRITE_HEIGHT;
 			Location tloc = location.clone().multiply(new Location(width * camera.getZoom(), height * camera.getZoom())).add(new Location(-camera.getX(), camera.getY()));
-			renderSprite(spriteName, tloc.getX(), tloc.getY(), width, height, texCoords, colour);
+			renderSprite(spriteName, tloc.getX(), tloc.getY(), width, height, texCoords, colour, new float[] {0.0f, 0.0f, 0.0f});
 		}
 	}
 
@@ -98,27 +101,37 @@ public class Screen {
 	public static void renderSpriteIgnoringCamera(String spriteName, Location location, float[] texCoords, float[] colour) {
 		if (SpriteRegistry.doesSpriteExist(spriteName)) {
 			Sprite sprite = SpriteRegistry.getSprite(spriteName);
-			renderSprite(spriteName, location.getX(), location.getY(), sprite.getWidth(), sprite.getHeight(), texCoords, colour);
+			renderSprite(spriteName, location.getX(), location.getY(), sprite.getWidth(), sprite.getHeight(), texCoords, colour, new float[] {0.0f, 0.0f, 0.0f});
 		}
 	}
-
-	public static void renderSprite(String spriteName, float x, float y, float width, float height, float[] texCoords, float[] colour) {
+	
+	public static void renderSprite(String spriteName, float x, float y, float width, float height, float[] rotation) {
+		renderSprite(spriteName, x, y, width, height, new float[] { 0.0f, 1.0f, 0.0f, 1.0f }, new float[] { 1.0f, 1.0f, 1.0f, 1.0f }, rotation);
+	}
+	
+	public static void renderSprite(String spriteName, float x, float y, float width, float height, float[] texCoords, float[] colour, float[] rotation) {
 		if (SpriteRegistry.doesSpriteExist(spriteName)) {
 			glEnable(GL_TEXTURE_2D);
 			SpriteRegistry.getSprite(spriteName).bind();
 			glColor4f(colour[0], colour[1], colour[2], colour[3]);
+			glPushMatrix();
+			glTranslatef(x, y, 0.0f);
+			glRotatef(rotation[0], 1.0f, 0.0f, 0.0f);
+			glRotatef(rotation[1], 0.0f, 1.0f, 0.0f);
+			glRotatef(rotation[2], 0.0f, 0.0f, 1.0f);
 			glBegin(GL_QUADS);
 			{
 				glTexCoord2f(texCoords[1], texCoords[3]);
-				glVertex2f(x + width, y + height);
+				glVertex2f(width, height);
 				glTexCoord2f(texCoords[1], texCoords[2]);
-				glVertex2f(x + width, y);
+				glVertex2f(width, 0.0f);
 				glTexCoord2f(texCoords[0], texCoords[2]);
-				glVertex2f(x, y);
+				glVertex2f(0.0f, 0.0f);
 				glTexCoord2f(texCoords[0], texCoords[3]);
-				glVertex2f(x, y + height);
+				glVertex2f(0.0f, 0.0f + height);
 			}
 			glEnd();
+			glPopMatrix();
 			glDisable(GL_TEXTURE_2D);
 		}
 	}
@@ -141,6 +154,13 @@ public class Screen {
 	}
 
 	public void postRender() {
+		if (DEBUG) {
+			if (screenFont == null) {
+				screenFont = new Font("Projects/testing/Assets/Textures/font.png", 10, 1);
+			}
+			String text = "(" + String.valueOf(Mouse.getMouseX()) + "," + String.valueOf(Mouse.getMouseY()) + ")";
+			screenFont.renderText(text, Mouse.getMouseX(), Mouse.getMouseY() - screenFont.getTextHeight(text) / 2);
+		}
 		Display.update();
 		Display.sync(60);
 	}

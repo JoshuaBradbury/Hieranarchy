@@ -145,6 +145,6 @@ public class Tile implements LocationContainer {
 				}
 			}
 		}
-		Screen.renderSprite(getSprite(), getLocation(), camera, col);
+		Screen.renderSprite(getSprite(), getLocation(), camera, new float[] { 0.0f, 1.0f, 0.0f, 1.0f }, col);
 	}
 }
