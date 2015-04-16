@@ -7,7 +7,7 @@ import uk.co.newagedev.hieranarchy.util.Location;
 
 public abstract class Component {
 	
-	public static Font componentFont = new Font("assets/textures/font.png", 10, 2);
+	public static Font componentFont = new Font("Projects/testing/Assets/Textures/font.png", 10, 2);
 	private int x, y, width, height, offsetX, offsetY;
 	private Component parent;
 	
@@ -51,6 +51,10 @@ public abstract class Component {
 	
 	public Location getLocation() {
 		return new Location(x, y);
+	}
+	
+	public Location getDisplayLocation() {
+		return getLocation().add(getOffset());
 	}
 	
 	public Location getOffset() {
