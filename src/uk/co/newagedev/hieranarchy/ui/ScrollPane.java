@@ -1,10 +1,5 @@
 package uk.co.newagedev.hieranarchy.ui;
 
-import static org.lwjgl.opengl.GL11.GL_SCISSOR_TEST;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glScissor;
-
 import java.awt.Rectangle;
 
 import uk.co.newagedev.hieranarchy.graphics.Screen;
@@ -68,10 +63,9 @@ public class ScrollPane extends Component {
 
 		pane.setOffset(xOffset, yOffset);
 
-		glEnable(GL_SCISSOR_TEST);
 		int yOff = scrollBars[1] != null ? 15 : 0;
-		glScissor((int) getLocation().getX(), (int) getLocation().getY() + yOff, getWidth(), getHeight());
+		Screen.startScissor((int) getLocation().getX(), (int) getLocation().getY() + yOff, getWidth(), getHeight());
 		pane.render();
-		glDisable(GL_SCISSOR_TEST);
+		Screen.stopScissor();
 	}
 }
