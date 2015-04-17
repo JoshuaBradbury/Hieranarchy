@@ -16,9 +16,10 @@ Features:
 - Map and State system which allows to dynamically load and swap states and maps
 - Dynamic tile system which allows you to create and save different tiles
 - Project system which saves and loads maps
-
+- Tile creation and editing in the editor
 
 What is left to come is:
-- Tile creation and editing in the editor
 - Entities as a whole
+- Image editor for sprites
+- Possible sound editor?
 - and whatever anyone else wants to suggest!
