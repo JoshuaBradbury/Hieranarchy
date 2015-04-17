@@ -3,7 +3,6 @@ package uk.co.newagedev.hieranarchy.state;
 import java.util.HashMap;
 import java.util.Map;
 
-import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.testing.Main;
 import uk.co.newagedev.hieranarchy.ui.Button;
 import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
@@ -84,7 +83,7 @@ public class TileCreatorState extends State {
 	
 	@Override
 	public void render() {
-		Screen.renderQuad(0, 0, Main.WIDTH, Main.HEIGHT, Component.VERY_LIGHT);
+		Main.getScreen().renderQuad(0, 0, Main.WIDTH, Main.HEIGHT, Component.VERY_LIGHT);
 		container.render();
 	}
 

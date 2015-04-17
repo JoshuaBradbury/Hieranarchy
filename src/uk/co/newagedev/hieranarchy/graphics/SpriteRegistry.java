@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.newdawn.slick.opengl.Texture;
 
+import uk.co.newagedev.hieranarchy.testing.Main;
 import uk.co.newagedev.hieranarchy.util.Logger;
 
 public class SpriteRegistry {
@@ -13,7 +14,7 @@ public class SpriteRegistry {
 	private static Map<String, Sprite> sprites = new HashMap<String, Sprite>();
 	
 	public static void registerSprite(String name, String path) {
-		Texture texture = Screen.loadTexture(path);
+		Texture texture = Main.getScreen().loadTexture(path);
 		if (texture != null) {
 			sprites.put(name, new Sprite(texture));
 			Logger.info("\"" + path + "\" loaded as \"" + name + "\"");
@@ -23,7 +24,7 @@ public class SpriteRegistry {
 	}
 	
 	public static void registerImage(String name, BufferedImage image) {
-		Texture texture = Screen.getTextureFromImage(image);
+		Texture texture = Main.getScreen().getTextureFromImage(image);
 		if (texture != null) {
 			sprites.put(name, new Sprite(texture));
 		}

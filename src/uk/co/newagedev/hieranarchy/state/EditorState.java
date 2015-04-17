@@ -5,7 +5,6 @@ import java.util.List;
 
 import uk.co.newagedev.hieranarchy.graphics.Camera;
 import uk.co.newagedev.hieranarchy.graphics.Font;
-import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.graphics.Sprite;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
 import uk.co.newagedev.hieranarchy.input.KeyBinding;
@@ -109,7 +108,7 @@ public class EditorState extends State {
 				selection.render(getCurrentCamera());
 			}
 		}
-		Screen.renderQuad(0, 0, Main.WIDTH, 40, Component.VERY_LIGHT);
+		Main.getScreen().renderQuad(0, 0, Main.WIDTH, 40, Component.VERY_LIGHT);
 		toolbar.render();
 		if (editing) {
 			editorFont.renderText("Edit Mode", 10 + editorFont.getTextWidth("Edit Mode") / 2, 50 + editorFont.getTextHeight("Edit Mode") / 2);

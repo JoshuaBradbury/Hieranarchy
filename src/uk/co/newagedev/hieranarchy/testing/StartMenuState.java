@@ -1,7 +1,6 @@
 package uk.co.newagedev.hieranarchy.testing;
 
 import uk.co.newagedev.hieranarchy.graphics.Camera;
-import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.state.EditorState;
 import uk.co.newagedev.hieranarchy.state.MenuState;
 import uk.co.newagedev.hieranarchy.state.ProjectLoaderState;
@@ -35,16 +34,16 @@ public class StartMenuState extends MenuState {
 		}));
 		registerComponent(new Button("Quit Game", 50, 300, 200, 50, false, new ButtonRunnable() {
 			public void run() {
-				Screen.close();
+				Main.getScreen().close();
 			}
 		}));
 	}
 	
 	@Override
 	public void render() {
-		Screen.renderQuad(0, 0, Main.WIDTH, Main.HEIGHT, Component.LIGHT);
+		Main.getScreen().renderQuad(0, 0, Main.WIDTH, Main.HEIGHT, Component.LIGHT);
 		for (int i = -200; i < Main.WIDTH; i += 20) {
-			Screen.renderLine(new int[] {200 + i + offset, -10}, new int[] {i + offset, Main.HEIGHT + 10}, 10.0f, Component.DARK);
+			Main.getScreen().renderLine(new int[] {200 + i + offset, -10}, new int[] {i + offset, Main.HEIGHT + 10}, 10.0f, Component.DARK);
 		}
 		super.render();
 	}

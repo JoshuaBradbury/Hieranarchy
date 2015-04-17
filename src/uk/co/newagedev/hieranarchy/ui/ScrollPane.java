@@ -2,8 +2,8 @@ package uk.co.newagedev.hieranarchy.ui;
 
 import java.awt.Rectangle;
 
-import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.input.Mouse;
+import uk.co.newagedev.hieranarchy.testing.Main;
 
 public class ScrollPane extends Component {
 	private ScrollBar[] scrollBars = new ScrollBar[2];
@@ -45,7 +45,7 @@ public class ScrollPane extends Component {
 	}
 
 	public void render() {
-		Screen.renderQuad((int) getLocation().getX(), (int) getLocation().getY(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Component.LIGHT);
+		Main.getScreen().renderQuad((int) getLocation().getX(), (int) getLocation().getY(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Component.LIGHT);
 		for (ScrollBar bar : scrollBars) {
 			if (bar != null) {
 				bar.render();
@@ -64,8 +64,8 @@ public class ScrollPane extends Component {
 		pane.setOffset(xOffset, yOffset);
 
 		int yOff = scrollBars[1] != null ? 15 : 0;
-		Screen.startScissor((int) getLocation().getX(), (int) getLocation().getY() + yOff, getWidth(), getHeight());
+		Main.getScreen().startScissor((int) getLocation().getX(), (int) getLocation().getY() + yOff, getWidth(), getHeight());
 		pane.render();
-		Screen.stopScissor();
+		Main.getScreen().stopScissor();
 	}
 }

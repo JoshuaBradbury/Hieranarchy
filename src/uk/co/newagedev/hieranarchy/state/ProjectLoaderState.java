@@ -1,6 +1,5 @@
 package uk.co.newagedev.hieranarchy.state;
 
-import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.testing.Main;
 import uk.co.newagedev.hieranarchy.ui.Button;
 import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
@@ -57,7 +56,7 @@ public class ProjectLoaderState extends MenuState {
 	
 	@Override
 	public void render() {
-		Screen.renderQuad(0, 0, Main.WIDTH, Main.HEIGHT, Component.DARK);
+		Main.getScreen().renderQuad(0, 0, Main.WIDTH, Main.HEIGHT, Component.DARK);
 		super.render();
 	}
 	

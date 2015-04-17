@@ -2,8 +2,7 @@ package uk.co.newagedev.hieranarchy.testing;
 
 import org.lwjgl.input.Keyboard;
 
-import com.google.gson.Gson;
-
+import uk.co.newagedev.hieranarchy.graphics.OpenGLScreen;
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
 import uk.co.newagedev.hieranarchy.input.KeyBinding;
@@ -11,6 +10,8 @@ import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.project.Project;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.util.Logger;
+
+import com.google.gson.Gson;
 
 public class Main {
 	
@@ -47,7 +48,7 @@ public class Main {
 	/**
 	 * The screen variable of the application.
 	 */
-	public static Screen screen;
+	public static OpenGLScreen screen;
 	
 	/**
 	 * The thread of the application.
@@ -115,7 +116,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		Main hieranarchy = new Main();
-		screen = new Screen();
+		screen = new OpenGLScreen();
 		hieranarchy.init();
 		hieranarchy.start();
 	}
@@ -165,6 +166,14 @@ public class Main {
 			StateManager.getState(currentState).render();
 		}
 		screen.postRender();
+	}
+
+	/**
+	 * Gets the Screen.
+	 * @return screen - instance of Screen.
+	 */
+	public static Screen getScreen() {
+		return screen;
 	}
 	
 	/**

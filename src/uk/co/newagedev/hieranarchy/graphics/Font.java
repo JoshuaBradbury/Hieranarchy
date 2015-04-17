@@ -2,6 +2,7 @@ package uk.co.newagedev.hieranarchy.graphics;
 
 import java.awt.Color;
 
+import uk.co.newagedev.hieranarchy.testing.Main;
 import uk.co.newagedev.hieranarchy.util.FileUtil;
 import uk.co.newagedev.hieranarchy.util.Location;
 import uk.co.newagedev.hieranarchy.util.StringUtil;
@@ -19,7 +20,7 @@ public class Font {
 		for (int i = 0; i < chars.length(); i++) {
 			letters[i] = this.fontImg + " - " + chars.charAt(i);
 		}
-		Screen.loadSpritesFromImage(fontImg, 32, 4, letters);
+		Main.getScreen().loadSpritesFromImage(fontImg, 32, 4, letters);
 		this.size = size;
 		this.spacing = spacing;
 		this.colour = new Color(0x00, 0x00, 0x00);
@@ -32,7 +33,7 @@ public class Font {
 			int prevSize = s.getWidth();
 			s.setWidth(size);
 			s.setHeight(size);
-			Screen.renderSpriteIgnoringCamera(fontImg + " - " + text.charAt(i), new Location(x + (i * (size + spacing)) - ((text.length() * (size + spacing)) / 2), y - (size / 2)), new float[] { 0.0f, 1.0f, 0.0f, 1.0f }, new float[] { colour.getRed() / 255.0f, colour.getGreen() / 255.0f, colour.getBlue() / 255.0f, colour.getAlpha() / 255.0f });
+			Main.getScreen().renderSpriteIgnoringCamera(fontImg + " - " + text.charAt(i), new Location(x + (i * (size + spacing)) - ((text.length() * (size + spacing)) / 2), y - (size / 2)), new float[] { 0.0f, 1.0f, 0.0f, 1.0f }, new float[] { colour.getRed() / 255.0f, colour.getGreen() / 255.0f, colour.getBlue() / 255.0f, colour.getAlpha() / 255.0f });
 			s.setWidth(prevSize);
 			s.setHeight(prevSize);
 		}

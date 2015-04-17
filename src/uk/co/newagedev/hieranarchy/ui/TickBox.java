@@ -1,7 +1,7 @@
 package uk.co.newagedev.hieranarchy.ui;
 
-import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.input.Mouse;
+import uk.co.newagedev.hieranarchy.testing.Main;
 
 public class TickBox extends Component {
 
@@ -22,11 +22,11 @@ public class TickBox extends Component {
 	
 	@Override
 	public void render() {
-		Screen.renderQuad((int) getLocation().getX(), (int) getLocation().getY(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Component.DARK);
-		Screen.renderQuad((int) getLocation().getX() + 5, (int) getLocation().getY() + 5, (int) getDimensions().getWidth() - 10, (int) getDimensions().getHeight() - 10, Component.LIGHT);
+		Main.getScreen().renderQuad((int) getLocation().getX(), (int) getLocation().getY(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Component.DARK);
+		Main.getScreen().renderQuad((int) getLocation().getX() + 5, (int) getLocation().getY() + 5, (int) getDimensions().getWidth() - 10, (int) getDimensions().getHeight() - 10, Component.LIGHT);
 		if (ticked) {
-			Screen.renderLine(new int[] {(int) getLocation().getX() + 15, (int) getLocation().getY() + 5}, new int[] {(int) getLocation().getX() + 5, (int) getLocation().getY() + 15}, 2, Component.DARK);
-			Screen.renderLine(new int[] {(int) getLocation().getX() + 5, (int) getLocation().getY() + 5}, new int[] {(int) getLocation().getX() + 15, (int) getLocation().getY() + 15}, 2, Component.DARK);
+			Main.getScreen().renderLine(new int[] {(int) getLocation().getX() + 15, (int) getLocation().getY() + 5}, new int[] {(int) getLocation().getX() + 5, (int) getLocation().getY() + 15}, 2, Component.DARK);
+			Main.getScreen().renderLine(new int[] {(int) getLocation().getX() + 5, (int) getLocation().getY() + 5}, new int[] {(int) getLocation().getX() + 15, (int) getLocation().getY() + 15}, 2, Component.DARK);
 		}
 	}
 

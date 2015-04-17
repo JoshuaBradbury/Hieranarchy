@@ -3,7 +3,6 @@ package uk.co.newagedev.hieranarchy.tile;
 import java.util.HashMap;
 
 import uk.co.newagedev.hieranarchy.graphics.Camera;
-import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.map.Map;
 import uk.co.newagedev.hieranarchy.testing.Main;
 import uk.co.newagedev.hieranarchy.util.CollisionBox;
@@ -140,11 +139,11 @@ public class Tile implements LocationContainer {
 						tyma = 1.0f;
 					}
 
-					Screen.renderSprite(getSprite(), getLocation(), camera, new float[] { txmi, txma, tymi, tyma }, col);
+					Main.getScreen().renderSprite(getSprite(), getLocation(), camera, new float[] { txmi, txma, tymi, tyma }, col);
 					return;
 				}
 			}
 		}
-		Screen.renderSprite(getSprite(), getLocation(), camera, new float[] { 0.0f, 1.0f, 0.0f, 1.0f }, col);
+		Main.getScreen().renderSprite(getSprite(), getLocation(), camera, new float[] { 0.0f, 1.0f, 0.0f, 1.0f }, col);
 	}
 }

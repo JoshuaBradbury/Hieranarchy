@@ -1,9 +1,9 @@
 package uk.co.newagedev.hieranarchy.ui;
 
-import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.graphics.Sprite;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
 import uk.co.newagedev.hieranarchy.input.Mouse;
+import uk.co.newagedev.hieranarchy.testing.Main;
 
 public class Button extends Component {
 	
@@ -29,18 +29,18 @@ public class Button extends Component {
 	}
 
 	public void render() {
-		Screen.renderQuad((int) getDisplayLocation().getX(), (int) getDisplayLocation().getY(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Component.DARK);
-		Screen.renderQuad((int) getDisplayLocation().getX() + 5, (int) getDisplayLocation().getY() + 5, (int) getDimensions().getWidth() - 10, (int) getDimensions().getHeight() - 10, (hover ? Component.VERY_LIGHT : Component.LIGHT));
+		Main.getScreen().renderQuad((int) getDisplayLocation().getX(), (int) getDisplayLocation().getY(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Component.DARK);
+		Main.getScreen().renderQuad((int) getDisplayLocation().getX() + 5, (int) getDisplayLocation().getY() + 5, (int) getDimensions().getWidth() - 10, (int) getDimensions().getHeight() - 10, (hover ? Component.VERY_LIGHT : Component.LIGHT));
 		if (image != "") {
 			Sprite sprite = SpriteRegistry.getSprite(image);
-			Screen.renderSpriteIgnoringCamera(image, getDisplayLocation().clone().subtract(sprite.getWidth() / 2, sprite.getHeight() / 2).add((int) getDimensions().getWidth() / 2, (int) getDimensions().getHeight() / 2));
+			Main.getScreen().renderSpriteIgnoringCamera(image, getDisplayLocation().clone().subtract(sprite.getWidth() / 2, sprite.getHeight() / 2).add((int) getDimensions().getWidth() / 2, (int) getDimensions().getHeight() / 2));
 		} else {
 			componentFont.renderText(text, (int) (getDisplayLocation().getX() + (getDimensions().getWidth() / 2)), (int) (getDisplayLocation().getY() + (getDimensions().getHeight() / 2)));
 		}
 		if (toolTipDisplay && toolTip) {
 			int toolTipX = Mouse.getMouseX(), toolTipY = (int) (getParent().getDisplayLocation().getY() + getParent().getDimensions().getHeight() + 10);
-			Screen.renderQuad(toolTipX, toolTipY - componentFont.getTextHeight(text) + 14, componentFont.getTextWidth(text) + 14, componentFont.getTextHeight(text) + 14, Component.DARK);
-			Screen.renderQuad(toolTipX + 2, toolTipY + 16 - componentFont.getTextHeight(text), componentFont.getTextWidth(text) + 10, componentFont.getTextHeight(text) + 10, Component.LIGHT);
+			Main.getScreen().renderQuad(toolTipX, toolTipY - componentFont.getTextHeight(text) + 14, componentFont.getTextWidth(text) + 14, componentFont.getTextHeight(text) + 14, Component.DARK);
+			Main.getScreen().renderQuad(toolTipX + 2, toolTipY + 16 - componentFont.getTextHeight(text), componentFont.getTextWidth(text) + 10, componentFont.getTextHeight(text) + 10, Component.LIGHT);
 			componentFont.renderText(text, toolTipX + componentFont.getTextWidth(text) / 2 + 7, toolTipY - componentFont.getTextHeight(text) / 2 + 21);
 		}
 	}
