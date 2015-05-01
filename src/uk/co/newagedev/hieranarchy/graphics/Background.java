@@ -5,21 +5,17 @@ import uk.co.newagedev.hieranarchy.testing.Main;
 import uk.co.newagedev.hieranarchy.util.Location;
 
 public class Background {
-	/**
-	 * The sprite variable for the background;
-	 */
+	
+	/** The sprite variable for the background. */
 	private String sprite;
 	
-	/**
-	 * The map the background is a part of.
-	 */
+	/** The map the background is a part of. */
 	private Map map;
 	
-	/**
-	 * The location variables for the background.
-	 */
+	/** The location variables for the background. */
 	private int startX, startY, x, y, z;
 	
+	/** Booleans to determine which directions it will scroll. */
 	private boolean scrollsX = true, scrollsY = true;
 	
 	/**
@@ -36,19 +32,36 @@ public class Background {
 		this.z = z;
 	}
 	
+	/**
+	 * Sets the scroll directions.
+	 * @param x - If the background scrolls in the x direction.
+	 * @param y - If the background scrolls in the y direction.
+	 */
 	public void setScrollDirections(boolean x, boolean y) {
 		scrollsX = x;
 		scrollsY = y;
 	}
 	
+	/**
+	 * Gets if the background will scroll in the x direction.
+	 * @return scrollsX
+	 */
 	public boolean getScrollsX() {
 		return scrollsX;
 	}
 	
+	/**
+	 * Gets if the background will scroll in the y direction.
+	 * @return scrollsY
+	 */
 	public boolean getScrollsY() {
 		return scrollsY;
 	}
 	
+	/**
+	 * Sets the current map.
+	 * @param map - the map to set as the current map.
+	 */
 	public void setMap(Map map) {
 		this.map = map;
 	}
