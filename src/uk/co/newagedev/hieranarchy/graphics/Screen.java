@@ -1,5 +1,6 @@
 package uk.co.newagedev.hieranarchy.graphics;
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import org.newdawn.slick.opengl.Texture;
@@ -34,6 +35,8 @@ public interface Screen {
 
 	public void renderQuad(int x, int y, int width, int height, float[] colour);
 	public void renderQuad(int x, int y, int width, int height, float[][] colours);
+	public void renderQuad(Rectangle rect, float[] colour);
+	public void renderQuad(Rectangle rect, float[][] colours);
 	
 	public void renderLine(int[] point1, int[] point2, float thickness, float[] colour);
 	

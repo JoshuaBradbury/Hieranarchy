@@ -28,6 +28,7 @@ import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glTranslatef;
 import static org.lwjgl.opengl.GL11.glVertex2f;
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -222,6 +223,14 @@ public class OpenGLScreen implements Screen {
 			Logger.error(e.getMessage());
 		}
 		return null;
+	}
+	
+	public void renderQuad(Rectangle rect, float[] colour) {
+		renderQuad((int) rect.getX(), (int) rect.getY(), (int) rect.getWidth(), (int) rect.getHeight(), colour);
+	}
+
+	public void renderQuad(Rectangle rect, float[][] colours) {
+		renderQuad((int) rect.getX(), (int) rect.getY(), (int) rect.getWidth(), (int) rect.getHeight(), colours);
 	}
 
 	public void renderQuad(int x, int y, int width, int height, float[] colour) {
