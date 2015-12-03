@@ -10,7 +10,7 @@ public class GameState extends State {
 	}
 	
 	public void render() {
-		currentMap.render();
+		currentMap.render(getCurrentCamera());
 	}
 	
 	public void update() {

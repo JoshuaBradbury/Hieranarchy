@@ -18,7 +18,7 @@ public class FileUtil {
 		if (filePath.contains("/")) {
 			parts = filePath.split("/");
 		} else if (filePath.contains("\\")) {
-			parts = filePath.split("\\");
+			parts = StringUtil.split(filePath, "\\");
 		} else {
 			parts = new String[] { filePath };
 		}
@@ -56,6 +56,7 @@ public class FileUtil {
 			boolean foldersInList = true;
 			while (foldersInList) {
 				List<File> remove = new ArrayList<File>();
+				List<File> toCheck = new ArrayList<File>();
 				for (File f : filesToCheck) {
 					if (f.isDirectory()) {
 						remove.add(f);
@@ -63,6 +64,9 @@ public class FileUtil {
 							filesToCheck.add(fi);
 						}
 					}
+				}
+				for (File f : toCheck) {
+					filesToCheck.add(f);
 				}
 				for (File f : remove) {
 					filesToCheck.remove(f);

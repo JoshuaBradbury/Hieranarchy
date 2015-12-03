@@ -50,7 +50,7 @@ public class TileCreatorState extends State {
 				EditorState editor = (EditorState) StateManager.getState(stateFrom);
 				Map<String, Object> props = getProps();
 				
-				Main.project.addTileToMap(editor.getCurrentMap().getMapStore().getName(), props);
+				Main.project.addObjectToMap(editor.getCurrentMap().getMapStore().getName(), props);
 			}
 		});
 		container.addComponent(createTile);
@@ -76,6 +76,7 @@ public class TileCreatorState extends State {
 			props.put("connected-textures", true);
 		}
 		
+		props.put("type", "tile");
 		props.put("sprite", sprite.getText().toLowerCase());
 		props.put("name", tileName.getText().toLowerCase());
 		return props;

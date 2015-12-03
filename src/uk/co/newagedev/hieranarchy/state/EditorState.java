@@ -10,22 +10,25 @@ import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
 import uk.co.newagedev.hieranarchy.input.KeyBinding;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.map.Map;
+import uk.co.newagedev.hieranarchy.map.objects.MapObject;
+import uk.co.newagedev.hieranarchy.map.objects.Tile;
 import uk.co.newagedev.hieranarchy.testing.Main;
-import uk.co.newagedev.hieranarchy.tile.Tile;
 import uk.co.newagedev.hieranarchy.ui.Button;
 import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
 import uk.co.newagedev.hieranarchy.ui.Component;
 import uk.co.newagedev.hieranarchy.ui.Container;
 import uk.co.newagedev.hieranarchy.ui.Window;
-import uk.co.newagedev.hieranarchy.util.Location;
+import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class EditorState extends State {
 
 	private static Font editorFont = new Font("Projects/testing/Assets/Textures/font.png", 15, 2);
 	private Map currentMap;
 	private boolean playing = false, editing = false, placing = false, deleting = false, mouseOverWindow = false, downOverWindow = false;
-	private Location selectionLocation = new Location(0, 0);
-	private Tile selection = new Tile(selectionLocation);
+
+	private Vector2f selectionLocation;
+
+	private Tile selection;
 	private Button playButton;
 	private String currentTileName;
 	private Container toolbar = new Container(0, 0);
@@ -102,7 +105,7 @@ public class EditorState extends State {
 
 	@Override
 	public void render() {
-		currentMap.render();
+		currentMap.render(getCurrentCamera());
 		if (editing) {
 			if (selection != null) {
 				selection.render(getCurrentCamera());
@@ -147,7 +150,7 @@ public class EditorState extends State {
 
 	public void disableEditing() {
 		editing = false;
-		currentMap.removeTile(selection);
+		currentMap.removeObject(selection);
 		selection = null;
 	}
 
@@ -170,9 +173,9 @@ public class EditorState extends State {
 				}
 			}
 			if (Mouse.getMouseY() > toolbar.getDimensions().getHeight() + toolbar.getLocation().getY()) {
-				selectionLocation = new Location((int) ((Mouse.getMouseX() + getCurrentCamera().getX()) / (Main.SPRITE_WIDTH * getCurrentCamera().getZoom())), (int) ((Mouse.getMouseY() - getCurrentCamera().getY()) / (Main.SPRITE_HEIGHT * getCurrentCamera().getZoom())));
+				selectionLocation = new Vector2f((int) ((Mouse.getMouseX() + getCurrentCamera().getX()) / (Main.SPRITE_WIDTH * getCurrentCamera().getZoom())), (int) ((Mouse.getMouseY() - getCurrentCamera().getY()) / (Main.SPRITE_HEIGHT * getCurrentCamera().getZoom())));
 
-				currentMap.removeTile(selection);
+				currentMap.removeObject(selection);
 
 				if (Mouse.isButtonDown(Mouse.LEFT_BUTTON) || Mouse.isButtonDown(Mouse.RIGHT_BUTTON) || Mouse.isButtonDown(Mouse.MIDDLE_BUTTON)) {
 					if (mouseOverWindow) {
@@ -198,22 +201,22 @@ public class EditorState extends State {
 
 				if (Mouse.isButtonReleasing(Mouse.RIGHT_BUTTON) && !placing) {
 					deleting = false;
-					List<Tile> tiles = currentMap.getPlacedTilesWithProperty("delete");
-					for (Tile tile : tiles) {
-						currentMap.removeTile(tile);
+					List<MapObject> tiles = currentMap.getObjectsWithProperty("delete", "type:tile");
+					for (MapObject tile : tiles) {
+						currentMap.removeObject(tile);
 					}
 				}
 
 				if (Mouse.isButtonDown(Mouse.LEFT_BUTTON) && !deleting && !mouseOverWindow) {
 					placing = true;
 					if (currentMap.getTileAt(selectionLocation) != null) {
-						currentMap.removeTile(currentMap.getTileAt(selectionLocation));
+						currentMap.removeObject(currentMap.getTileAt(selectionLocation));
 					}
 					if (selection != null) {
 						selection.removeProperty("selection");
 					}
 
-					currentMap.addTile(selection);
+					currentMap.addObject(selection);
 				}
 
 				if (Mouse.isButtonReleasing(Mouse.LEFT_BUTTON) && !deleting) {
@@ -228,15 +231,18 @@ public class EditorState extends State {
 					currentTileName = currentMap.getMapStore().getPrevTile(currentTileName);
 				}
 
-				selection = new Tile(selectionLocation);
-
-				java.util.Map<String, Object> props = currentMap.getMapStore().getTileProperties(currentTileName);
-				for (String prop : props.keySet()) {
-					selection.setProperty(prop, props.get(prop));
+				selection = new Tile();
+				selection.setLocation(selectionLocation);
+				
+				java.util.Map<String, Object> props = currentMap.getMapStore().getObjectProperties(currentTileName);
+				if (props != null) {
+					for (String prop : props.keySet()) {
+						selection.setProperty(prop, props.get(prop));
+					}
 				}
 
-				for (Tile tile : currentMap.getPlacedTilesWithProperty("selection")) {
-					currentMap.removeTile(tile);
+				for (MapObject object : currentMap.getObjectsWithProperty("selection")) {
+					currentMap.removeObject(object);
 				}
 
 				selection.setProperty("selection", null);
@@ -244,9 +250,9 @@ public class EditorState extends State {
 				if (deleting) {
 					selection.setProperty("delete", null);
 				}
-
+	
 				Camera camera = getCurrentCamera();
-				
+
 				if (KeyBinding.isKeyDown("Up")) {
 					camera.move(0, (int) (5 * camera.getZoom()));
 				}
@@ -254,9 +260,9 @@ public class EditorState extends State {
 				if (KeyBinding.isKeyDown("Down")) {
 					camera.move(0, (int) (-5 * camera.getZoom()));
 				}
-				
+
 				currentMap.updateCamera();
-				
+
 			} else {
 				selection = null;
 			}

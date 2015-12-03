@@ -11,14 +11,15 @@ import uk.co.newagedev.hieranarchy.graphics.Background;
 import uk.co.newagedev.hieranarchy.graphics.Camera;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
 import uk.co.newagedev.hieranarchy.input.KeyBinding;
+import uk.co.newagedev.hieranarchy.map.objects.MapObject;
+import uk.co.newagedev.hieranarchy.map.objects.Tile;
 import uk.co.newagedev.hieranarchy.project.Project;
 import uk.co.newagedev.hieranarchy.state.State;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.testing.Main;
-import uk.co.newagedev.hieranarchy.tile.Tile;
 import uk.co.newagedev.hieranarchy.util.CollisionBox;
 import uk.co.newagedev.hieranarchy.util.FileUtil;
-import uk.co.newagedev.hieranarchy.util.Location;
+import uk.co.newagedev.hieranarchy.util.Vector2f;
 import uk.co.newagedev.hieranarchy.util.Logger;
 
 public class Map {
@@ -28,7 +29,7 @@ public class Map {
 	private Project project;
 	private MapStore store = new MapStore();
 	private Background bg;
-	private List<Tile> tiles;
+	private List<MapObject> objects;
 	private String state, name, mapFolder;
 	private int width, height;
 
@@ -54,7 +55,7 @@ public class Map {
 			store = new MapStore();
 			store.setName(name);
 		}
-		
+
 		loadMap();
 	}
 
@@ -71,7 +72,7 @@ public class Map {
 	}
 
 	public void save() {
-		store.storeTiles(tiles);
+		store.storeObjects(objects);
 		try {
 			FileWriter writer = new FileWriter(getMapFile());
 			String json = Main.GSON.toJson(store);
@@ -85,13 +86,15 @@ public class Map {
 		}
 	}
 
-	public Tile getTileAt(Location loc) {
+	public Tile getTileAt(Vector2f loc) {
 		Tile tile = null;
-		for (Tile t : tiles) {
-			if (t != null) {
-				if (t.getLocation().equals(loc)) {
-					tile = t;
-					break;
+		for (MapObject object : objects) {
+			if (object != null) {
+				if (object instanceof Tile) {
+					if (object.getLocation().equals(loc)) {
+						tile = (Tile) object;
+						break;
+					}
 				}
 			}
 		}
@@ -128,11 +131,10 @@ public class Map {
 
 	public void update() {
 		updateCamera();
-		for (String tile : store.getTiles().keySet()) {
-			String sprite = (String) store.getTileProperties(tile).get("sprite");
+		for (String object : store.getObjects().keySet()) {
+			String sprite = (String) store.getObjectProperties(object).get("sprite");
 			if (!SpriteRegistry.doesSpriteExist(sprite)) {
 				String file = "";
-				Logger.info("");
 				for (String fileName : FileUtil.getAllFilesInFolder(Main.project.getProjectFolder() + Project.TEXTURES_DIRECTORY)) {
 					String temp = FileUtil.getFileNameWithoutExtension(fileName);
 					if (temp.equalsIgnoreCase(sprite)) {
@@ -147,20 +149,18 @@ public class Map {
 				}
 			}
 		}
-		for (Tile tile : tiles) {
-			if (tile != null) {
-				tile.update();
-			}
+		for (MapObject object : objects) {
+			object.update();
 		}
 	}
 
-	public void render() {
+	public void render(Camera camera) {
 		if (bg != null) {
 			bg.render();
 		}
-		for (Tile tile : tiles) {
-			if (tile != null) {
-				tile.render(getState().getCurrentCamera());
+		for (MapObject object : objects) {
+			if (object != null) {
+				object.render(camera);
 			}
 		}
 	}
@@ -171,70 +171,87 @@ public class Map {
 		bg.setMap(this);
 		width = store.getWidth();
 		height = store.getHeight();
-		tiles = new ArrayList<Tile>();
+		objects = new ArrayList<MapObject>();
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				String tileName = store.getTileAtLocation(x, y);
-				if (tileName != "") {
-					Tile tile = new Tile(new Location(x, y));
-					java.util.Map<String, Object> props = store.getTiles().get(tileName);
-					for (String prop : props.keySet()) {
-						tile.setProperty(prop, props.get(prop));
+				String objectName = store.getObjectAtLocation(x, y);
+				if (objectName != "") {
+					if (((String) store.getObjectProperty(objectName, "type")).equalsIgnoreCase("tile")) {
+						MapObject object = new MapObject();
+						object.setLocation(new Vector2f(x, y));
+						java.util.Map<String, Object> props = store.getObjects().get(objectName);
+						for (String prop : props.keySet()) {
+							object.setProperty(prop, props.get(prop));
+						}
+						objects.add(object);
+						object.setMap(this);
 					}
-					tiles.add(tile);
-					tile.setMap(this);
 				}
 			}
 		}
-		Logger.info("\"" + name + "\"", "loaded with \"", "Width:", width, "Height:", height, "tileCount:", tiles.size());
+		Logger.info(StringUtil.surroundWith(name, "\""), "loaded with", "Width:", width, "Height:", height, "Object Count:", objects.size());
 	}
 
-	public void addTile(Tile tile) {
-		List<Tile> ts = new ArrayList<Tile>();
-		for (Tile t : tiles) {
-			if (t.getLocation().equals(tile.getLocation())) {
-				ts.add(t);
+	public void addObject(MapObject object) {
+		List<MapObject> objs = new ArrayList<MapObject>();
+		for (MapObject obj : objects) {
+			if (obj.getLocation().equals(object.getLocation())) {
+				objs.add(obj);
 			}
 		}
-		for (Tile t : ts) {
-			removeTile(t);
+		for (Object obj : objs) {
+			removeObject(obj);
 		}
-		tiles.add(tile);
-		tile.setMap(this);
+		objects.add(object);
+		object.setMap(this);
 	}
 
-	public void removeTile(Tile tile) {
-		if (tile != null) {
-			tiles.remove(tile);
+	public void removeObject(Object object) {
+		if (object != null) {
+			objects.remove(object);
 		}
 	}
 
-	public List<Tile> getPlacedTilesWithProperty(String name) {
-		List<Tile> tilesWithProps = new ArrayList<Tile>();
-		for (Tile tile : tiles) {
-			if (tile != null) {
-				if (tile.doesPropertyExist(name)) {
-					tilesWithProps.add(tile);
+	public List<MapObject> getObjectsWithProperty(String... props) {
+		List<MapObject> objectsWithProps = new ArrayList<MapObject>();
+		for (MapObject object : objects) {
+			if (object != null) {
+				int propCount = 0;
+
+				for (String prop : props) {
+					if (prop.contains(":")) {
+						if (object.doesPropertyExist(prop.split(":")[0]) && object.getProperty(prop.split(":")[0]).toString().equalsIgnoreCase(prop.split(":")[1])) {
+							propCount += 1;
+						}
+					} else {
+						if (object.doesPropertyExist(prop)) {
+							propCount += 1;
+						}
+					}
+				}
+				
+				if (propCount == props.length) {
+					objectsWithProps.add(object);
 				}
 			}
 		}
-		return tilesWithProps;
+		return objectsWithProps;
 	}
 
-	public List<Tile> getTilesWithinRadius(Location loc, float radius) {
-		List<Tile> tilesWithinRadius = new ArrayList<Tile>();
-		for (Tile tile : tiles) {
-			if (tile.getLocation().distance(loc) < radius) {
-				tilesWithinRadius.add(tile);
+	public List<MapObject> getObjectsWithinRadius(String type, Vector2f loc, float radius) {
+		List<MapObject> objectsWithinRadius = new ArrayList<MapObject>();
+		for (MapObject object : getObjectsWithProperty(type)) {
+			if (object.getLocation().distance(loc) < radius) {
+				objectsWithinRadius.add(object);
 			}
 		}
-		return tilesWithinRadius;
+		return objectsWithinRadius;
 	}
 
-	public List<CollisionBox> getTileCollisionBoxesWithinRadius(Location loc, float radius) {
+	public List<CollisionBox> getObjectCollisionBoxesWithinRadius(String type, Vector2f loc, float radius) {
 		List<CollisionBox> boxes = new ArrayList<CollisionBox>();
-		for (Tile tile : getTilesWithinRadius(loc, radius)) {
-			boxes.add(tile.getCollisionBox());
+		for (MapObject object : getObjectsWithinRadius(type, loc, radius)) {
+			boxes.add(object.getCollisionBox());
 		}
 		return boxes;
 	}

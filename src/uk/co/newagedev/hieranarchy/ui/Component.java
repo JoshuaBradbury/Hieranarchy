@@ -3,7 +3,7 @@ package uk.co.newagedev.hieranarchy.ui;
 import java.awt.Dimension;
 
 import uk.co.newagedev.hieranarchy.graphics.Font;
-import uk.co.newagedev.hieranarchy.util.Location;
+import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public abstract class Component {
 	
@@ -49,16 +49,16 @@ public abstract class Component {
 		this.height = height;
 	}
 	
-	public Location getLocation() {
-		return new Location(x, y);
+	public Vector2f getLocation() {
+		return new Vector2f(x, y);
 	}
 	
-	public Location getDisplayLocation() {
+	public Vector2f getDisplayLocation() {
 		return getLocation().add(getOffset());
 	}
 	
-	public Location getOffset() {
-		return new Location(offsetX, offsetY);
+	public Vector2f getOffset() {
+		return new Vector2f(offsetX, offsetY);
 	}
 	
 	public void setLocation(int x, int y) {

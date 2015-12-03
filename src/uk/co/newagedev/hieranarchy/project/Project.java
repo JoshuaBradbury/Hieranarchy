@@ -91,7 +91,7 @@ public class Project {
 		}
 	}
 	
-	public void addTileToMap(String map, Map<String, Object> tileProperties) {
-		maps.get(map).getMapStore().writeTile((String) tileProperties.get("name"), tileProperties);
+	public void addObjectToMap(String map, Map<String, Object> objectProperties) {
+		maps.get(map).getMapStore().writeObject((String) objectProperties.get("name"), objectProperties);
 	}
 }

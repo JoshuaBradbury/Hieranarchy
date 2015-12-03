@@ -46,7 +46,7 @@ import org.newdawn.slick.util.BufferedImageUtil;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.testing.Main;
 import uk.co.newagedev.hieranarchy.util.FileUtil;
-import uk.co.newagedev.hieranarchy.util.Location;
+import uk.co.newagedev.hieranarchy.util.Vector2f;
 import uk.co.newagedev.hieranarchy.util.Logger;
 
 public class OpenGLScreen implements Screen {
@@ -87,23 +87,29 @@ public class OpenGLScreen implements Screen {
 		return texture;
 	}
 
-	public void renderSprite(String spriteName, Location location, Camera camera, float[] texCoords, float[] colour) {
+	public void renderSprite(String spriteName, Vector2f location, Camera camera) {
+		renderSprite(spriteName, location, camera, new float[] { 0.0f, 1.0f, 0.0f, 1.0f }, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
+	}
+
+	public void renderSprite(String spriteName, Vector2f location, Camera camera, float[] texCoords, float[] colour) {
 		if (SpriteRegistry.doesSpriteExist(spriteName)) {
-			int width = Main.SPRITE_WIDTH;
-			int height = Main.SPRITE_HEIGHT;
-			Location tloc = location.clone().multiply(new Location(width * camera.getZoom(), height * camera.getZoom())).add(new Location(-camera.getX(), camera.getY()));
-			renderSprite(spriteName, tloc.getX(), tloc.getY(), width, height, texCoords, colour, new float[] {0.0f, 0.0f, 0.0f});
+			if (camera != null) {
+				int width = Main.SPRITE_WIDTH;
+				int height = Main.SPRITE_HEIGHT;
+				Vector2f tloc = location.clone().multiply(new Vector2f(width * camera.getZoom(), height * camera.getZoom())).add(new Vector2f(-camera.getX(), camera.getY()));
+				renderSprite(spriteName, tloc.getX(), tloc.getY(), width, height, texCoords, colour, new float[] { 0.0f, 0.0f, 0.0f });
+			}
 		}
 	}
 
-	public void renderSpriteIgnoringCamera(String spriteName, Location location) {
+	public void renderSpriteIgnoringCamera(String spriteName, Vector2f location) {
 		renderSpriteIgnoringCamera(spriteName, location, new float[] { 0.0f, 1.0f, 0.0f, 1.0f }, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
 	}
 
-	public void renderSpriteIgnoringCamera(String spriteName, Location location, float[] texCoords, float[] colour) {
+	public void renderSpriteIgnoringCamera(String spriteName, Vector2f location, float[] texCoords, float[] colour) {
 		if (SpriteRegistry.doesSpriteExist(spriteName)) {
 			Sprite sprite = SpriteRegistry.getSprite(spriteName);
-			renderSprite(spriteName, location.getX(), location.getY(), sprite.getWidth(), sprite.getHeight(), texCoords, colour, new float[] {0.0f, 0.0f, 0.0f});
+			renderSprite(spriteName, location.getX(), location.getY(), sprite.getWidth(), sprite.getHeight(), texCoords, colour, new float[] { 0.0f, 0.0f, 0.0f });
 		}
 	}
 	

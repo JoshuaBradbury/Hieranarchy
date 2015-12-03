@@ -2,16 +2,16 @@ package uk.co.newagedev.hieranarchy.util;
 
 public class CollisionBox {
 
-	private LocationContainer locationContainer;
+	private MapObject parent;
 	private int width, height;
 	private boolean collidable;
 
-	public CollisionBox(LocationContainer locationContainer, int width, int height) {
-		this(locationContainer, width, height, true);
+	public CollisionBox(MapObject parent, int width, int height) {
+		this(parent, width, height, true);
 	}
 
-	public CollisionBox(LocationContainer locationContainer, int width, int height, boolean collidable) {
-		this.locationContainer = locationContainer;
+	public CollisionBox(MapObject parent, int width, int height, boolean collidable) {
+		this.parent = parent;
 		this.width = width;
 		this.height = height;
 		this.collidable = collidable;
@@ -35,8 +35,8 @@ public class CollisionBox {
 
 	public boolean isColliding(CollisionBox box) {
 		if (collidable) {
-			Location loc = locationContainer.getLocation();
-			Location boxLoc = box.locationContainer.getLocation();
+			Vector2f loc = parent.getLocation();
+			Vector2f boxLoc = box.parent.getLocation();
 
 			int[][] boxPoints = new int[][] { { (int) boxLoc.getX(), (int) boxLoc.getY() }, { (int) boxLoc.getX() + box.getWidth(), (int) boxLoc.getY() }, { (int) boxLoc.getX() + box.getWidth(), (int) boxLoc.getY() + box.getHeight() }, { (int) boxLoc.getX(), (int) boxLoc.getY() + box.getHeight() } };
 			boolean colliding = false;

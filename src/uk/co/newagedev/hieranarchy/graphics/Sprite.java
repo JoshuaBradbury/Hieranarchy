@@ -32,6 +32,10 @@ public class Sprite {
 		return height;
 	}
 	
+	public Texture getTexture() {
+		return texture;
+	}
+
 	public void release() {
 		texture.release();
 	}

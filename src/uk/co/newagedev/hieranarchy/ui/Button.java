@@ -8,10 +8,13 @@ import uk.co.newagedev.hieranarchy.testing.Main;
 public class Button extends Component {
 	
 	private String text;
+	
 	private boolean hover = false, toolTip = false, toolTipDisplay = false;
+	
 	private ButtonRunnable task;
+	
 	private String image = "";
-
+	
 	public Button(String text, int x, int y, int width, int height, boolean toolTip, ButtonRunnable task) {
 		super(x, y, width, height);
 		this.text = text;
@@ -23,7 +26,7 @@ public class Button extends Component {
 	public void changeText(String text) {
 		this.text = text;
 	}
-
+	
 	public void setImage(String sprite) {
 		this.image = sprite;
 	}

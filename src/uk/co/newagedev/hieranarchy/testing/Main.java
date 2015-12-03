@@ -14,69 +14,33 @@ import uk.co.newagedev.hieranarchy.util.Logger;
 import com.google.gson.Gson;
 
 public class Main {
-	
-	/**
-	 * 	The title of the application.
-	 */
+
 	public static final String TITLE = "Hieranarchy";
-	
-	/**
-	 * The instance of Gson used in multiple locations throughout the engine.
-	 */
+
 	public static final Gson GSON = new Gson();
-	
-	/**
-	 * The current project in use/
-	 */
+
 	public static Project project = new Project("testing");
-	
-	/**
-	 * The width and height of the window.
-	 */
+
 	public static final int WIDTH = 720, HEIGHT = 480;
-	
-	/**
-	 * The default width and height of sprites.
-	 */
+
 	public static final int SPRITE_WIDTH = 64, SPRITE_HEIGHT = 64;
-	
-	/**
-	 * The default scale of the application.
-	 */
+
 	public static float SCALE = 1;
-	
-	/**
-	 * The screen variable of the application.
-	 */
+
 	public static OpenGLScreen screen;
-	
-	/**
-	 * The thread of the application.
-	 */
+
 	private Thread thread;
-	
-	/**
-	 * Whether the application is running or not.
-	 */
+
 	private boolean running;
-	
-	/**
-	 * The current state being displayed.
-	 */
+
 	public static String currentState;
-	
-	/**
-	 * Bundle of init methods.
-	 */
+
 	public void init() {
 		initResources();
 		initStates();
 		initBindings();
 	}
-	
-	/**
-	 * Initialises the resources for the game.
-	 */
+
 	public void initResources() {
 		SpriteRegistry.registerSprite("bg", "Projects/testing/Assets/Textures/background.png");
 		SpriteRegistry.registerSprite("play", "Projects/testing/Assets/Textures/gui/play.png");
@@ -87,10 +51,7 @@ public class Main {
 		SpriteRegistry.registerSprite("arrow", "Projects/testing/Assets/Textures/gui/arrow.png");
 		SpriteRegistry.registerSprite("arrow hover", "Projects/testing/Assets/Textures/gui/arrow hover.png");
 	}
-	
-	/**
-	 * Binds the initial keys for the engine.
-	 */
+
 	public void initBindings() {
 		KeyBinding.bindKey("Left", Keyboard.KEY_LEFT);
 		KeyBinding.bindKey("Right", Keyboard.KEY_RIGHT);
@@ -100,39 +61,26 @@ public class Main {
 		KeyBinding.bindKey("SelectPrevTile", Keyboard.KEY_Z);
 		KeyBinding.bindKey("SelectNextTile", Keyboard.KEY_X);
 	}
-	
-	/**
-	 * Initialises the states.
-	 */
+
 	public void initStates() {
 		StartMenuState state = new StartMenuState();
 		currentState = "start menu";
 		StateManager.registerState(currentState, state);
 	}
-	
-	/**
-	 * Main method for the program.
-	 * @param args - Command line arguments.
-	 */
+
 	public static void main(String[] args) {
 		Main hieranarchy = new Main();
 		screen = new OpenGLScreen();
 		hieranarchy.init();
 		hieranarchy.start();
 	}
-	
-	/**
-	 * Starts the thread and the engine.
-	 */
+
 	public synchronized void start() {
 		thread = new Thread("Hieranarchy");
 		running = true;
 		run();
 	}
-	
-	/**
-	 * Stops the engine and calls for the resources to be cleaned up.
-	 */
+
 	public synchronized void stop() {
 		cleanup();
 		try {
@@ -145,10 +93,7 @@ public class Main {
 		}
 		running = false;
 	}
-	
-	/**
-	 * Updates the current state.
-	 */
+
 	public void update() {
 		Mouse.update();
 		KeyBinding.update();
@@ -156,10 +101,7 @@ public class Main {
 			StateManager.getState(currentState).update();
 		}
 	}
-	
-	/**
-	 * Prepares the screen for rendering and then renders the current state.
-	 */
+
 	public void render() {
 		screen.renderInit();
 		if (StateManager.getState(currentState) != null) {
@@ -168,17 +110,10 @@ public class Main {
 		screen.postRender();
 	}
 
-	/**
-	 * Gets the Screen.
-	 * @return screen - instance of Screen.
-	 */
 	public static Screen getScreen() {
 		return screen;
 	}
-	
-	/**
-	 * Main loop for the program.
-	 */
+
 	public void run() {
 		long secondTime = System.currentTimeMillis();
 		int fps = 0;
@@ -196,21 +131,14 @@ public class Main {
 			}
 		}
 	}
-	
-	/**
-	 * Clears the sprite registry and destroys the display.
-	 */
+
 	public void cleanup() {
 		project.cleanup();
 		SpriteRegistry.clear();
 		KeyBinding.cleanup();
 		screen.cleanup();
 	}
-	
-	/**
-	 * Sets the current state. 
-	 * @param state - The state to change to.
-	 */
+
 	public static void setCurrentState(String state) {
 		currentState = state;
 	}
