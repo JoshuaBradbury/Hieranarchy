@@ -1,69 +1,24 @@
-package uk.co.newagedev.hieranarchy.tile;
-
-import java.util.HashMap;
+package uk.co.newagedev.hieranarchy.map.objects;
 
 import uk.co.newagedev.hieranarchy.graphics.Camera;
-import uk.co.newagedev.hieranarchy.map.Map;
 import uk.co.newagedev.hieranarchy.testing.Main;
-import uk.co.newagedev.hieranarchy.util.CollisionBox;
-import uk.co.newagedev.hieranarchy.util.Location;
-import uk.co.newagedev.hieranarchy.util.LocationContainer;
 
-public class Tile implements LocationContainer {
-	private Location loc;
-	private Map map;
-	private CollisionBox box;
-	private java.util.Map<String, Object> properties = new HashMap<String, Object>();
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Tile.
+ */
+public class Tile extends MapObject {
 
-	public Tile(Location loc) {
-		this.loc = loc;
-		box = new CollisionBox(this, Main.SPRITE_WIDTH, Main.SPRITE_HEIGHT);
+	/**
+	 * Instantiates a new tile.
+	 */
+	public Tile() {
+		setProperty("type", "tile");
 	}
-
-	public Location getLocation() {
-		return loc;
-	}
-
-	public void setLocation(Location loc) {
-		this.loc = loc;
-	}
-
-	public void setProperty(String name, Object value) {
-		properties.put(name, value);
-	}
-
-	public void removeProperty(String name) {
-		properties.remove(name);
-	}
-
-	public Object getProperty(String name) {
-		return properties.get(name);
-	}
-
-	public void update() {
-
-	}
-
-	public CollisionBox getCollisionBox() {
-		return box;
-	}
-
-	public void setMap(Map map) {
-		this.map = map;
-	}
-
-	public Map getMap() {
-		return map;
-	}
-
-	public String getSprite() {
-		return (String) getProperty("sprite");
-	}
-
-	public boolean doesPropertyExist(String name) {
-		return properties.containsKey(name);
-	}
-
+	
+	/* (non-Javadoc)
+	 * @see uk.co.newagedev.hieranarchy.map.objects.MapObject#render(uk.co.newagedev.hieranarchy.graphics.Camera)
+	 */
 	public void render(Camera camera) {
 		float[] col = new float[] { 1.0f, 1.0f, 1.0f, 1.0f };
 		if (doesPropertyExist("selection"))
