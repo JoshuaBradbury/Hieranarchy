@@ -1,5 +1,7 @@
 package uk.co.newagedev.hieranarchy.util;
 
+import uk.co.newagedev.hieranarchy.map.objects.MapObject;
+
 public class CollisionBox {
 
 	private MapObject parent;

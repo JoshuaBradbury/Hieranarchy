@@ -21,6 +21,7 @@ import uk.co.newagedev.hieranarchy.util.CollisionBox;
 import uk.co.newagedev.hieranarchy.util.FileUtil;
 import uk.co.newagedev.hieranarchy.util.Vector2f;
 import uk.co.newagedev.hieranarchy.util.Logger;
+import uk.co.newagedev.hieranarchy.util.StringUtil;
 
 public class Map {
 
