@@ -2,7 +2,7 @@ package uk.co.newagedev.hieranarchy.graphics;
 
 import uk.co.newagedev.hieranarchy.map.Map;
 import uk.co.newagedev.hieranarchy.testing.Main;
-import uk.co.newagedev.hieranarchy.util.Location;
+import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class Background {
 	
@@ -74,9 +74,9 @@ public class Background {
 	public void render() {
 		if (SpriteRegistry.doesSpriteExist(sprite)) {
 			int width = SpriteRegistry.getSprite(sprite).getWidth();
-			Main.getScreen().renderSpriteIgnoringCamera(sprite, new Location(((x - map.getState().getCurrentCamera().getX()) % width) - width, y));
-			Main.getScreen().renderSpriteIgnoringCamera(sprite, new Location(((x - map.getState().getCurrentCamera().getX()) % width), y));
-			Main.getScreen().renderSpriteIgnoringCamera(sprite, new Location(((x - map.getState().getCurrentCamera().getX()) % width) + width, y));
+			Main.getScreen().renderSpriteIgnoringCamera(sprite, new Vector2f(((x - map.getState().getCurrentCamera().getX()) % width) - width, y));
+			Main.getScreen().renderSpriteIgnoringCamera(sprite, new Vector2f(((x - map.getState().getCurrentCamera().getX()) % width), y));
+			Main.getScreen().renderSpriteIgnoringCamera(sprite, new Vector2f(((x - map.getState().getCurrentCamera().getX()) % width) + width, y));
 		}
 	}
 }
