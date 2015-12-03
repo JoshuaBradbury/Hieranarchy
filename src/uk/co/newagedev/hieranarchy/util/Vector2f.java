@@ -1,10 +1,10 @@
 package uk.co.newagedev.hieranarchy.util;
 
-public class Location {
+public class Vector2f {
 	
 	private float x, y;
 	
-	public Location(float x, float y) {
+	public Vector2f(float x, float y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -25,47 +25,47 @@ public class Location {
 		this.y = y;
 	}
 	
-	public Location add(Location loc) {
+	public Vector2f add(Vector2f loc) {
 		return add(loc.x, loc.y);
 	}
 	
-	public Location add(float x, float y) {
+	public Vector2f add(float x, float y) {
 		this.x += x;
 		this.y += y;
 		return this;
 	}
 	
-	public Location subtract(Location loc) {
+	public Vector2f subtract(Vector2f loc) {
 		return subtract(loc.x, loc.y);
 	}
 	
-	public Location subtract(float x, float y) {
+	public Vector2f subtract(float x, float y) {
 		this.x -= x;
 		this.y -= y;
 		return this;
 	}
 	
-	public Location multiply(Location loc) {
+	public Vector2f multiply(Vector2f loc) {
 		return multiply(loc.x, loc.y);
 	}
 	
-	public Location multiply(float x, float y) {
+	public Vector2f multiply(float x, float y) {
 		this.x *= x;
 		this.y *= y;
 		return this;
 	}
 	
-	public Location divide(Location loc) {
+	public Vector2f divide(Vector2f loc) {
 		return divide(loc.x, loc.y);
 	}
 	
-	public Location divide(float x, float y) {
+	public Vector2f divide(float x, float y) {
 		this.x /= x;
 		this.y /= y;
 		return this;
 	}
 	
-	public float distance(Location loc) {
+	public float distance(Vector2f loc) {
 		return distance(loc.x, loc.y);
 	}
 	
@@ -73,16 +73,16 @@ public class Location {
 		return (float) Math.sqrt(Math.pow(x - this.x, 2) + Math.pow(y - this.y, 2));
 	}
 
-	public Location clone() {
-		return new Location(x, y);
+	public Vector2f clone() {
+		return new Vector2f(x, y);
 	}
 	
-	public boolean equals(Location loc) {
+	public boolean equals(Vector2f loc) {
 		return this.x == loc.x && this.y == loc.y;
 	}
 	
-	public Location getRelative(float x, float y) {
-		return new Location(this.x + x, this.y + y);
+	public Vector2f getRelative(float x, float y) {
+		return new Vector2f(this.x + x, this.y + y);
 	}
 	
 	public String toString() {
