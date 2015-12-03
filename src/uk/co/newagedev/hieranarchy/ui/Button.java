@@ -1,5 +1,8 @@
 package uk.co.newagedev.hieranarchy.ui;
 
+import java.awt.Point;
+import java.awt.Rectangle;
+
 import uk.co.newagedev.hieranarchy.graphics.Sprite;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
 import uk.co.newagedev.hieranarchy.input.Mouse;
@@ -32,8 +35,10 @@ public class Button extends Component {
 	}
 
 	public void render() {
-		Main.getScreen().renderQuad((int) getDisplayLocation().getX(), (int) getDisplayLocation().getY(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Component.DARK);
-		Main.getScreen().renderQuad((int) getDisplayLocation().getX() + 5, (int) getDisplayLocation().getY() + 5, (int) getDimensions().getWidth() - 10, (int) getDimensions().getHeight() - 10, (hover ? Component.VERY_LIGHT : Component.LIGHT));
+		Rectangle buttonDimensions = new Rectangle(new Point((int) getDisplayLocation().getX(), (int) getDisplayLocation().getY()), getDimensions());
+		Main.getScreen().renderQuad(buttonDimensions, Component.DARK);
+		buttonDimensions.grow(-1, -1);
+		Main.getScreen().renderQuad(buttonDimensions, (hover ? Component.VERY_LIGHT : Component.LIGHT));
 		if (image != "") {
 			Sprite sprite = SpriteRegistry.getSprite(image);
 			Main.getScreen().renderSpriteIgnoringCamera(image, getDisplayLocation().clone().subtract(sprite.getWidth() / 2, sprite.getHeight() / 2).add((int) getDimensions().getWidth() / 2, (int) getDimensions().getHeight() / 2));
