@@ -50,6 +50,7 @@ public class StartMenuState extends MenuState {
 	
 	@Override
 	public void update() {
+		super.update();
 		count++;
 		if (count % 5 == 0) {
 			count = 1;
@@ -58,6 +59,5 @@ public class StartMenuState extends MenuState {
 				offset = 0;
 			}
 		}
-		super.update();
 	}
 }
