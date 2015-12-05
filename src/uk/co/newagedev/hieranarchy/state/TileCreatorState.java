@@ -25,7 +25,7 @@ public class TileCreatorState extends State {
 		
 		container = new Container(0, 0, Main.WIDTH, Main.HEIGHT);
 		
-		tileName = new TextBox(150, 20, 32);
+		tileName = new TextBox(150, 20, 200, 50);
 		container.addComponent(tileName);
 		
 		Label tileNameLabel = new Label("Tile Name", 20, 25);
@@ -37,7 +37,7 @@ public class TileCreatorState extends State {
 		Label connectedTexturesLabel = new Label("Connected Textures", 20, 55);
 		container.addComponent(connectedTexturesLabel);
 		
-		sprite = new TextBox(150, 80, 32);
+		sprite = new TextBox(150, 80, 200, 50);
 		container.addComponent(sprite);
 		
 		Label spriteLabel = new Label("Sprite", 20, 85);

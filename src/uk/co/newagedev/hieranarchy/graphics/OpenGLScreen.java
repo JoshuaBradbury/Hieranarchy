@@ -28,6 +28,7 @@ import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glTranslatef;
 import static org.lwjgl.opengl.GL11.glVertex2f;
 
+import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -47,8 +48,9 @@ import org.newdawn.slick.util.BufferedImageUtil;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.testing.Main;
 import uk.co.newagedev.hieranarchy.util.FileUtil;
-import uk.co.newagedev.hieranarchy.util.Vector2f;
+import uk.co.newagedev.hieranarchy.util.FontUtil;
 import uk.co.newagedev.hieranarchy.util.Logger;
+import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class OpenGLScreen implements Screen {
 
@@ -165,10 +167,12 @@ public class OpenGLScreen implements Screen {
 	public void postRender() {
 		if (DEBUG) {
 			if (screenFont == null) {
-				screenFont = new Font("Projects/testing/Assets/Textures/font.png", 10, 1);
+				screenFont = new Font("Tahoma", Font.PLAIN, 10);
 			}
 			String text = "(" + String.valueOf(Mouse.getMouseX()) + "," + String.valueOf(Mouse.getMouseY()) + ")";
-			screenFont.renderText(text, Mouse.getMouseX(), Mouse.getMouseY() - screenFont.getTextHeight(text) / 2);
+			TextObject debugText = FontUtil.getStringFromFont(screenFont, text);
+			FontUtil.renderText(debugText, Mouse.getMouseX(), Mouse.getMouseY() - debugText.getHeight() / 2);
+			debugText.destroy();
 		}
 		Display.update();
 		Display.sync(60);

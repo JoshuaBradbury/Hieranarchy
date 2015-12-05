@@ -1,18 +1,25 @@
 package uk.co.newagedev.hieranarchy.ui;
 
+import uk.co.newagedev.hieranarchy.graphics.TextObject;
+import uk.co.newagedev.hieranarchy.util.FontUtil;
 
 public class Label extends Component {
 
-	private String text;
+	private TextObject text;
+	
+	public void changeText(String text) {
+		this.text = FontUtil.getStringFromFont(componentFont, text);
+	}
 	
 	public Label(String text, int x, int y) {
-		super(x, y, componentFont.getTextWidth(text), componentFont.getTextHeight(text));
-		this.text = text;
+		super(x, y);
+		changeText(text);
+		setDimensions(this.text.getWidth(), this.text.getHeight());
 	}
 
 	@Override
 	public void render() {
-		componentFont.renderText(text, (int) (getLocation().getX() + (getDimensions().getWidth() / 2)), (int) (getLocation().getY() + (getDimensions().getHeight() / 2)));
+		FontUtil.renderText(text, (int) (getLocation().getX() + (getDimensions().getWidth() / 2)), (int) (getLocation().getY() + (getDimensions().getHeight() / 2)));
 	}
 
 	@Override

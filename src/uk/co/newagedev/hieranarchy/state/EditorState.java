@@ -1,12 +1,12 @@
 package uk.co.newagedev.hieranarchy.state;
 
-import java.awt.Color;
+import java.awt.Font;
 import java.util.List;
 
 import uk.co.newagedev.hieranarchy.graphics.Camera;
-import uk.co.newagedev.hieranarchy.graphics.Font;
 import uk.co.newagedev.hieranarchy.graphics.Sprite;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
+import uk.co.newagedev.hieranarchy.graphics.TextObject;
 import uk.co.newagedev.hieranarchy.input.KeyBinding;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.map.Map;
@@ -18,11 +18,12 @@ import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
 import uk.co.newagedev.hieranarchy.ui.Component;
 import uk.co.newagedev.hieranarchy.ui.Container;
 import uk.co.newagedev.hieranarchy.ui.Window;
+import uk.co.newagedev.hieranarchy.util.FontUtil;
 import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class EditorState extends State {
 
-	private static Font editorFont = new Font("Projects/testing/Assets/Textures/font.png", 15, 2);
+	private static TextObject editorMode = FontUtil.getStringFromFont(new Font("Tahoma", java.awt.Font.PLAIN, 15), "Edit Mode");
 	private Map currentMap;
 	private boolean playing = false, editing = false, placing = false, deleting = false, mouseOverWindow = false, downOverWindow = false;
 
@@ -34,7 +35,6 @@ public class EditorState extends State {
 	private Container toolbar = new Container(0, 0);
 
 	public EditorState(Map map) {
-		editorFont.setColour(new Color(0xff, 0xff, 0xff));
 		currentMap = map;
 		Sprite play = SpriteRegistry.getSprite("play");
 		play.setWidth(20);
@@ -114,7 +114,7 @@ public class EditorState extends State {
 		Main.getScreen().renderQuad(0, 0, Main.WIDTH, 40, Component.VERY_LIGHT);
 		toolbar.render();
 		if (editing) {
-			editorFont.renderText("Edit Mode", 10 + editorFont.getTextWidth("Edit Mode") / 2, 50 + editorFont.getTextHeight("Edit Mode") / 2);
+			FontUtil.renderText(editorMode, 10 + editorMode.getWidth() / 2, 50 + editorMode.getHeight() / 2);
 			for (Window window : getWindows()) {
 				window.render();
 			}

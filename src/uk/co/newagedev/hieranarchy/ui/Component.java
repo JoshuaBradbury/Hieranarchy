@@ -1,13 +1,13 @@
 package uk.co.newagedev.hieranarchy.ui;
 
 import java.awt.Dimension;
+import java.awt.Font;
 
-import uk.co.newagedev.hieranarchy.graphics.Font;
 import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public abstract class Component {
 	
-	public static Font componentFont = new Font("Projects/testing/Assets/Textures/font.png", 10, 2);
+	public static Font componentFont = new Font("Helvetica", Font.BOLD, 30);
 	private int x, y, width, height, offsetX, offsetY;
 	private Component parent;
 	
