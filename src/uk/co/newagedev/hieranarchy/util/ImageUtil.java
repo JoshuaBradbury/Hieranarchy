@@ -51,6 +51,7 @@ public class ImageUtil {
 		try {
 			File file = new File(fileName);
 			ImageIO.write(image, "png", file);
+			Logger.info(fileName, "saved at", file.getAbsolutePath());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
