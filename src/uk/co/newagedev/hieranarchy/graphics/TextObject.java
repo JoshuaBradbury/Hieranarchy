@@ -5,14 +5,16 @@ import java.awt.Font;
 public class TextObject {
 
 	private String sprite, text;
-	private int width, height;
+	private int spriteWidth, spriteHeight, width, height;
 	private Font font;
 	
-	public TextObject(String sprite, String text, Font font, int width, int height) {
+	public TextObject(String sprite, String text, Font font, int width, int height, int spriteWidth, int spriteHeight) {
 		this.sprite = sprite;
 		this.font = font;
 		this.width = width;
 		this.height = height;
+		this.spriteWidth = spriteWidth;
+		this.spriteHeight = spriteHeight;
 		this.text = text;
 	}
 	
@@ -30,6 +32,15 @@ public class TextObject {
 
 	public int getHeight() {
 		return height;
+	}
+	
+
+	public int getSpriteWidth() {
+		return spriteWidth;
+	}
+
+	public int getSpriteHeight() {
+		return spriteHeight;
 	}
 
 	public Font getFont() {

@@ -14,11 +14,9 @@ import uk.co.newagedev.hieranarchy.testing.Main;
 
 public class FontUtil {
 
-	public static BufferedImage getImageFromFont(Font font, String text) {
-		return getImageFromFont(font, text, Color.BLACK);
-	}
-	
-	public static BufferedImage getImageFromFont(Font font, String text, Color colour) {
+	public static TextObject getStringFromFont(Font font, String text, Color colour) {
+		String name = font.getFontName() + "-" + font.getSize() + "-" + text;
+
 		BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = img.getGraphics();
 		g.setFont(font);
@@ -27,7 +25,9 @@ public class FontUtil {
 		int height = fm.getHeight();
 		g.dispose();
 
-		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		int imageWidth = (int) Math.pow(2, (int) Math.ceil(MathUtil.logab(2, width))), imageHeight = (int) Math.pow(2, (int) Math.ceil(MathUtil.logab(2, width)));
+
+		BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2d = (Graphics2D) image.getGraphics();
 		g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -42,17 +42,9 @@ public class FontUtil {
 		g2d.setColor(colour);
 		g2d.drawString(text, 0, fm.getAscent());
 		g2d.dispose();
-		
-		return image;
-	}
-
-	public static TextObject getStringFromFont(Font font, String text, Color colour) {
-		String name = font.getFontName() + "-" + font.getSize() + "-" + text;
-
-		BufferedImage image = getImageFromFont(font, text, colour);
 
 		SpriteRegistry.registerImage(name, image);
-		return new TextObject(name, text, font, image.getWidth(), image.getHeight());
+		return new TextObject(name, text, font, width, height, imageWidth, imageHeight);
 	}
 
 	public static TextObject getStringFromFont(Font font, String text) {
@@ -60,7 +52,6 @@ public class FontUtil {
 	}
 
 	public static void renderText(TextObject text, int x, int y) {
-		Main.getScreen().renderSpriteIgnoringCamera(text.getSprite(),
-				new Vector2f(x - text.getWidth() / 2, y - text.getHeight() / 2));
+		Main.getScreen().renderSpriteIgnoringCamera(text.getSprite(), new Vector2f(x - text.getWidth() / 2, y - text.getHeight() / 2));
 	}
 }

@@ -5,23 +5,18 @@ import java.awt.Rectangle;
 
 import uk.co.newagedev.hieranarchy.graphics.Sprite;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
+import uk.co.newagedev.hieranarchy.graphics.TextObject;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.testing.Main;
+import uk.co.newagedev.hieranarchy.util.FontUtil;
 import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class Button extends Component {
 
+	private TextObject text;
+	
 	public void changeText(String text) {
-		/*BufferedImage image = FontUtil.getImageFromFont(componentFont, text);
-		Logger.info(image == null);
-		if (image != null) {
-			ImageUtil.saveImageToFile(image, "Projects/testing/Assets/Textures/" + text + ".png");
-		}
-		*/
-		String name = componentFont.getFontName() + "-" + componentFont.getSize() + "-" + text;
-		this.image = name;
-		
-		SpriteRegistry.registerSprite(name, "Projects/testing/Assets/Textures/" + text + ".png");
+		this.text = FontUtil.getStringFromFont(componentFont, text);
 	}
 
 	private boolean hover = false, toolTip = false, toolTipDisplay = false;
@@ -48,18 +43,21 @@ public class Button extends Component {
 		buttonDimensions.grow(-1, -1);
 		Main.getScreen().renderQuad(buttonDimensions, (hover ? Component.VERY_LIGHT : Component.LIGHT));
 
+		Vector2f loc = getDisplayLocation().clone().add((int) getDimensions().getWidth() / 2, (int) getDimensions().getHeight() / 2);
+		
 		if (image != "") {
 			Sprite sprite = SpriteRegistry.getSprite(image);
-			Vector2f loc = getDisplayLocation().clone().subtract(sprite.getWidth() / 2, sprite.getHeight() / 2).add((int) getDimensions().getWidth() / 2, (int) getDimensions().getHeight() / 2);
-			Main.getScreen().renderSpriteIgnoringCamera(image, loc);
-			Main.getScreen().renderQuad((int) loc.getX(), (int) loc.getY(), sprite.getWidth(), sprite.getHeight(), Component.DARK_ALPHA);
+			Main.getScreen().renderSpriteIgnoringCamera(image, loc.subtract(sprite.getWidth() / 2, sprite.getHeight() / 2));
+		} else {
+			FontUtil.renderText(text, (int) loc.getX(), (int) loc.getY());
 		}
-//		if (toolTipDisplay && toolTip) {
-//			int toolTipX = Mouse.getMouseX(), toolTipY = (int) (getParent().getDisplayLocation().getY() + getParent().getDimensions().getHeight() + 10);
-//			Main.getScreen().renderQuad(toolTipX, toolTipY - text.getHeight() + 14, text.getWidth() + 14, text.getHeight() + 14, Component.DARK);
-//			Main.getScreen().renderQuad(toolTipX + 2, toolTipY + 16 - text.getHeight(), text.getWidth() + 10, text.getHeight() + 10, Component.LIGHT);
-//			FontUtil.renderText(text, toolTipX + text.getWidth() / 2 + 7, toolTipY - text.getHeight() / 2 + 21);
-//		}
+		
+		if (toolTipDisplay && toolTip) {
+			int toolTipX = Mouse.getMouseX(), toolTipY = (int) (getParent().getDisplayLocation().getY() + getParent().getDimensions().getHeight() + 10);
+			Main.getScreen().renderQuad(toolTipX, toolTipY - text.getHeight() + 14, text.getWidth() + 14, text.getHeight() + 14, Component.DARK);
+			Main.getScreen().renderQuad(toolTipX + 2, toolTipY + 16 - text.getHeight(), text.getWidth() + 10, text.getHeight() + 10, Component.LIGHT);
+			FontUtil.renderText(text, toolTipX + text.getWidth() / 2 + 7, toolTipY - text.getHeight() / 2 + 21);
+		}
 	}
 
 	public void update() {

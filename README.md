@@ -23,3 +23,8 @@ What is left to come is:
 - Image editor for sprites
 - Possible sound editor?
 - and whatever anyone else wants to suggest!
+
+#Credits
+This project was created and is written by Joshua Bradbury
+Thanks go to:
+s0ulan - Helping fix font rendering
