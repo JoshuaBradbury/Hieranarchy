@@ -61,7 +61,7 @@ public class FileUtil {
 					if (f.isDirectory()) {
 						remove.add(f);
 						for (File fi : f.listFiles()) {
-							filesToCheck.add(fi);
+							toCheck.add(fi);
 						}
 					}
 				}
