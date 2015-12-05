@@ -139,7 +139,7 @@ public class OpenGLScreen implements Screen {
 				glTexCoord2f(texCoords[0], texCoords[2]);
 				glVertex2f(0.0f, 0.0f);
 				glTexCoord2f(texCoords[0], texCoords[3]);
-				glVertex2f(0.0f, 0.0f + height);
+				glVertex2f(0.0f, height);
 			}
 			glEnd();
 			glPopMatrix();
