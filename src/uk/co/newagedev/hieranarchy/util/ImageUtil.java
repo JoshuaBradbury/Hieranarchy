@@ -2,6 +2,7 @@ package uk.co.newagedev.hieranarchy.util;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -46,4 +47,12 @@ public class ImageUtil {
 		return result;
 	}
 
+	public static void saveImageToFile(BufferedImage image, String fileName) {
+		try {
+			File file = new File(fileName);
+			ImageIO.write(image, "png", file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
