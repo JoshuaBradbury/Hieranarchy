@@ -7,8 +7,9 @@ import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public abstract class Component {
 	
-	public static Font componentFont = new Font("Helvetica", Font.BOLD, 30);
-	private int x, y, width, height, offsetX, offsetY;
+	public static Font componentFont = new Font("Helvetica", Font.PLAIN, 20);
+	private float x, y;
+	private int width, height, offsetX, offsetY;
 	private Component parent;
 	
 	public static final float[] VERY_LIGHT = new float[] { 0.7f, 0.7f, 0.85f }, LIGHT = new float[] { 0.6f, 0.6f, 0.75f }, DARK = new float[] { 0.4f, 0.4f, 0.55f }, DARK_ALPHA = new float[] { 0.2f, 0.2f, 0.35f, 0.75f };
@@ -61,7 +62,7 @@ public abstract class Component {
 		return new Vector2f(offsetX, offsetY);
 	}
 	
-	public void setLocation(int x, int y) {
+	public void setLocation(float x, float y) {
 		this.x = x;
 		this.y = y;
 	}

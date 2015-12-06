@@ -30,7 +30,7 @@ public class EditorState extends State {
 	private Vector2f selectionLocation;
 
 	private Tile selection;
-	private Button playButton;
+	private Button[] buttons = new Button[4];
 	private String currentTileName;
 	private Container toolbar = new Container(0, 0);
 
@@ -56,23 +56,23 @@ public class EditorState extends State {
 		newTile.setWidth(20);
 		newTile.setHeight(20);
 
-		playButton = new Button("Play", 5, 5, 30, 30, true, new ButtonRunnable() {
+		buttons[0] = new Button("Play", 5, 5, 30, 30, true, new ButtonRunnable() {
 			public void run() {
 				changePlaying();
 			}
 		});
-		playButton.setImage("play");
-		toolbar.addComponent(playButton);
+		buttons[0].setImage("play");
+		toolbar.addComponent(buttons[0]);
 
-		Button resetButton = new Button("Reset", 45, 5, 30, 30, true, new ButtonRunnable() {
+		buttons[1] = new Button("Reset", 45, 5, 30, 30, true, new ButtonRunnable() {
 			public void run() {
 				restartMap();
 			}
 		});
-		resetButton.setImage("reset");
-		toolbar.addComponent(resetButton);
+		buttons[1].setImage("reset");
+		toolbar.addComponent(buttons[1]);
 
-		Button editButton = new Button("Edit", 85, 5, 30, 30, true, new ButtonRunnable() {
+		buttons[2] = new Button("Edit", 85, 5, 30, 30, true, new ButtonRunnable() {
 			public void run() {
 				if (!editing) {
 					enableEditing();
@@ -81,10 +81,10 @@ public class EditorState extends State {
 				}
 			}
 		});
-		editButton.setImage("edit");
-		toolbar.addComponent(editButton);
+		buttons[2].setImage("edit");
+		toolbar.addComponent(buttons[2]);
 
-		Button newTileButton = new Button("Create New Tile", 205, 5, 30, 30, true, new ButtonRunnable() {
+		buttons[3] = new Button("Create New Tile", 45, 5, 30, 30, true, new ButtonRunnable() {
 			public void run() {
 				if (editing) {
 					TileCreatorState state = new TileCreatorState(getName());
@@ -93,8 +93,7 @@ public class EditorState extends State {
 				}
 			}
 		});
-		newTileButton.setImage("new tile");
-		toolbar.addComponent(newTileButton);
+		buttons[3].setImage("new tile");
 
 		currentTileName = currentMap.getMapStore().getNextTile(currentTileName);
 	}
@@ -126,11 +125,11 @@ public class EditorState extends State {
 		if (!editing) {
 			playing = !playing;
 			if (playing) {
-				playButton.changeText("Pause");
-				playButton.setImage("pause");
+				buttons[0].changeText("Pause");
+				buttons[0].setImage("pause");
 			} else {
-				playButton.changeText("Play");
-				playButton.setImage("play");
+				buttons[0].changeText("Play");
+				buttons[0].setImage("play");
 			}
 		}
 	}
@@ -145,6 +144,13 @@ public class EditorState extends State {
 	public void enableEditing() {
 		if (!playing) {
 			editing = true;
+			for (int i = 0; i < 2; i++) {
+				toolbar.removeComponent(buttons[i]);
+			}
+			for (int i = 3; i < buttons.length; i++) {
+				toolbar.addComponent(buttons[i]);
+			}
+			buttons[2].setLocation(buttons[0].getLocation().getX(), buttons[0].getLocation().getY());
 		}
 	}
 
@@ -152,6 +158,13 @@ public class EditorState extends State {
 		editing = false;
 		currentMap.removeObject(selection);
 		selection = null;
+		buttons[2].setLocation(85, 5);
+		for (int i = 0; i < 2; i++) {
+			toolbar.addComponent(buttons[i]);
+		}
+		for (int i = 3; i < buttons.length; i++) {
+			toolbar.removeComponent(buttons[i]);
+		}
 	}
 
 	public void continueMap() {
