@@ -27,6 +27,9 @@ public class FontUtil {
 
 		int imageWidth = (int) Math.pow(2, (int) Math.ceil(MathUtil.logab(2, width))), imageHeight = (int) Math.pow(2, (int) Math.ceil(MathUtil.logab(2, width)));
 
+		if (imageWidth == 0 || imageHeight == 0)
+			return null;
+		
 		BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2d = (Graphics2D) image.getGraphics();
 		g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
@@ -52,6 +55,7 @@ public class FontUtil {
 	}
 
 	public static void renderText(TextObject text, int x, int y) {
-		Main.getScreen().renderSpriteIgnoringCamera(text.getSprite(), new Vector2f(x - text.getWidth() / 2, y - text.getHeight() / 2));
+		if (text != null)
+			Main.getScreen().renderSpriteIgnoringCamera(text.getSprite(), new Vector2f(x - text.getWidth() / 2, y - text.getHeight() / 2));
 	}
 }
