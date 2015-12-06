@@ -12,21 +12,18 @@ public class TextBox extends Component {
 
 	private boolean hover = false, selected = false;
 	private TextObject text;
-	private int characterWidth, selectedTimer = 0;
+	private int selectedTimer = 0;
 	private int[] keyTimer = new int[Keyboard.KEYBOARD_SIZE];
 
 	public TextBox(int x, int y, int width, int height) {
 		super(x, y, width, height);
 		changeText("");
 	}
-	
+
 	public void changeText(String text) {
-		if (this.text != null) {
-			this.text.destroy();
-		}
 		this.text = FontUtil.getStringFromFont(componentFont, text);
 	}
-	
+
 	public TextBox(String defaultText, int x, int y, int width, int height) {
 		this(x, y, width, height);
 		changeText(defaultText);
@@ -39,7 +36,7 @@ public class TextBox extends Component {
 		if (selected) {
 			selectedTimer += 1;
 			if (selectedTimer % 60 < 30) {
-				Main.getScreen().renderLine(new int[] { (int) getLocation().getX() + 5 + (int) (getDimensions().getWidth() / 2) + (text.getWidth() / 2), (int) getLocation().getY() + 6 }, new int[] { (int) getLocation().getX() + 5 + (int) (getDimensions().getWidth() / 2) + (text.getWidth() / 2), (int) getDimensions().getHeight() + (int) getLocation().getY() - 6 }, 4, Component.VERY_LIGHT);
+				Main.getScreen().renderLine(new int[] { (int) getLocation().getX() + 5 + (int) (getDimensions().getWidth() / 2) + ((text != null ? text.getWidth() : 0) / 2), (int) getLocation().getY() + 6 }, new int[] { (int) getLocation().getX() + 5 + (int) (getDimensions().getWidth() / 2) + ((text != null ? text.getWidth() : 0) / 2), (int) getDimensions().getHeight() + (int) getLocation().getY() - 6 }, 4, Component.VERY_LIGHT);
 			}
 		} else {
 			selectedTimer = 0;
@@ -66,11 +63,9 @@ public class TextBox extends Component {
 					} else if (Keyboard.getKeyName(key).trim().equalsIgnoreCase("space")) {
 						addToText(" ");
 					} else {
-						if (text.getText().length() < characterWidth) {
-							String kt = Keyboard.getKeyName(key);
-							if ("abcdefghijklmnopqrstuvwxyz".contains(kt.toLowerCase())) {
-								addToText(kt);
-							}
+						String kt = Keyboard.getKeyName(key);
+						if ("abcdefghijklmnopqrstuvwxyz".contains(kt.toLowerCase())) {
+							addToText(kt);
 						}
 					}
 				}
@@ -80,13 +75,13 @@ public class TextBox extends Component {
 			}
 		}
 	}
-	
+
 	private void removeLastFromText() {
 		String text = getText();
 		text = text.substring(0, text.length() - 1);
 		changeText(text);
 	}
-	
+
 	private void addToText(String add) {
 		String text = getText();
 		text += add;
@@ -94,6 +89,8 @@ public class TextBox extends Component {
 	}
 
 	public String getText() {
+		if (text == null)
+			return "";
 		return text.getText();
 	}
 }
