@@ -5,25 +5,21 @@ import java.awt.Rectangle;
 
 import uk.co.newagedev.hieranarchy.graphics.Sprite;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
-import uk.co.newagedev.hieranarchy.graphics.TextObject;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.testing.Main;
-import uk.co.newagedev.hieranarchy.util.FontUtil;
 import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class Button extends Component {
-
-	private TextObject text;
 	
 	public void changeText(String text) {
-		this.text = FontUtil.getStringFromFont(componentFont, text);
+		this.text = text;
 	}
 
 	private boolean hover = false, toolTip = false, toolTipDisplay = false;
 
 	private ButtonRunnable task;
 
-	private String image = "";
+	private String image = "", text = "";
 
 	public Button(String text, int x, int y, int width, int height, boolean toolTip, ButtonRunnable task) {
 		super(x, y, width, height);
@@ -49,14 +45,16 @@ public class Button extends Component {
 			Sprite sprite = SpriteRegistry.getSprite(image);
 			Main.getScreen().renderSpriteIgnoringCamera(image, loc.subtract(sprite.getWidth() / 2, sprite.getHeight() / 2));
 		} else {
-			FontUtil.renderText(text, (int) loc.getX(), (int) loc.getY());
+			componentFont.renderText(text, (int) loc.getX(), (int) loc.getY());
 		}
 		
 		if (toolTipDisplay && toolTip) {
+			int textHeight = componentFont.getTextHeight(text), textWidth = componentFont.getTextWidth(text);
 			int toolTipX = Mouse.getMouseX(), toolTipY = (int) (getParent().getDisplayLocation().getY() + getParent().getDimensions().getHeight() + 10);
-			Main.getScreen().renderQuad(toolTipX, toolTipY - text.getHeight() + 14, text.getWidth() + 14, text.getHeight() + 14, Component.DARK);
-			Main.getScreen().renderQuad(toolTipX + 2, toolTipY + 16 - text.getHeight(), text.getWidth() + 10, text.getHeight() + 10, Component.LIGHT);
-			FontUtil.renderText(text, toolTipX + text.getWidth() / 2 + 7, toolTipY - text.getHeight() / 2 + 21);
+			Main.getScreen().renderQuad(toolTipX, toolTipY - textHeight + 14, textWidth + 14, textHeight + 14, Component.DARK);
+			Main.getScreen().renderQuad(toolTipX + 2, toolTipY + 16 - textHeight, textWidth + 10, textHeight + 10, Component.LIGHT);
+			
+			componentFont.renderText(text, toolTipX + textWidth / 2 + 7, toolTipY - textHeight / 2 + 21);
 		}
 	}
 

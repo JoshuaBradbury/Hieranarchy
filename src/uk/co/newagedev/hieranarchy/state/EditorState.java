@@ -1,12 +1,10 @@
 package uk.co.newagedev.hieranarchy.state;
 
-import java.awt.Font;
 import java.util.List;
 
 import uk.co.newagedev.hieranarchy.graphics.Camera;
 import uk.co.newagedev.hieranarchy.graphics.Sprite;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
-import uk.co.newagedev.hieranarchy.graphics.TextObject;
 import uk.co.newagedev.hieranarchy.input.KeyBinding;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.map.Map;
@@ -18,12 +16,10 @@ import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
 import uk.co.newagedev.hieranarchy.ui.Component;
 import uk.co.newagedev.hieranarchy.ui.Container;
 import uk.co.newagedev.hieranarchy.ui.Window;
-import uk.co.newagedev.hieranarchy.util.FontUtil;
 import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class EditorState extends State {
 
-	private static TextObject editorMode = FontUtil.getStringFromFont(new Font("Tahoma", java.awt.Font.PLAIN, 15), "Edit Mode");
 	private Map currentMap;
 	private boolean playing = false, editing = false, placing = false, deleting = false, mouseOverWindow = false, downOverWindow = false;
 
@@ -113,7 +109,7 @@ public class EditorState extends State {
 		Main.getScreen().renderQuad(0, 0, Main.WIDTH, 40, Component.VERY_LIGHT);
 		toolbar.render();
 		if (editing) {
-			FontUtil.renderText(editorMode, 10 + editorMode.getWidth() / 2, 50 + editorMode.getHeight() / 2);
+			Component.componentFont.renderText("Edit Mode", 10, 50);
 			for (Window window : getWindows()) {
 				window.render();
 			}

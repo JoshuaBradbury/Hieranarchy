@@ -48,7 +48,6 @@ import org.newdawn.slick.util.BufferedImageUtil;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.testing.Main;
 import uk.co.newagedev.hieranarchy.util.FileUtil;
-import uk.co.newagedev.hieranarchy.util.FontUtil;
 import uk.co.newagedev.hieranarchy.util.Logger;
 import uk.co.newagedev.hieranarchy.util.Vector2f;
 
@@ -170,9 +169,6 @@ public class OpenGLScreen implements Screen {
 				screenFont = new Font("Tahoma", Font.PLAIN, 10);
 			}
 			String text = "(" + String.valueOf(Mouse.getMouseX()) + "," + String.valueOf(Mouse.getMouseY()) + ")";
-			TextObject debugText = FontUtil.getStringFromFont(screenFont, text);
-			FontUtil.renderText(debugText, Mouse.getMouseX(), Mouse.getMouseY() - debugText.getHeight() / 2);
-			debugText.destroy();
 		}
 		Display.update();
 		Display.sync(60);

@@ -2,16 +2,14 @@ package uk.co.newagedev.hieranarchy.ui;
 
 import org.lwjgl.input.Keyboard;
 
-import uk.co.newagedev.hieranarchy.graphics.TextObject;
 import uk.co.newagedev.hieranarchy.input.KeyBinding;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.testing.Main;
-import uk.co.newagedev.hieranarchy.util.FontUtil;
 
 public class TextBox extends Component {
 
 	private boolean hover = false, selected = false;
-	private TextObject text;
+	private String text;
 	private int selectedTimer = 0;
 	private int[] keyTimer = new int[Keyboard.KEYBOARD_SIZE];
 
@@ -21,7 +19,7 @@ public class TextBox extends Component {
 	}
 
 	public void changeText(String text) {
-		this.text = FontUtil.getStringFromFont(componentFont, text);
+		this.text = text;
 	}
 
 	public TextBox(String defaultText, int x, int y, int width, int height) {
@@ -32,11 +30,11 @@ public class TextBox extends Component {
 	public void render() {
 		Main.getScreen().renderQuad((int) getLocation().getX(), (int) getLocation().getY(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Component.DARK);
 		Main.getScreen().renderQuad((int) getLocation().getX() + 5, (int) getLocation().getY() + 5, (int) getDimensions().getWidth() - 10, (int) getDimensions().getHeight() - 10, (hover ? Component.VERY_LIGHT : Component.LIGHT));
-		FontUtil.renderText(text, (int) (getLocation().getX() + (getDimensions().getWidth() / 2)), (int) (getLocation().getY() + (getDimensions().getHeight() / 2)));
+		componentFont.renderText(text, (int) (getLocation().getX() + (getDimensions().getWidth() / 2)), (int) (getLocation().getY() + (getDimensions().getHeight() / 2)));
 		if (selected) {
 			selectedTimer += 1;
 			if (selectedTimer % 60 < 30) {
-				Main.getScreen().renderLine(new int[] { (int) getLocation().getX() + 5 + (int) (getDimensions().getWidth() / 2) + ((text != null ? text.getWidth() : 0) / 2), (int) getLocation().getY() + 6 }, new int[] { (int) getLocation().getX() + 5 + (int) (getDimensions().getWidth() / 2) + ((text != null ? text.getWidth() : 0) / 2), (int) getDimensions().getHeight() + (int) getLocation().getY() - 6 }, 4, Component.VERY_LIGHT);
+				Main.getScreen().renderLine(new int[] { (int) getLocation().getX() + 5 + (int) (getDimensions().getWidth() / 2) + ((text != null ? componentFont.getTextWidth(text) : 0) / 2), (int) getLocation().getY() + 6 }, new int[] { (int) getLocation().getX() + 5 + (int) (getDimensions().getWidth() / 2) + ((text != null ? componentFont.getTextWidth(text) : 0) / 2), (int) getDimensions().getHeight() + (int) getLocation().getY() - 6 }, 4, Component.VERY_LIGHT);
 			}
 		} else {
 			selectedTimer = 0;
@@ -77,20 +75,14 @@ public class TextBox extends Component {
 	}
 
 	private void removeLastFromText() {
-		String text = getText();
 		text = text.substring(0, text.length() - 1);
-		changeText(text);
 	}
 
 	private void addToText(String add) {
-		String text = getText();
 		text += add;
-		changeText(text);
 	}
 
 	public String getText() {
-		if (text == null)
-			return "";
-		return text.getText();
+		return text;
 	}
 }
