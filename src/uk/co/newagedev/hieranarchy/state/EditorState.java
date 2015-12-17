@@ -123,9 +123,12 @@ public class EditorState extends State {
 			if (playing) {
 				buttons[0].changeText("Pause");
 				buttons[0].setImage("pause");
+				switchCamera("play");
+				
 			} else {
 				buttons[0].changeText("Play");
 				buttons[0].setImage("play");
+				switchCamera("edit");
 			}
 		}
 	}

@@ -18,8 +18,9 @@ public class StartMenuState extends MenuState {
 			public void run() {
 				Main.project.loadMap("testing");
 				EditorState state = new EditorState(Main.project.getMap("testing"));
-				state.registerCamera("start", new Camera(100, 0));
-				state.switchCamera("start");
+				state.registerCamera("edit", new Camera(100, 0));
+				state.registerCamera("play", new Camera(100, 0));
+				state.switchCamera("edit");
 				StateManager.registerState("edit map", state);
 				Main.project.getMap("testing").setState("edit map");
 				Main.setCurrentState("edit map");
