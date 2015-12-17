@@ -92,6 +92,7 @@ public class Map {
 		for (MapObject object : objects) {
 			if (object != null) {
 				if (object instanceof Tile) {
+					Logger.info(loc.toString(), object.getLocation().toString());
 					if (object.getLocation().equals(loc)) {
 						tile = (Tile) object;
 						break;
@@ -178,14 +179,14 @@ public class Map {
 				String objectName = store.getObjectAtLocation(x, y);
 				if (objectName != "") {
 					if (((String) store.getObjectProperty(objectName, "type")).equalsIgnoreCase("tile")) {
-						MapObject object = new MapObject();
-						object.setLocation(new Vector2f(x, y));
+						Tile tile = new Tile();
+						tile.setLocation(new Vector2f(x, y));
 						java.util.Map<String, Object> props = store.getObjects().get(objectName);
 						for (String prop : props.keySet()) {
-							object.setProperty(prop, props.get(prop));
+							tile.setProperty(prop, props.get(prop));
 						}
-						objects.add(object);
-						object.setMap(this);
+						objects.add(tile);
+						tile.setMap(this);
 					}
 				}
 			}
