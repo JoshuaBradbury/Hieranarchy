@@ -92,7 +92,6 @@ public class Map {
 		for (MapObject object : objects) {
 			if (object != null) {
 				if (object instanceof Tile) {
-					Logger.info(loc.toString(), object.getLocation().toString());
 					if (object.getLocation().equals(loc)) {
 						tile = (Tile) object;
 						break;
