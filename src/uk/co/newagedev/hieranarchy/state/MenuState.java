@@ -15,6 +15,11 @@ public class MenuState extends State {
 			component.render();
 		}
 	}
+	
+	@Override
+	public void onLoad() {
+		
+	}
 
 	@Override
 	public void update() {

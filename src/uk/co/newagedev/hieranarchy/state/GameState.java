@@ -8,11 +8,18 @@ public class GameState extends State {
 	public GameState(Map map) {
 		currentMap = map;
 	}
+
+	@Override
+	public void onLoad() {
+		
+	}
 	
+	@Override
 	public void render() {
 		currentMap.render(getCurrentCamera());
 	}
 	
+	@Override
 	public void update() {
 		currentMap.update();
 	}

@@ -83,6 +83,11 @@ public class TileCreatorState extends State {
 	}
 	
 	@Override
+	public void onLoad() {
+		
+	}
+	
+	@Override
 	public void render() {
 		Main.getScreen().renderQuad(0, 0, Main.WIDTH, Main.HEIGHT, Component.VERY_LIGHT);
 		container.render();

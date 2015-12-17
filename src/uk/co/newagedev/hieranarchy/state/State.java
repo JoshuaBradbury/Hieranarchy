@@ -13,6 +13,7 @@ public abstract class State {
 	private List<Window> windows = new ArrayList<Window>();
 	private Camera currentCamera;
 	private String name;
+	private boolean loaded = false;
 	
 	public void setName(String name) {
 		this.name = name;
@@ -60,6 +61,10 @@ public abstract class State {
 	}
 	
 	public void render() {
+		if (!loaded) {
+			loaded = true;
+			onLoad();
+		}
 		for (Window window : getWindows()) {
 			window.update();
 		}
@@ -70,4 +75,6 @@ public abstract class State {
 			window.update();
 		}
 	}
+	
+	public abstract void onLoad();
 }

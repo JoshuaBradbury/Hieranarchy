@@ -94,6 +94,11 @@ public class EditorState extends State {
 		currentTileName = currentMap.getMapStore().getNextTile(currentTileName);
 	}
 	
+	@Override
+	public void onLoad() {
+		currentMap.update();
+	}
+	
 	public Map getCurrentMap() {
 		return currentMap;
 	}
