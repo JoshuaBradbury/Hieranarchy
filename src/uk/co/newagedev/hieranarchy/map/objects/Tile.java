@@ -3,22 +3,12 @@ package uk.co.newagedev.hieranarchy.map.objects;
 import uk.co.newagedev.hieranarchy.graphics.Camera;
 import uk.co.newagedev.hieranarchy.testing.Main;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class Tile.
- */
 public class Tile extends MapObject {
 
-	/**
-	 * Instantiates a new tile.
-	 */
 	public Tile() {
 		setProperty("type", "tile");
 	}
 	
-	/* (non-Javadoc)
-	 * @see uk.co.newagedev.hieranarchy.map.objects.MapObject#render(uk.co.newagedev.hieranarchy.graphics.Camera)
-	 */
 	public void render(Camera camera) {
 		float[] col = new float[] { 1.0f, 1.0f, 1.0f, 1.0f };
 		if (doesPropertyExist("selection"))
