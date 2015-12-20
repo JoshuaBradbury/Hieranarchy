@@ -19,6 +19,11 @@ public class Mouse {
 		return Main.HEIGHT - my;
 	}
 	
+	public static void simulateLocation(int x, int y) {
+		mx = x;
+		my = y;
+	}
+	
 	public static int getChangeInMouseX() {
 		return mdx;
 	}
