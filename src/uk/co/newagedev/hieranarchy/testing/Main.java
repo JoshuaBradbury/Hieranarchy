@@ -21,7 +21,7 @@ public class Main {
 
 	public static Project project = new Project("testing");
 
-	public static final int WIDTH = 720, HEIGHT = 480;
+	public static final int WIDTH = 1024, HEIGHT = 576;
 
 	public static final int SPRITE_WIDTH = 64, SPRITE_HEIGHT = 64;
 
