@@ -13,8 +13,6 @@ public abstract class Component {
 	private int width, height, offsetX, offsetY;
 	private Component parent;
 	
-	public static final float[] VERY_LIGHT = new float[] { 0.7f, 0.7f, 0.85f }, LIGHT = new float[] { 0.6f, 0.6f, 0.75f }, DARK = new float[] { 0.4f, 0.4f, 0.55f }, DARK_ALPHA = new float[] { 0.2f, 0.2f, 0.35f, 0.75f };
-	
 	public Component(int x, int y, int width, int height) {
 		this.x = x;
 		this.y = y;

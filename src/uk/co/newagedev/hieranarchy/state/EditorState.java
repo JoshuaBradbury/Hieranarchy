@@ -16,6 +16,7 @@ import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
 import uk.co.newagedev.hieranarchy.ui.Component;
 import uk.co.newagedev.hieranarchy.ui.Container;
 import uk.co.newagedev.hieranarchy.ui.Window;
+import uk.co.newagedev.hieranarchy.util.Colour;
 import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class EditorState extends State {
@@ -111,7 +112,7 @@ public class EditorState extends State {
 				selection.render(getCurrentCamera());
 			}
 		}
-		Main.getScreen().renderQuad(new Vector2f(), Main.WIDTH, 40, Component.VERY_LIGHT);
+		Main.getScreen().renderQuad(new Vector2f(), Main.WIDTH, 40, Colour.LIGHT_LIGHT_GREY);
 		toolbar.render();
 		if (editing) {
 			Component.componentFont.renderText("Edit Mode", 10, 50);

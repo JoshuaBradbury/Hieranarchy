@@ -7,6 +7,7 @@ import uk.co.newagedev.hieranarchy.graphics.Sprite;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.testing.Main;
+import uk.co.newagedev.hieranarchy.util.Colour;
 import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class Button extends Component {
@@ -35,9 +36,9 @@ public class Button extends Component {
 
 	public void render() {
 		Rectangle buttonDimensions = new Rectangle(new Point((int) getDisplayLocation().getX(), (int) getDisplayLocation().getY()), getDimensions());
-		Main.getScreen().renderQuad(buttonDimensions, Component.DARK);
+		Main.getScreen().renderQuad(buttonDimensions, Colour.DARK_GREY);
 		buttonDimensions.grow(-1, -1);
-		Main.getScreen().renderQuad(buttonDimensions, (hover ? Component.VERY_LIGHT : Component.LIGHT));
+		Main.getScreen().renderQuad(buttonDimensions, (hover ? Colour.GREY : Colour.LIGHT_GREY));
 
 		Vector2f loc = getDisplayLocation().clone().add((int) getDimensions().getWidth() / 2, (int) getDimensions().getHeight() / 2);
 		
@@ -51,8 +52,8 @@ public class Button extends Component {
 		if (toolTipDisplay && toolTip) {
 			int textHeight = componentFont.getTextHeight(text), textWidth = componentFont.getTextWidth(text);
 			int toolTipX = Mouse.getMouseX(), toolTipY = (int) (getParent().getDisplayLocation().getY() + getParent().getDimensions().getHeight() + 10);
-			Main.getScreen().renderQuad(new Vector2f(toolTipX, toolTipY - textHeight + 14), textWidth + 14, textHeight + 14, Component.DARK);
-			Main.getScreen().renderQuad(new Vector2f(toolTipX + 2, toolTipY + 16 - textHeight), textWidth + 10, textHeight + 10, Component.LIGHT);
+			Main.getScreen().renderQuad(new Vector2f(toolTipX, toolTipY - textHeight + 14), textWidth + 14, textHeight + 14, Colour.DARK_GREY);
+			Main.getScreen().renderQuad(new Vector2f(toolTipX + 2, toolTipY + 16 - textHeight), textWidth + 10, textHeight + 10, Colour.GREY);
 			
 			componentFont.renderText(text, toolTipX + textWidth / 2 + 7, toolTipY - textHeight / 2 + 21);
 		}

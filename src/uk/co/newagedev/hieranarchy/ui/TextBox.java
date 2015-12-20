@@ -34,9 +34,9 @@ public class TextBox extends Component {
 
 	public void render() {
 		Rectangle rect = new Rectangle((int) getLocation().getX(), (int) getLocation().getY(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight());
-		Main.getScreen().renderQuad(rect, Component.DARK);
+		Main.getScreen().renderQuad(rect, Colour.DARK_GREY);
 		rect.grow(-1, -1);
-		Main.getScreen().renderQuad(rect, (hover ? Component.VERY_LIGHT : Component.LIGHT));
+		Main.getScreen().renderQuad(rect, (hover ? Colour.LIGHT_GREY : Colour.GREY));
 		componentFont.renderText(text, (int) (getLocation().getX() + (getDimensions().getWidth() / 2)), (int) (getLocation().getY() + (getDimensions().getHeight() / 2)));
 		if (selected) {
 			selectedTimer += 1;

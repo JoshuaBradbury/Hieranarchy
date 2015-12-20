@@ -2,6 +2,7 @@ package uk.co.newagedev.hieranarchy.ui;
 
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.testing.Main;
+import uk.co.newagedev.hieranarchy.util.Colour;
 import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class TickBox extends Component {
@@ -23,11 +24,11 @@ public class TickBox extends Component {
 	
 	@Override
 	public void render() {
-		Main.getScreen().renderQuad(getLocation(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Component.DARK);
-		Main.getScreen().renderQuad(getLocation().clone().add(1, 1), (int) getDimensions().getWidth() - 2, (int) getDimensions().getHeight() - 2, (hover ? Component.VERY_LIGHT : Component.LIGHT));
+		Main.getScreen().renderQuad(getLocation(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Colour.DARK_GREY);
+		Main.getScreen().renderQuad(getLocation().clone().add(1, 1), (int) getDimensions().getWidth() - 2, (int) getDimensions().getHeight() - 2, (hover ? Colour.LIGHT_GREY : Colour.GREY));
 		if (ticked) {
-			Main.getScreen().renderLine(new Vector2f((int) getLocation().getX() + 15, (int) getLocation().getY() + 5), new Vector2f((int) getLocation().getX() + 5, (int) getLocation().getY() + 15), 2, Component.DARK);
-			Main.getScreen().renderLine(new Vector2f((int) getLocation().getX() + 5, (int) getLocation().getY() + 5), new Vector2f((int) getLocation().getX() + 15, (int) getLocation().getY() + 15), 2, Component.DARK);
+			Main.getScreen().renderLine(new Vector2f((int) getLocation().getX() + 15, (int) getLocation().getY() + 5), new Vector2f((int) getLocation().getX() + 5, (int) getLocation().getY() + 15), 2, Colour.DARK_DARK_GREY);
+			Main.getScreen().renderLine(new Vector2f((int) getLocation().getX() + 5, (int) getLocation().getY() + 5), new Vector2f((int) getLocation().getX() + 15, (int) getLocation().getY() + 15), 2, Colour.DARK_DARK_GREY);
 		}
 	}
 

@@ -1,13 +1,12 @@
 package uk.co.newagedev.hieranarchy.testing;
 
-import uk.co.newagedev.hieranarchy.graphics.Camera;
-import uk.co.newagedev.hieranarchy.state.EditorState;
 import uk.co.newagedev.hieranarchy.state.MenuState;
+import uk.co.newagedev.hieranarchy.state.ProjectCreationState;
 import uk.co.newagedev.hieranarchy.state.ProjectLoaderState;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.ui.Button;
 import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
-import uk.co.newagedev.hieranarchy.ui.Component;
+import uk.co.newagedev.hieranarchy.util.Colour;
 import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class StartMenuState extends MenuState {
@@ -15,16 +14,11 @@ public class StartMenuState extends MenuState {
 	private int count, offset;
 	
 	public StartMenuState() {
-		registerComponent(new Button("Edit Map", 50, 200, 200, 50, false,  new ButtonRunnable() {
+		registerComponent(new Button("Create New Project", 50, 200, 200, 50, false,  new ButtonRunnable() {
 			public void run() {
-				Main.project.loadMap("testing");
-				EditorState state = new EditorState(Main.project.getMap("testing"));
-				state.registerCamera("edit", new Camera(100, 0));
-				state.registerCamera("play", new Camera(100, 0));
-				state.switchCamera("edit");
-				StateManager.registerState("edit map", state);
-				Main.project.getMap("testing").setState("edit map");
-				Main.setCurrentState("edit map");
+				ProjectCreationState state = new ProjectCreationState();
+				StateManager.registerState("project creator", state);
+				Main.setCurrentState("project creator");
 			}
 		}));
 		registerComponent(new Button("Load Project", 450, 200, 200, 50, false, new ButtonRunnable() {
@@ -43,9 +37,9 @@ public class StartMenuState extends MenuState {
 	
 	@Override
 	public void render() {
-		Main.getScreen().renderQuad(new Vector2f(), Main.WIDTH, Main.HEIGHT, Component.LIGHT);
+		Main.getScreen().renderQuad(new Vector2f(), Main.WIDTH, Main.HEIGHT, Colour.DARK_GREY);
 		for (int i = -200; i < Main.WIDTH; i += 20) {
-			Main.getScreen().renderLine(new Vector2f(200 + i + offset, -10), new Vector2f(i + offset, Main.HEIGHT + 10), 10.0f, Component.DARK);
+			Main.getScreen().renderLine(new Vector2f(200 + i + offset, -10), new Vector2f(i + offset, Main.HEIGHT + 10), 10.0f, Colour.LIGHT_GREY);
 		}
 		super.render();
 	}

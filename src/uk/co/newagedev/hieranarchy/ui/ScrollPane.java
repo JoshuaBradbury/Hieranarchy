@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.testing.Main;
+import uk.co.newagedev.hieranarchy.util.Colour;
 
 public class ScrollPane extends Component {
 	private ScrollBar[] scrollBars = new ScrollBar[2];
@@ -50,7 +51,7 @@ public class ScrollPane extends Component {
 	}
 
 	public void render() {
-		Main.getScreen().renderQuad(getLocation(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Component.LIGHT);
+		Main.getScreen().renderQuad(getLocation(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Colour.LIGHT_LIGHT_GREY);
 		for (ScrollBar bar : scrollBars) {
 			if (bar != null) {
 				bar.render();

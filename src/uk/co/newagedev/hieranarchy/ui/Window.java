@@ -1,6 +1,7 @@
 package uk.co.newagedev.hieranarchy.ui;
 
 import uk.co.newagedev.hieranarchy.testing.Main;
+import uk.co.newagedev.hieranarchy.util.Colour;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.state.State;
 
@@ -25,8 +26,8 @@ public class Window extends Container {
 
 	@Override
 	public void render() {
-		Main.getScreen().renderQuad(getLocation().clone().subtract(0, 30), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Component.VERY_LIGHT);
-		Main.getScreen().renderQuad(getLocation().clone().add(5, 0), (int) getDimensions().getWidth() - 10, (int) getDimensions().getHeight() - 35, Component.LIGHT);
+		Main.getScreen().renderQuad(getLocation().clone().subtract(0, 30), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Colour.DARK_GREY);
+		Main.getScreen().renderQuad(getLocation().clone().add(5, 0), (int) getDimensions().getWidth() - 10, (int) getDimensions().getHeight() - 35, Colour.DARK_DARK_GREY);
 		super.render();
 	}
 
