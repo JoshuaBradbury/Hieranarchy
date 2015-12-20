@@ -105,7 +105,7 @@ public class FontSheet {
 				String character = text.substring(i, i + 1);
 				FontCharacter fontCharacter = getFontCharacter(character);
 				Main.getScreen().renderSpriteIgnoringCamera(fontCharacter.getSprite(), new Vector2f(progressiveX, y - height / 2));
-				progressiveX += fontCharacter.getWidth();
+				progressiveX += fontCharacter.getWidth() + 1;
 			}
 		}
 	}

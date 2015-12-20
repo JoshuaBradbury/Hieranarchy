@@ -1,5 +1,7 @@
 package uk.co.newagedev.hieranarchy.ui;
 
+import java.awt.Rectangle;
+
 import org.lwjgl.input.Keyboard;
 
 import uk.co.newagedev.hieranarchy.graphics.FontSheet;
@@ -7,12 +9,13 @@ import uk.co.newagedev.hieranarchy.input.KeyBinding;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.testing.Main;
 import uk.co.newagedev.hieranarchy.util.Colour;
+import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class TextBox extends Component {
 
 	private boolean hover = false, selected = false;
 	private String text;
-	private int selectedTimer = 0;
+	private int selectedTimer = 0, cursorPlacement = 0;
 	private int[] keyTimer = new int[Keyboard.KEYBOARD_SIZE];
 
 	public TextBox(int x, int y, int width, int height) {
@@ -30,14 +33,17 @@ public class TextBox extends Component {
 	}
 
 	public void render() {
-		Main.getScreen().renderQuad((int) getLocation().getX(), (int) getLocation().getY(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Component.DARK);
-		Main.getScreen().renderQuad((int) getLocation().getX() + 5, (int) getLocation().getY() + 5, (int) getDimensions().getWidth() - 10, (int) getDimensions().getHeight() - 10, (hover ? Component.VERY_LIGHT : Component.LIGHT));
+		Rectangle rect = new Rectangle((int) getLocation().getX(), (int) getLocation().getY(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight());
+		Main.getScreen().renderQuad(rect, Component.DARK);
+		rect.grow(-1, -1);
+		Main.getScreen().renderQuad(rect, (hover ? Component.VERY_LIGHT : Component.LIGHT));
 		componentFont.renderText(text, (int) (getLocation().getX() + (getDimensions().getWidth() / 2)), (int) (getLocation().getY() + (getDimensions().getHeight() / 2)));
 		if (selected) {
 			selectedTimer += 1;
 			if (selectedTimer % 60 < 30) {
 				int lineHeight = text.length() > 0 ? componentFont.getTextHeight(text) : 20;
-				Main.getScreen().renderLine(new int[] { (int) getLocation().getX() + 2 + (int) (getDimensions().getWidth() / 2) + ((text != null ? componentFont.getTextWidth(text) : 0) / 2), (int) getLocation().getY() + (int) getDimensions().getHeight() / 2 + 1 - lineHeight / 2 }, new int[] { (int) getLocation().getX() + 2 + (int) (getDimensions().getWidth() / 2) + ((text != null ? componentFont.getTextWidth(text) : 0) / 2), (int) getLocation().getY() + (int) getDimensions().getHeight() / 2 + 1 + lineHeight / 2 }, 2, Colour.BLACK);
+				int cursorX = (int) (getDimensions().getWidth() / 2) - (componentFont.getTextWidth(text) / 2) + componentFont.getTextWidth(text.substring(0, cursorPlacement)) + cursorPlacement;
+				Main.getScreen().renderLine(new Vector2f((int) getLocation().getX() + cursorX, (int) getDimensions().getHeight() / 2 + getLocation().getY() - lineHeight / 2), new Vector2f((int) getLocation().getX() + cursorX, (int) getDimensions().getHeight() / 2 + getLocation().getY() + lineHeight / 2), 1, Colour.BLACK);
 			}
 		} else {
 			selectedTimer = 0;
@@ -60,9 +66,18 @@ public class TextBox extends Component {
 				keyTimer[key] += 1;
 				if (keyTimer[key] == 1 || keyTimer[key] > 30) {
 					if (Keyboard.getKeyName(key).trim().equalsIgnoreCase("back")) {
-						removeLastFromText();
-					} else if (Keyboard.getKeyName(key).trim().equalsIgnoreCase("space")) {
-						addToText(" ");
+						removeFromText();
+					} else if (Keyboard.getKeyName(key).trim().equalsIgnoreCase("delete")) {
+						if (cursorPlacement < text.length()) {
+							cursorPlacement++;
+							removeFromText();
+						}
+					} else if (Keyboard.getKeyName(key).trim().equalsIgnoreCase("left")) {
+						cursorPlacement--;
+						if (cursorPlacement < 0) cursorPlacement++;
+					} else if (Keyboard.getKeyName(key).trim().equalsIgnoreCase("right")) {
+						cursorPlacement++;
+						if (cursorPlacement > text.length()) cursorPlacement--;
 					} else {
 						String kt = String.valueOf(KeyBinding.getKeyChar(key));
 						if (FontSheet.POSSIBLE_CHARACTERS.contains(kt)) {
@@ -77,12 +92,14 @@ public class TextBox extends Component {
 		}
 	}
 
-	private void removeLastFromText() {
-		text = text.substring(0, text.length() - 1);
+	private void removeFromText() {
+		text = text.substring(0, cursorPlacement - 1) + text.substring(cursorPlacement, text.length());
+		cursorPlacement--;
 	}
 
 	private void addToText(String add) {
-		text += add;
+		text = text.substring(0, cursorPlacement) + add + text.substring(cursorPlacement, text.length());
+		cursorPlacement++;
 	}
 
 	public String getText() {
