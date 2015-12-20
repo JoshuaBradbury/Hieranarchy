@@ -39,7 +39,7 @@ public class ScrollPane extends Component {
 			}
 		}
 		int mx = Mouse.getMouseX(), my = Mouse.getMouseY();
-		boolean hovering = (scrollBars[0] != null ? (my > getDisplayLocation().getY() + getHeight() - 15 && my < getDisplayLocation().getY() + getHeight()) || scrollBars[0].isHeld() : false) || (scrollBars[1] != null ? (mx > getDisplayLocation().getX() + getWidth() - 15 && mx < getDisplayLocation().getX() + getWidth()) || scrollBars[1].isHeld() : false);
+		boolean hovering = (scrollBars[0] != null ? (my > getDisplayLocation().getY() + getHeight() && my < getDisplayLocation().getY() + getHeight() + 15) || scrollBars[0].isHeld() : false) || (scrollBars[1] != null ? (mx > getDisplayLocation().getX() + getWidth() && mx < getDisplayLocation().getX() + getWidth() + 15) || scrollBars[1].isHeld() : false);
 		if ((new Rectangle((int) getLocation().getX(), (int) getLocation().getY(), getWidth(), getHeight())).contains(Mouse.getMouseX(), Mouse.getMouseY())) {
 			pane.update();
 		} else if (hovering) {
