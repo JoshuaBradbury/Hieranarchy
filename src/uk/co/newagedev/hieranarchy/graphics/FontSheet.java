@@ -79,7 +79,7 @@ public class FontSheet {
 		int width = 0;
 		for (int i = 0; i < text.length(); i++) {
 			FontCharacter fontCharacter = getFontCharacter(text.substring(i, i + 1));
-			width += fontCharacter.getWidth();
+			width += fontCharacter.getWidth() + 1;
 		}
 		return width;
 	}

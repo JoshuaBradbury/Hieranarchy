@@ -42,7 +42,7 @@ public class TextBox extends Component {
 			selectedTimer += 1;
 			if (selectedTimer % 60 < 30) {
 				int lineHeight = text.length() > 0 ? componentFont.getTextHeight(text) : 20;
-				int cursorX = (int) (getDimensions().getWidth() / 2) - (componentFont.getTextWidth(text) / 2) + componentFont.getTextWidth(text.substring(0, cursorPlacement)) + cursorPlacement;
+				int cursorX = (int) (getDimensions().getWidth() / 2) - (componentFont.getTextWidth(text) / 2) + componentFont.getTextWidth(text.substring(0, cursorPlacement));
 				Main.getScreen().renderLine(new Vector2f((int) getLocation().getX() + cursorX, (int) getDimensions().getHeight() / 2 + getLocation().getY() - lineHeight / 2), new Vector2f((int) getLocation().getX() + cursorX, (int) getDimensions().getHeight() / 2 + getLocation().getY() + lineHeight / 2), 1, Colour.BLACK);
 			}
 		} else {
@@ -93,8 +93,10 @@ public class TextBox extends Component {
 	}
 
 	private void removeFromText() {
-		text = text.substring(0, cursorPlacement - 1) + text.substring(cursorPlacement, text.length());
-		cursorPlacement--;
+		if (cursorPlacement > 0) {
+			text = text.substring(0, cursorPlacement - 1) + text.substring(cursorPlacement, text.length());
+			cursorPlacement--;
+		}
 	}
 
 	private void addToText(String add) {
