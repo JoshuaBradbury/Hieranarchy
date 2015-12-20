@@ -2,6 +2,7 @@ package uk.co.newagedev.hieranarchy.ui;
 
 import org.lwjgl.util.Rectangle;
 
+import uk.co.newagedev.hieranarchy.input.KeyBinding;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.testing.Main;
 import uk.co.newagedev.hieranarchy.util.Vector2f;
@@ -81,6 +82,9 @@ public class ScrollBar {
 					y += 3;
 				}
 			}
+			if (!KeyBinding.isShift()) {
+				y -= Mouse.getChangeInMouseWheel() / 10;
+			}
 			if (y < 0) {
 				y = 0;
 			}
@@ -115,6 +119,9 @@ public class ScrollBar {
 				if (rightHover) {
 					x += 3;
 				}
+			}
+			if (KeyBinding.isShift()) {
+				x += Mouse.getChangeInMouseWheel() / 10;
 			}
 			if (x < 0) {
 				x = 0;
