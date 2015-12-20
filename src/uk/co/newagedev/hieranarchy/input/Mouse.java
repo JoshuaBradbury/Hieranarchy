@@ -9,7 +9,7 @@ public class Mouse {
 	private static boolean[] releasing = new boolean[org.lwjgl.input.Mouse.getButtonCount()];
 	
 	public static final int LEFT_BUTTON = 0, RIGHT_BUTTON = 1, MIDDLE_BUTTON = 2;
-	private static int mx = 0, my = 0, mdx = 0, mdy = 0, updatesSinceLastMovement = 0, updatesSinceLastButton = 0;
+	private static int mx = 0, my = 0, mdx = 0, mdy = 0, mdw = 0, updatesSinceLastMovement = 0, updatesSinceLastButton = 0;
 	
 	public static int getMouseX() {
 		return mx;
@@ -32,6 +32,10 @@ public class Mouse {
 		return mdy;
 	}
 	
+	public static int getChangeInMouseWheel() {
+		return mdw;
+	}
+	
 	public static long getMillisSinceLastMovement() {
 		return updatesSinceLastMovement;
 	}
@@ -41,6 +45,7 @@ public class Mouse {
 	}
 	
 	public static void update() {
+		mdw = org.lwjgl.input.Mouse.getDWheel();
 		int t = 0;
 		for (int i = 0; i < org.lwjgl.input.Mouse.getButtonCount(); i++) {
 			boolean bd = org.lwjgl.input.Mouse.isButtonDown(i);

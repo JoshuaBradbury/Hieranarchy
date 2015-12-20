@@ -19,6 +19,10 @@ public class KeyBinding {
 	
 	private static boolean capsLock = false, shift = false;
 	
+	public static boolean isShift() {
+		return shift;
+	}
+	
 	public static void bindKey(String function, int key) {
 		keyBindings.put(function, key);
 		Logger.info(function, "bound as key", Keyboard.getKeyName(key));
