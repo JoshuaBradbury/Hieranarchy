@@ -23,7 +23,7 @@ public class TickBox extends Component {
 	@Override
 	public void render() {
 		Main.getScreen().renderQuad((int) getLocation().getX(), (int) getLocation().getY(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Component.DARK);
-		Main.getScreen().renderQuad((int) getLocation().getX() + 5, (int) getLocation().getY() + 5, (int) getDimensions().getWidth() - 10, (int) getDimensions().getHeight() - 10, Component.LIGHT);
+		Main.getScreen().renderQuad((int) getLocation().getX() + 1, (int) getLocation().getY() + 1, (int) getDimensions().getWidth() - 2, (int) getDimensions().getHeight() - 2, (hover ? Component.VERY_LIGHT : Component.LIGHT));
 		if (ticked) {
 			Main.getScreen().renderLine(new int[] {(int) getLocation().getX() + 15, (int) getLocation().getY() + 5}, new int[] {(int) getLocation().getX() + 5, (int) getLocation().getY() + 15}, 2, Component.DARK);
 			Main.getScreen().renderLine(new int[] {(int) getLocation().getX() + 5, (int) getLocation().getY() + 5}, new int[] {(int) getLocation().getX() + 15, (int) getLocation().getY() + 15}, 2, Component.DARK);
