@@ -2,9 +2,11 @@ package uk.co.newagedev.hieranarchy.ui;
 
 import org.lwjgl.input.Keyboard;
 
+import uk.co.newagedev.hieranarchy.graphics.FontSheet;
 import uk.co.newagedev.hieranarchy.input.KeyBinding;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.testing.Main;
+import uk.co.newagedev.hieranarchy.util.Colour;
 
 public class TextBox extends Component {
 
@@ -34,7 +36,8 @@ public class TextBox extends Component {
 		if (selected) {
 			selectedTimer += 1;
 			if (selectedTimer % 60 < 30) {
-				Main.getScreen().renderLine(new int[] { (int) getLocation().getX() + 5 + (int) (getDimensions().getWidth() / 2) + ((text != null ? componentFont.getTextWidth(text) : 0) / 2), (int) getLocation().getY() + 6 }, new int[] { (int) getLocation().getX() + 5 + (int) (getDimensions().getWidth() / 2) + ((text != null ? componentFont.getTextWidth(text) : 0) / 2), (int) getDimensions().getHeight() + (int) getLocation().getY() - 6 }, 4, Component.VERY_LIGHT);
+				int lineHeight = text.length() > 0 ? componentFont.getTextHeight(text) : 20;
+				Main.getScreen().renderLine(new int[] { (int) getLocation().getX() + 2 + (int) (getDimensions().getWidth() / 2) + ((text != null ? componentFont.getTextWidth(text) : 0) / 2), (int) getLocation().getY() + (int) getDimensions().getHeight() / 2 + 1 - lineHeight / 2 }, new int[] { (int) getLocation().getX() + 2 + (int) (getDimensions().getWidth() / 2) + ((text != null ? componentFont.getTextWidth(text) : 0) / 2), (int) getLocation().getY() + (int) getDimensions().getHeight() / 2 + 1 + lineHeight / 2 }, 2, Colour.BLACK);
 			}
 		} else {
 			selectedTimer = 0;
@@ -61,8 +64,8 @@ public class TextBox extends Component {
 					} else if (Keyboard.getKeyName(key).trim().equalsIgnoreCase("space")) {
 						addToText(" ");
 					} else {
-						String kt = Keyboard.getKeyName(key);
-						if ("abcdefghijklmnopqrstuvwxyz".contains(kt.toLowerCase())) {
+						String kt = String.valueOf(KeyBinding.getKeyChar(key));
+						if (FontSheet.POSSIBLE_CHARACTERS.contains(kt)) {
 							addToText(kt);
 						}
 					}
