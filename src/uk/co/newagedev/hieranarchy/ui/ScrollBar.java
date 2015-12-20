@@ -8,7 +8,7 @@ import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class ScrollBar {
 	private ScrollPane parent;
-	private int display, x, y, startY, startX, startDragX, startDragY, width, maxWidth, height, maxHeight;
+	private int display, x, y, startY = -1, startX = -1, startDragX = -1, startDragY = -1, width, maxWidth, height, maxHeight;
 	private boolean barHover = false, topHover = false, bottomHover = false, leftHover = false, rightHover = false;
 
 	public static final int VERTICAL = 1;
@@ -43,6 +43,14 @@ public class ScrollBar {
 		return barHover;
 	}
 	
+	public boolean isHeld() {
+		if (display == ScrollBar.VERTICAL)
+			return startDragY > -1;
+		if (display == ScrollBar.HORIZONTAL)
+			return startDragX > -1;
+		return false;
+	}
+	
 	public void update() {
 		if (display == ScrollBar.VERTICAL) {
 			int paneHeight = (int) (parent.getPane().getDimensions().getHeight() > getParentHeight() ? parent.getPane().getDimensions().getHeight() : getParentHeight());
@@ -55,6 +63,10 @@ public class ScrollBar {
 				if (Mouse.isButtonDown(Mouse.LEFT_BUTTON)) {
 					y = startY + (Mouse.getMouseY() - startDragY);
 				}
+			}
+			if (Mouse.isButtonReleasing(Mouse.LEFT_BUTTON)) {
+				startY = -1;
+				startDragY = -1;
 			}
 			if (!Mouse.isButtonDown(Mouse.LEFT_BUTTON)) {
 				barHover = getBar().contains(Mouse.getMouseX(), Mouse.getMouseY());
@@ -86,6 +98,10 @@ public class ScrollBar {
 				if (Mouse.isButtonDown(Mouse.LEFT_BUTTON)) {
 					x = startX + (Mouse.getMouseX() - startDragX);
 				}
+			}
+			if (Mouse.isButtonReleasing(Mouse.LEFT_BUTTON)) {
+				startX = -1;
+				startDragX = -1;
 			}
 			if (!Mouse.isButtonDown(Mouse.LEFT_BUTTON)) {
 				barHover = getBar().contains(Mouse.getMouseX(), Mouse.getMouseY());
