@@ -8,6 +8,7 @@ import uk.co.newagedev.hieranarchy.ui.Container;
 import uk.co.newagedev.hieranarchy.ui.ScrollBar;
 import uk.co.newagedev.hieranarchy.ui.ScrollPane;
 import uk.co.newagedev.hieranarchy.util.Logger;
+import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class ProjectLoaderState extends MenuState {
 
@@ -56,7 +57,7 @@ public class ProjectLoaderState extends MenuState {
 	
 	@Override
 	public void render() {
-		Main.getScreen().renderQuad(0, 0, Main.WIDTH, Main.HEIGHT, Component.DARK);
+		Main.getScreen().renderQuad(new Vector2f(), Main.WIDTH, Main.HEIGHT, Component.DARK);
 		super.render();
 	}
 	

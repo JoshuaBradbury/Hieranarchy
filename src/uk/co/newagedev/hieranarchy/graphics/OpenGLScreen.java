@@ -99,7 +99,7 @@ public class OpenGLScreen implements Screen {
 				int width = Main.SPRITE_WIDTH;
 				int height = Main.SPRITE_HEIGHT;
 				Vector2f tloc = location.clone().multiply(new Vector2f(width * camera.getZoom(), height * camera.getZoom())).add(new Vector2f(-camera.getX(), camera.getY()));
-				renderSprite(spriteName, tloc.getX(), tloc.getY(), width, height, texCoords, colour, new float[] { 0.0f, 0.0f, 0.0f });
+				renderSprite(spriteName, tloc, width, height, texCoords, colour, new float[] { 0.0f, 0.0f, 0.0f });
 			}
 		}
 	}
@@ -111,21 +111,21 @@ public class OpenGLScreen implements Screen {
 	public void renderSpriteIgnoringCamera(String spriteName, Vector2f location, float[] texCoords, float[] colour) {
 		if (SpriteRegistry.doesSpriteExist(spriteName)) {
 			Sprite sprite = SpriteRegistry.getSprite(spriteName);
-			renderSprite(spriteName, location.getX(), location.getY(), sprite.getWidth(), sprite.getHeight(), texCoords, colour, new float[] { 0.0f, 0.0f, 0.0f });
+			renderSprite(spriteName, location, sprite.getWidth(), sprite.getHeight(), texCoords, colour, new float[] { 0.0f, 0.0f, 0.0f });
 		}
 	}
 	
-	public void renderSprite(String spriteName, float x, float y, float width, float height, float[] rotation) {
-		renderSprite(spriteName, x, y, width, height, new float[] { 0.0f, 1.0f, 0.0f, 1.0f }, new float[] { 1.0f, 1.0f, 1.0f, 1.0f }, rotation);
+	public void renderSprite(String spriteName, Vector2f location, float width, float height, float[] rotation) {
+		renderSprite(spriteName, location, width, height, new float[] { 0.0f, 1.0f, 0.0f, 1.0f }, new float[] { 1.0f, 1.0f, 1.0f, 1.0f }, rotation);
 	}
 	
-	public void renderSprite(String spriteName, float x, float y, float width, float height, float[] texCoords, float[] colour, float[] rotation) {
+	public void renderSprite(String spriteName, Vector2f location, float width, float height, float[] texCoords, float[] colour, float[] rotation) {
 		if (SpriteRegistry.doesSpriteExist(spriteName)) {
 			glEnable(GL_TEXTURE_2D);
 			SpriteRegistry.getSprite(spriteName).bind();
 			glColor4f(colour[0], colour[1], colour[2], colour[3]);
 			glPushMatrix();
-			glTranslatef(x, y, 0.0f);
+			glTranslatef(location.getX(), location.getY(), 0.0f);
 			glRotatef(rotation[0], 1.0f, 0.0f, 0.0f);
 			glRotatef(rotation[1], 0.0f, 1.0f, 0.0f);
 			glRotatef(rotation[2], 0.0f, 0.0f, 1.0f);
@@ -226,51 +226,51 @@ public class OpenGLScreen implements Screen {
 	}
 	
 	public void renderQuad(Rectangle rect, float[] colour) {
-		renderQuad((int) rect.getX(), (int) rect.getY(), (int) rect.getWidth(), (int) rect.getHeight(), colour);
+		renderQuad(new Vector2f((int) rect.getX(), (int) rect.getY()), (int) rect.getWidth(), (int) rect.getHeight(), colour);
 	}
 
 	public void renderQuad(Rectangle rect, float[][] colours) {
-		renderQuad((int) rect.getX(), (int) rect.getY(), (int) rect.getWidth(), (int) rect.getHeight(), colours);
+		renderQuad(new Vector2f((int) rect.getX(), (int) rect.getY()), (int) rect.getWidth(), (int) rect.getHeight(), colours);
 	}
 
-	public void renderQuad(int x, int y, int width, int height, float[] colour) {
-		renderQuad(x, y, width, height, new float[][] { colour, colour, colour, colour });
+	public void renderQuad(Vector2f loc, int width, int height, float[] colour) {
+		renderQuad(loc, width, height, new float[][] { colour, colour, colour, colour });
 	}
 
-	public void renderQuad(int x, int y, int width, int height, float[][] colours) {
+	public void renderQuad(Vector2f loc, int width, int height, float[][] colours) {
 		if (colours[0].length == 4) {
 			glBegin(GL_QUADS);
 			{
 				glColor4f(colours[0][0], colours[0][1], colours[0][2], colours[0][3]);
-				glVertex2f(x + width, y + height);
+				glVertex2f(loc.getX() + width, loc.getY() + height);
 				glColor4f(colours[1][0], colours[1][1], colours[1][2], colours[1][3]);
-				glVertex2f(x + width, y);
+				glVertex2f(loc.getX() + width, loc.getY());
 				glColor4f(colours[2][0], colours[2][1], colours[2][2], colours[1][3]);
-				glVertex2f(x, y);
+				glVertex2f(loc.getX(), loc.getY());
 				glColor4f(colours[3][0], colours[3][1], colours[3][2], colours[1][3]);
-				glVertex2f(x, y + height);
+				glVertex2f(loc.getX(), loc.getY() + height);
 			}
 			glEnd();
 		} else {
 			glBegin(GL_QUADS);
 			{
 				glColor3f(colours[0][0], colours[0][1], colours[0][2]);
-				glVertex2f(x + width, y + height);
+				glVertex2f(loc.getX() + width, loc.getY() + height);
 				glColor3f(colours[1][0], colours[1][1], colours[1][2]);
-				glVertex2f(x + width, y);
+				glVertex2f(loc.getX() + width, loc.getY());
 				glColor3f(colours[2][0], colours[2][1], colours[2][2]);
-				glVertex2f(x, y);
+				glVertex2f(loc.getX(), loc.getY());
 				glColor3f(colours[3][0], colours[3][1], colours[3][2]);
-				glVertex2f(x, y + height);
+				glVertex2f(loc.getX(), loc.getY() + height);
 			}
 			glEnd();
 		}
 	}
 
-	public void renderLine(int[] point1, int[] point2, float thickness, float[] colour) {
+	public void renderLine(Vector2f point1, Vector2f point2, float thickness, float[] colour) {
 		glColor3f(colour[0], colour[1], colour[2]);
 		float t = thickness / 2;
-		int x = point1[0], x2 = point2[0], y = point1[1], y2 = point2[1];
+		int x = (int) point1.getX(), x2 = (int) point2.getX(), y = (int) point1.getY(), y2 = (int) point2.getY();
 		float hyp = (float) Math.sqrt(((x2 - x) * (x2 - x)) + ((y2 - y) * (y2 - y)));
 		float angle = (float) Math.acos(((x2 - x) / hyp) % 1);
 		float[][] points = new float[4][2];
@@ -292,9 +292,9 @@ public class OpenGLScreen implements Screen {
 		close = true;
 	}
 
-	public void startScissor(int x, int y, int width, int height) {
+	public void startScissor(Vector2f loc, int width, int height) {
 		glEnable(GL_SCISSOR_TEST);
-		glScissor(x, y, width, height);
+		glScissor((int) loc.getX(), (int) loc.getY(), width, height);
 	}
 	
 	public void stopScissor() {

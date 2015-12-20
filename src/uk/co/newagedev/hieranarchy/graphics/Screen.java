@@ -27,19 +27,19 @@ public interface Screen {
 
 	public void renderSprite(String spriteName, Vector2f location, Camera camera);
 	public void renderSprite(String spriteName, Vector2f location, Camera camera, float[] texCoords, float[] colour);
-	public void renderSprite(String spriteName, float x, float y, float width, float height, float[] rotation);
-	public void renderSprite(String spriteName, float x, float y, float width, float height, float[] texCoords, float[] colour, float[] rotation);
+	public void renderSprite(String spriteName, Vector2f location, float width, float height, float[] rotation);
+	public void renderSprite(String spriteName, Vector2f location, float width, float height, float[] texCoords, float[] colour, float[] rotation);
 
 	public void renderSpriteIgnoringCamera(String spriteName, Vector2f location);
 	public void renderSpriteIgnoringCamera(String spriteName, Vector2f location, float[] texCoords, float[] colour);
 
-	public void renderQuad(int x, int y, int width, int height, float[] colour);
-	public void renderQuad(int x, int y, int width, int height, float[][] colours);
+	public void renderQuad(Vector2f loc, int width, int height, float[] colour);
+	public void renderQuad(Vector2f loc, int width, int height, float[][] colours);
 	public void renderQuad(Rectangle rect, float[] colour);
 	public void renderQuad(Rectangle rect, float[][] colours);
 	
-	public void renderLine(int[] point1, int[] point2, float thickness, float[] colour);
+	public void renderLine(Vector2f point1, Vector2f point2, float thickness, float[] colour);
 	
-	public void startScissor(int x, int y, int width, int height);
+	public void startScissor(Vector2f loc, int width, int height);
 	public void stopScissor();
 }

@@ -51,8 +51,8 @@ public class Button extends Component {
 		if (toolTipDisplay && toolTip) {
 			int textHeight = componentFont.getTextHeight(text), textWidth = componentFont.getTextWidth(text);
 			int toolTipX = Mouse.getMouseX(), toolTipY = (int) (getParent().getDisplayLocation().getY() + getParent().getDimensions().getHeight() + 10);
-			Main.getScreen().renderQuad(toolTipX, toolTipY - textHeight + 14, textWidth + 14, textHeight + 14, Component.DARK);
-			Main.getScreen().renderQuad(toolTipX + 2, toolTipY + 16 - textHeight, textWidth + 10, textHeight + 10, Component.LIGHT);
+			Main.getScreen().renderQuad(new Vector2f(toolTipX, toolTipY - textHeight + 14), textWidth + 14, textHeight + 14, Component.DARK);
+			Main.getScreen().renderQuad(new Vector2f(toolTipX + 2, toolTipY + 16 - textHeight), textWidth + 10, textHeight + 10, Component.LIGHT);
 			
 			componentFont.renderText(text, toolTipX + textWidth / 2 + 7, toolTipY - textHeight / 2 + 21);
 		}

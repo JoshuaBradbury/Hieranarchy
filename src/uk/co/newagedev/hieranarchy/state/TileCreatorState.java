@@ -11,6 +11,7 @@ import uk.co.newagedev.hieranarchy.ui.Container;
 import uk.co.newagedev.hieranarchy.ui.Label;
 import uk.co.newagedev.hieranarchy.ui.TextBox;
 import uk.co.newagedev.hieranarchy.ui.TickBox;
+import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 
 public class TileCreatorState extends State {
@@ -89,7 +90,7 @@ public class TileCreatorState extends State {
 	
 	@Override
 	public void render() {
-		Main.getScreen().renderQuad(0, 0, Main.WIDTH, Main.HEIGHT, Component.VERY_LIGHT);
+		Main.getScreen().renderQuad(new Vector2f(), Main.WIDTH, Main.HEIGHT, Component.VERY_LIGHT);
 		container.render();
 	}
 

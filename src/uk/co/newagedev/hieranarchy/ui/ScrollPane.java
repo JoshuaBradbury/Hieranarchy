@@ -45,7 +45,7 @@ public class ScrollPane extends Component {
 	}
 
 	public void render() {
-		Main.getScreen().renderQuad((int) getLocation().getX(), (int) getLocation().getY(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Component.LIGHT);
+		Main.getScreen().renderQuad(getLocation(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Component.LIGHT);
 		for (ScrollBar bar : scrollBars) {
 			if (bar != null) {
 				bar.render();
@@ -64,7 +64,7 @@ public class ScrollPane extends Component {
 		pane.setOffset(xOffset, yOffset);
 
 		int yOff = scrollBars[1] != null ? 15 : 0;
-		Main.getScreen().startScissor((int) getLocation().getX(), (int) getLocation().getY() + yOff, getWidth(), getHeight());
+		Main.getScreen().startScissor(getLocation().clone().add(0, yOff), getWidth(), getHeight());
 		pane.render();
 		Main.getScreen().stopScissor();
 	}

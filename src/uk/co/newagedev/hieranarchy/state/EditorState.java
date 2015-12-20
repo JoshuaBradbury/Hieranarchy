@@ -111,7 +111,7 @@ public class EditorState extends State {
 				selection.render(getCurrentCamera());
 			}
 		}
-		Main.getScreen().renderQuad(0, 0, Main.WIDTH, 40, Component.VERY_LIGHT);
+		Main.getScreen().renderQuad(new Vector2f(), Main.WIDTH, 40, Component.VERY_LIGHT);
 		toolbar.render();
 		if (editing) {
 			Component.componentFont.renderText("Edit Mode", 10, 50);
