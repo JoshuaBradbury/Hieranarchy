@@ -106,8 +106,8 @@ public class ScrollBar {
 			if (!Mouse.isButtonDown(Mouse.LEFT_BUTTON)) {
 				barHover = getBar().contains(Mouse.getMouseX(), Mouse.getMouseY());
 			}
-			leftHover = (new Rectangle((int) parent.getLocation().getX() + 2, (int) (parent.getLocation().getY() + getParentHeight()) + 2, 11, 11)).contains(Mouse.getMouseX(), Mouse.getMouseY());
-			rightHover = (new Rectangle((int) (parent.getLocation().getX()) + 2, (int) (parent.getLocation().getY() + getParentHeight()) - 2, 11, 11)).contains(Mouse.getMouseX(), Mouse.getMouseY());
+			leftHover = (new Rectangle((int) parent.getLocation().getX() + 2, (int) (parent.getLocation().getY() + getParentHeight()) - 13, 11, 11)).contains(Mouse.getMouseX(), Mouse.getMouseY());
+			rightHover = (new Rectangle((int) parent.getLocation().getX() + getParentWidth() - 13, (int) (parent.getLocation().getY() + getParentHeight()) - 13, 11, 11)).contains(Mouse.getMouseX(), Mouse.getMouseY());
 			if (Mouse.isButtonDown(Mouse.LEFT_BUTTON)) {
 				if (leftHover) {
 					x -= 3;
