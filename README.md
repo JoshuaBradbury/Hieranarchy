@@ -27,4 +27,4 @@ What is left to come is:
 #Credits
 This project was created and is written by Joshua Bradbury
 Thanks go to:
--s0ulan (https://github.com/soulan) - For helping fix the font rendering
+- s0ulan (https://github.com/soulan) - For helping fix the font rendering
