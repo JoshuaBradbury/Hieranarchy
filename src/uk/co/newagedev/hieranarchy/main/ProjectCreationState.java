@@ -1,4 +1,4 @@
-package uk.co.newagedev.hieranarchy.testing;
+package uk.co.newagedev.hieranarchy.main;
 
 import uk.co.newagedev.hieranarchy.state.MenuState;
 import uk.co.newagedev.hieranarchy.ui.Label;

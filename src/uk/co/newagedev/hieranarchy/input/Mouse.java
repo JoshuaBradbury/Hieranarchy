@@ -1,6 +1,6 @@
 package uk.co.newagedev.hieranarchy.input;
 
-import uk.co.newagedev.hieranarchy.testing.Main;
+import uk.co.newagedev.hieranarchy.main.Main;
 
 public class Mouse {
 	

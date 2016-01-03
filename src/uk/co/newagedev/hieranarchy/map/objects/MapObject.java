@@ -3,7 +3,7 @@ package uk.co.newagedev.hieranarchy.map.objects;
 import java.util.HashMap;
 
 import uk.co.newagedev.hieranarchy.graphics.Camera;
-import uk.co.newagedev.hieranarchy.testing.Main;
+import uk.co.newagedev.hieranarchy.main.Main;
 import uk.co.newagedev.hieranarchy.util.CollisionBox;
 import uk.co.newagedev.hieranarchy.util.Vector2f;
 import uk.co.newagedev.hieranarchy.map.Map;

@@ -9,7 +9,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
-import uk.co.newagedev.hieranarchy.testing.Main;
+import uk.co.newagedev.hieranarchy.main.Main;
 import uk.co.newagedev.hieranarchy.util.MathUtil;
 import uk.co.newagedev.hieranarchy.util.Vector2f;
 

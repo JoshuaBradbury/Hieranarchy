@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.newdawn.slick.opengl.Texture;
 
-import uk.co.newagedev.hieranarchy.testing.Main;
+import uk.co.newagedev.hieranarchy.main.Main;
 import uk.co.newagedev.hieranarchy.util.Logger;
 
 public class SpriteRegistry {

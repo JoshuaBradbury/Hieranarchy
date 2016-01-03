@@ -3,7 +3,7 @@ package uk.co.newagedev.hieranarchy.ui;
 import java.awt.Rectangle;
 
 import uk.co.newagedev.hieranarchy.input.Mouse;
-import uk.co.newagedev.hieranarchy.testing.Main;
+import uk.co.newagedev.hieranarchy.main.Main;
 import uk.co.newagedev.hieranarchy.util.Colour;
 
 public class ScrollPane extends Component {

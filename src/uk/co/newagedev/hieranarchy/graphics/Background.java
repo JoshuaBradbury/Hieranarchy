@@ -1,7 +1,7 @@
 package uk.co.newagedev.hieranarchy.graphics;
 
+import uk.co.newagedev.hieranarchy.main.Main;
 import uk.co.newagedev.hieranarchy.map.Map;
-import uk.co.newagedev.hieranarchy.testing.Main;
 import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class Background {

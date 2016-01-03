@@ -1,7 +1,7 @@
 package uk.co.newagedev.hieranarchy.map.objects;
 
 import uk.co.newagedev.hieranarchy.graphics.Camera;
-import uk.co.newagedev.hieranarchy.testing.Main;
+import uk.co.newagedev.hieranarchy.main.Main;
 
 public class Tile extends MapObject {
 

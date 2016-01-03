@@ -1,4 +1,4 @@
-package uk.co.newagedev.hieranarchy.testing;
+package uk.co.newagedev.hieranarchy.main;
 
 import java.util.HashMap;
 import java.util.Map;
