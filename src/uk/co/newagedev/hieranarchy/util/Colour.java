@@ -19,4 +19,8 @@ public class Colour {
 	public static final float[] DARK_DARK_GREY   = new float[] { 0.15f, 0.15f, 0.15f, 1.0f };
 	public static final float[] LIGHT_GREY       = new float[] { 0.75f, 0.75f, 0.75f, 1.0f };
 	public static final float[] LIGHT_LIGHT_GREY = new float[] { 0.85f, 0.85f, 0.85f, 1.0f };
+	
+	public static float[] vary(float[] colour, float r, float g, float b, float a) {
+		return new float[] {colour[0] + r, colour[1] + g, colour[2] + b, colour[3] + a};
+	}
 }
