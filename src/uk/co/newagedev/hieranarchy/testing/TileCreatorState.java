@@ -1,9 +1,11 @@
-package uk.co.newagedev.hieranarchy.state;
+package uk.co.newagedev.hieranarchy.testing;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import uk.co.newagedev.hieranarchy.testing.Main;
+import uk.co.newagedev.hieranarchy.state.EditorState;
+import uk.co.newagedev.hieranarchy.state.State;
+import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.ui.Button;
 import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
 import uk.co.newagedev.hieranarchy.ui.Container;

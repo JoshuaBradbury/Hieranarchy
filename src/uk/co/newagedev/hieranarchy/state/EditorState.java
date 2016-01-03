@@ -11,6 +11,7 @@ import uk.co.newagedev.hieranarchy.map.Map;
 import uk.co.newagedev.hieranarchy.map.objects.MapObject;
 import uk.co.newagedev.hieranarchy.map.objects.Tile;
 import uk.co.newagedev.hieranarchy.testing.Main;
+import uk.co.newagedev.hieranarchy.testing.TileCreatorState;
 import uk.co.newagedev.hieranarchy.ui.Button;
 import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
 import uk.co.newagedev.hieranarchy.ui.Component;

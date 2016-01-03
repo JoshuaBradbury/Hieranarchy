@@ -1,6 +1,6 @@
-package uk.co.newagedev.hieranarchy.state;
+package uk.co.newagedev.hieranarchy.testing;
 
-import uk.co.newagedev.hieranarchy.testing.Main;
+import uk.co.newagedev.hieranarchy.state.MenuState;
 import uk.co.newagedev.hieranarchy.ui.Label;
 import uk.co.newagedev.hieranarchy.ui.TextBox;
 import uk.co.newagedev.hieranarchy.util.Colour;
@@ -28,5 +28,6 @@ public class ProjectCreationState extends MenuState {
 	@Override
 	public void update() {
 		super.update();
+		projectName = nameBox.getText();
 	}
 }
