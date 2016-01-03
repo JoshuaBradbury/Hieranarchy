@@ -11,10 +11,6 @@ import uk.co.newagedev.hieranarchy.util.Colour;
 import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class Button extends Component {
-	
-	public void changeText(String text) {
-		this.text = text;
-	}
 
 	private boolean hover = false, toolTip = false, toolTipDisplay = false;
 
@@ -80,5 +76,13 @@ public class Button extends Component {
 				task.run();
 			}
 		}
+	}
+	
+	public void changeText(String text) {
+		this.text = text;
+	}
+	
+	public String getText() {
+		return text;
 	}
 }

@@ -4,7 +4,11 @@ import uk.co.newagedev.hieranarchy.state.MenuState;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.ui.Button;
 import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
+import uk.co.newagedev.hieranarchy.ui.Container;
+import uk.co.newagedev.hieranarchy.ui.Label;
+import uk.co.newagedev.hieranarchy.ui.TextBox;
 import uk.co.newagedev.hieranarchy.util.Colour;
+import uk.co.newagedev.hieranarchy.util.Logger;
 import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class StartMenuState extends MenuState {
@@ -14,9 +18,18 @@ public class StartMenuState extends MenuState {
 	public StartMenuState() {
 		registerComponent(new Button("Create New Project", 50, 200, 200, 50, false,  new ButtonRunnable() {
 			public void run() {
-				ProjectCreationState state = new ProjectCreationState();
-				StateManager.registerState("project creator", state);
-				Main.setCurrentState("project creator");
+				Container cont = new Container(0, 0);
+				Label label = new Label("Project Name:", 100, 100);
+				TextBox nameBox = new TextBox(100 + (int) label.getDimensions().getWidth(), 100, Main.WIDTH - 200 - (int) label.getDimensions().getWidth(), (int) label.getDimensions().getHeight());
+				
+				cont.addComponent(label);
+				cont.addComponent(nameBox);
+				Main.popup("Create New Project", cont, new ButtonRunnable() {
+					@Override
+					public void run() {
+						Logger.info("YOLO");
+					}
+				});
 			}
 		}));
 		registerComponent(new Button("Load Project", 450, 200, 200, 50, false, new ButtonRunnable() {

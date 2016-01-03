@@ -1,6 +1,10 @@
 package uk.co.newagedev.hieranarchy.main;
 
+import java.util.Stack;
+
 import org.lwjgl.input.Keyboard;
+
+import com.google.gson.Gson;
 
 import uk.co.newagedev.hieranarchy.graphics.OpenGLScreen;
 import uk.co.newagedev.hieranarchy.graphics.Screen;
@@ -8,10 +12,11 @@ import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
 import uk.co.newagedev.hieranarchy.input.KeyBinding;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.project.Project;
+import uk.co.newagedev.hieranarchy.state.PopupState;
 import uk.co.newagedev.hieranarchy.state.StateManager;
+import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
+import uk.co.newagedev.hieranarchy.ui.Container;
 import uk.co.newagedev.hieranarchy.util.Logger;
-
-import com.google.gson.Gson;
 
 public class Main {
 
@@ -33,7 +38,9 @@ public class Main {
 
 	private boolean running;
 
-	public static String currentState;
+	private static String currentState;
+
+	private static Stack<String> popupStack = new Stack<String>();
 
 	public void init() {
 		initResources();
@@ -132,6 +139,28 @@ public class Main {
 		}
 	}
 
+	public static void popup(String title, Container contents, ButtonRunnable runnable) {
+		if (!popupStack.isEmpty()) {
+			currentState = ((PopupState) StateManager.getState(popupStack.lastElement())).getState();
+		}
+		PopupState popup = new PopupState(title, contents, currentState, new ButtonRunnable() {
+			public void run() {
+				if (!popupStack.isEmpty())
+					setCurrentState(((PopupState) StateManager.getState(popupStack.lastElement())).getState());
+				StateManager.removeState(popupStack.pop());
+
+				if (button.getText().equalsIgnoreCase("okay")) {
+					runnable.setButton(button);
+					runnable.run();
+				}
+			}
+		});
+		StateManager.registerState(title, popup);
+		setCurrentState(title);
+		popupStack.push(title);
+
+	}
+
 	public void cleanup() {
 		project.cleanup();
 		SpriteRegistry.clear();
@@ -141,5 +170,9 @@ public class Main {
 
 	public static void setCurrentState(String state) {
 		currentState = state;
+	}
+
+	public static String getCurrentState() {
+		return currentState;
 	}
 }
