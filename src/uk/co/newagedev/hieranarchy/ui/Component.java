@@ -8,7 +8,7 @@ import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public abstract class Component {
 	
-	public static FontSheet componentFont = new FontSheet(new Font("Helvetica", Font.PLAIN, 20));
+	public static FontSheet componentFont = new FontSheet(new Font("Segoe UI", Font.PLAIN, 20));
 	private float x, y;
 	private int width, height, offsetX, offsetY;
 	private Component parent;
