@@ -149,10 +149,14 @@ public class Main {
 					setCurrentState(((PopupState) StateManager.getState(popupStack.lastElement())).getState());
 				StateManager.removeState(popupStack.pop());
 
-				if (button.getText().equalsIgnoreCase("okay")) {
-					runnable.setButton(button);
-					runnable.run();
-				}
+				runnable.setButton(button);
+				runnable.run();
+			}
+		}, new ButtonRunnable() {
+			public void run() {
+				if (!popupStack.isEmpty())
+					setCurrentState(((PopupState) StateManager.getState(popupStack.lastElement())).getState());
+				StateManager.removeState(popupStack.pop());
 			}
 		});
 		StateManager.registerState(title, popup);

@@ -14,7 +14,7 @@ public class PopupState extends MenuState {
 	
 	private String state;
 	
-	public PopupState(String title, Container contents, String state, ButtonRunnable okayTask) {
+	public PopupState(String title, Container contents, String state, ButtonRunnable okayTask, ButtonRunnable cancelTask) {
 		this.state = state;
 		
 		registerComponent(new Label(title, Main.WIDTH / 2 - Component.componentFont.getTextWidth(title) / 2, 0));
@@ -28,7 +28,7 @@ public class PopupState extends MenuState {
 		registerComponent(cont);
 		
 		registerComponent(new Button("Okay", Main.WIDTH / 2 - 125, (int) (cont.getHeight() + cont.getLocation().getY()), 100, 25, false, okayTask));
-		registerComponent(new Button("Cancel", Main.WIDTH / 2 + 125, (int) (cont.getHeight() + cont.getLocation().getY()), 100, 25, false, okayTask));
+		registerComponent(new Button("Cancel", Main.WIDTH / 2 + 125, (int) (cont.getHeight() + cont.getLocation().getY()), 100, 25, false, cancelTask));
 	}
 	
 	@Override
