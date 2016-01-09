@@ -16,7 +16,7 @@ public class StartMenuState extends MenuState {
 	private int count, offset;
 	
 	public StartMenuState() {
-		registerComponent(new Button("Create New Project", 50, 200, 200, 50, false,  new ButtonRunnable() {
+		registerComponent(new Button("Create New Project", Main.WIDTH / 8 * 3 - 100, Main.HEIGHT / 8 * 3 - 25, 200, 50, false,  new ButtonRunnable() {
 			public void run() {
 				Container cont = new Container(0, 0);
 				Label label = new Label("Project Name:", 0, 100);
@@ -33,14 +33,14 @@ public class StartMenuState extends MenuState {
 				});
 			}
 		}));
-		registerComponent(new Button("Load Project", 450, 200, 200, 50, false, new ButtonRunnable() {
+		registerComponent(new Button("Load Project", Main.WIDTH / 8 * 5 - 100, Main.HEIGHT / 8 * 3 - 25, 200, 50, false, new ButtonRunnable() {
 			public void run() {
 				ProjectLoaderState state = new ProjectLoaderState();
 				StateManager.registerState("project loader", state);
 				Main.setCurrentState("project loader");
 			}
 		}));
-		registerComponent(new Button("Quit Game", 50, 300, 200, 50, false, new ButtonRunnable() {
+		registerComponent(new Button("Quit Game", Main.WIDTH / 8 * 5 - 100, Main.HEIGHT / 8 * 5 - 25, 200, 50, false, new ButtonRunnable() {
 			public void run() {
 				Main.getScreen().close();
 			}
