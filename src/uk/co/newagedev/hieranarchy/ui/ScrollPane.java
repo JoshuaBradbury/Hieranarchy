@@ -41,7 +41,7 @@ public class ScrollPane extends Component {
 		}
 		int mx = Mouse.getMouseX(), my = Mouse.getMouseY();
 		boolean hovering = (scrollBars[0] != null ? (my > getDisplayLocation().getY() + getHeight() && my < getDisplayLocation().getY() + getHeight() + 15) || scrollBars[0].isHeld() : false) || (scrollBars[1] != null ? (mx > getDisplayLocation().getX() + getWidth() && mx < getDisplayLocation().getX() + getWidth() + 15) || scrollBars[1].isHeld() : false);
-		if ((new Rectangle((int) getLocation().getX(), (int) getLocation().getY(), getWidth(), getHeight())).contains(Mouse.getMouseX(), Mouse.getMouseY())) {
+		if ((new Rectangle((int) getDisplayLocation().getX(), (int) getDisplayLocation().getY(), getWidth(), getHeight())).contains(Mouse.getMouseX(), Mouse.getMouseY())) {
 			pane.update();
 		} else if (hovering) {
 			Mouse.simulateLocation(-1, -1);
@@ -51,7 +51,7 @@ public class ScrollPane extends Component {
 	}
 
 	public void render() {
-		Main.getScreen().renderQuad(getLocation(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Colour.LIGHT_LIGHT_GREY);
+		Main.getScreen().renderQuad(getDisplayLocation(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Colour.LIGHT_LIGHT_GREY);
 		for (ScrollBar bar : scrollBars) {
 			if (bar != null) {
 				bar.render();
@@ -70,7 +70,7 @@ public class ScrollPane extends Component {
 		pane.setOffset(xOffset, yOffset);
 
 		int yOff = scrollBars[1] != null ? 15 : 0;
-		Main.getScreen().startScissor(getLocation().clone().add(0, yOff), getWidth(), getHeight());
+		Main.getScreen().startScissor(getDisplayLocation().clone().add(0, yOff), getWidth(), getHeight());
 		pane.render();
 		Main.getScreen().stopScissor();
 	}

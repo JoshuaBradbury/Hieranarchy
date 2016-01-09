@@ -41,8 +41,9 @@ public class Container extends Component {
 	public int getHeight() {
 		if (height == 0) {
 			for (Component component : components) {
-				if (component.getLocation().getY() + component.getDimensions().getHeight() > height) {
-					height = (int) (component.getLocation().getY() + component.getDimensions().getHeight());
+				int temp = (int) (component.getLocation().getY() + component.getDimensions().getHeight());
+				if (temp > height) {
+					height = temp;
 				}
 			}
 		}
@@ -52,8 +53,9 @@ public class Container extends Component {
 	public int getWidth() {
 		if (width == 0) {
 			for (Component component : components) {
-				if (component.getLocation().getX() + component.getDimensions().getWidth() > width) {
-					width = (int) (component.getLocation().getX() + component.getDimensions().getWidth());
+				int temp = (int) (component.getLocation().getX() + component.getDimensions().getWidth());
+				if (temp > width) {
+					width = temp;
 				}
 			}
 		}

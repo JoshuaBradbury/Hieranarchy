@@ -24,19 +24,19 @@ public class TickBox extends Component {
 	
 	@Override
 	public void render() {
-		Main.getScreen().renderQuad(getLocation(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Colour.DARK_GREY);
-		Main.getScreen().renderQuad(getLocation().clone().add(1, 1), (int) getDimensions().getWidth() - 2, (int) getDimensions().getHeight() - 2, (hover ? Colour.LIGHT_GREY : Colour.GREY));
+		Main.getScreen().renderQuad(getDisplayLocation(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Colour.DARK_GREY);
+		Main.getScreen().renderQuad(getDisplayLocation().clone().add(1, 1), (int) getDimensions().getWidth() - 2, (int) getDimensions().getHeight() - 2, (hover ? Colour.LIGHT_GREY : Colour.GREY));
 		if (ticked) {
-			Main.getScreen().renderLine(new Vector2f((int) getLocation().getX() + 15, (int) getLocation().getY() + 5), new Vector2f((int) getLocation().getX() + 5, (int) getLocation().getY() + 15), 2, Colour.DARK_DARK_GREY);
-			Main.getScreen().renderLine(new Vector2f((int) getLocation().getX() + 5, (int) getLocation().getY() + 5), new Vector2f((int) getLocation().getX() + 15, (int) getLocation().getY() + 15), 2, Colour.DARK_DARK_GREY);
+			Main.getScreen().renderLine(new Vector2f((int) getDisplayLocation().getX() + 15, (int) getDisplayLocation().getY() + 5), new Vector2f((int) getDisplayLocation().getX() + 5, (int) getDisplayLocation().getY() + 15), 2, Colour.DARK_DARK_GREY);
+			Main.getScreen().renderLine(new Vector2f((int) getDisplayLocation().getX() + 5, (int) getDisplayLocation().getY() + 5), new Vector2f((int) getDisplayLocation().getX() + 15, (int) getDisplayLocation().getY() + 15), 2, Colour.DARK_DARK_GREY);
 		}
 	}
 
 	@Override
 	public void update() {
 		hover = false;
-		if (Mouse.getMouseX() > getLocation().getX() && Mouse.getMouseX() < getLocation().getX() + getDimensions().getWidth()) {
-			if (Mouse.getMouseY() > getLocation().getY() && Mouse.getMouseY() < getLocation().getY() + getDimensions().getHeight()) {
+		if (Mouse.getMouseX() > getDisplayLocation().getX() && Mouse.getMouseX() < getDisplayLocation().getX() + getDimensions().getWidth()) {
+			if (Mouse.getMouseY() > getDisplayLocation().getY() && Mouse.getMouseY() < getDisplayLocation().getY() + getDimensions().getHeight()) {
 				hover = true;
 			}
 		}

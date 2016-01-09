@@ -33,17 +33,17 @@ public class TextBox extends Component {
 	}
 
 	public void render() {
-		Rectangle rect = new Rectangle((int) getLocation().getX(), (int) getLocation().getY(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight());
+		Rectangle rect = new Rectangle((int) getDisplayLocation().getX(), (int) getDisplayLocation().getY(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight());
 		Main.getScreen().renderQuad(rect, Colour.DARK_GREY);
 		rect.grow(-1, -1);
 		Main.getScreen().renderQuad(rect, (hover ? Colour.LIGHT_GREY : Colour.GREY));
-		componentFont.renderText(text, (int) (getLocation().getX() + (getDimensions().getWidth() / 2)), (int) (getLocation().getY() + (getDimensions().getHeight() / 2)));
+		componentFont.renderText(text, (int) (getDisplayLocation().getX() + (getDimensions().getWidth() / 2)), (int) (getDisplayLocation().getY() + (getDimensions().getHeight() / 2)));
 		if (selected) {
 			selectedTimer += 1;
 			if (selectedTimer % 60 < 30) {
 				int lineHeight = text.length() > 0 ? componentFont.getTextHeight(text) : 20;
 				int cursorX = (int) (getDimensions().getWidth() / 2) - (componentFont.getTextWidth(text) / 2) + componentFont.getTextWidth(text.substring(0, cursorPlacement));
-				Main.getScreen().renderLine(new Vector2f((int) getLocation().getX() + cursorX, (int) getDimensions().getHeight() / 2 + getLocation().getY() - lineHeight / 2), new Vector2f((int) getLocation().getX() + cursorX, (int) getDimensions().getHeight() / 2 + getLocation().getY() + lineHeight / 2), 1, Colour.BLACK);
+				Main.getScreen().renderLine(new Vector2f((int) getDisplayLocation().getX() + cursorX, (int) getDimensions().getHeight() / 2 + getDisplayLocation().getY() - lineHeight / 2), new Vector2f((int) getDisplayLocation().getX() + cursorX, (int) getDimensions().getHeight() / 2 + getDisplayLocation().getY() + lineHeight / 2), 1, Colour.BLACK);
 			}
 		} else {
 			selectedTimer = 0;
@@ -52,8 +52,8 @@ public class TextBox extends Component {
 
 	public void update() {
 		hover = false;
-		if (Mouse.getMouseX() > getLocation().getX() && Mouse.getMouseX() < getLocation().getX() + getDimensions().getWidth()) {
-			if (Mouse.getMouseY() > getLocation().getY() && Mouse.getMouseY() < getLocation().getY() + getDimensions().getHeight()) {
+		if (Mouse.getMouseX() > getDisplayLocation().getX() && Mouse.getMouseX() < getDisplayLocation().getX() + getDimensions().getWidth()) {
+			if (Mouse.getMouseY() > getDisplayLocation().getY() && Mouse.getMouseY() < getDisplayLocation().getY() + getDimensions().getHeight()) {
 				hover = true;
 			}
 		}
