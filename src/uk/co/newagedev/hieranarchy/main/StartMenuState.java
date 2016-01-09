@@ -19,11 +19,12 @@ public class StartMenuState extends MenuState {
 		registerComponent(new Button("Create New Project", 50, 200, 200, 50, false,  new ButtonRunnable() {
 			public void run() {
 				Container cont = new Container(0, 0);
-				Label label = new Label("Project Name:", 100, 100);
-				TextBox nameBox = new TextBox(100 + (int) label.getDimensions().getWidth(), 100, Main.WIDTH - 200 - (int) label.getDimensions().getWidth(), (int) label.getDimensions().getHeight());
-				
+				Label label = new Label("Project Name:", 0, 100);
+				TextBox nameBox = new TextBox((int) label.getDimensions().getWidth() + 20, 100, Main.WIDTH - 200 - (int) label.getDimensions().getWidth(), (int) label.getDimensions().getHeight());
+				Label spacing = new Label(" ", 0, 200);
 				cont.addComponent(label);
 				cont.addComponent(nameBox);
+				cont.addComponent(spacing);
 				Main.popup("Create New Project", cont, new ButtonRunnable() {
 					@Override
 					public void run() {
