@@ -1,4 +1,4 @@
-# Hieranarchy
+#Hieranarchy
 
 #What is it?
 
@@ -19,12 +19,14 @@ Features:
 - Tile creation and editing in the editor
 
 What is left to come is:
+- Add map management interface
+- Improve links between interfaces
 - Entities as a whole
 - Image editor for sprites
 - Possible sound editor?
 - and whatever anyone else wants to suggest!
 
 #Credits
-This project was created and is written by Joshua Bradbury
+This project was created, designed and written by Joshua Bradbury
 Thanks go to:
 - s0ulan (https://github.com/soulan) - For helping fix the font rendering
