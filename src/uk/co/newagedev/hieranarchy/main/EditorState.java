@@ -1,4 +1,4 @@
-package uk.co.newagedev.hieranarchy.state;
+package uk.co.newagedev.hieranarchy.main;
 
 import java.util.List;
 
@@ -7,11 +7,11 @@ import uk.co.newagedev.hieranarchy.graphics.Sprite;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
 import uk.co.newagedev.hieranarchy.input.KeyBinding;
 import uk.co.newagedev.hieranarchy.input.Mouse;
-import uk.co.newagedev.hieranarchy.main.Main;
-import uk.co.newagedev.hieranarchy.main.TileCreatorState;
 import uk.co.newagedev.hieranarchy.map.Map;
 import uk.co.newagedev.hieranarchy.map.objects.MapObject;
 import uk.co.newagedev.hieranarchy.map.objects.Tile;
+import uk.co.newagedev.hieranarchy.state.State;
+import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.ui.Button;
 import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
 import uk.co.newagedev.hieranarchy.ui.Component;

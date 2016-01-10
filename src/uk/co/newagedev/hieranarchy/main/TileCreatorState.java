@@ -3,7 +3,6 @@ package uk.co.newagedev.hieranarchy.main;
 import java.util.HashMap;
 import java.util.Map;
 
-import uk.co.newagedev.hieranarchy.state.EditorState;
 import uk.co.newagedev.hieranarchy.state.State;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.ui.Button;
