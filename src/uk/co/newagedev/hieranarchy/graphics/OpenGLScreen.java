@@ -39,6 +39,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
+import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.stb.STBImage;
@@ -84,6 +85,10 @@ public class OpenGLScreen implements Screen {
 				Logger.info(width, height);
 			}
 		}));
+
+		GLFWVidMode vidmode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+
+		GLFW.glfwSetWindowPos(windowID, (vidmode.width() - Main.WIDTH) / 2, (vidmode.height() - Main.HEIGHT) / 2);
 
 		GLFW.glfwMakeContextCurrent(windowID);
 		GL.createCapabilities();
@@ -157,7 +162,7 @@ public class OpenGLScreen implements Screen {
 		} catch (IOException e) {
 			Logger.error(e.getMessage());
 		}
-		
+
 		return new Sprite(image, width.get(0), height.get(0), components.get(0) == 3 ? GL11.GL_RGB : GL11.GL_RGBA);
 	}
 
