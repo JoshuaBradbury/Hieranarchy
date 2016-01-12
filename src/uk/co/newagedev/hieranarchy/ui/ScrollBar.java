@@ -1,6 +1,6 @@
 package uk.co.newagedev.hieranarchy.ui;
 
-import org.lwjgl.util.Rectangle;
+import java.awt.Rectangle;
 
 import uk.co.newagedev.hieranarchy.input.KeyBinding;
 import uk.co.newagedev.hieranarchy.input.Mouse;
@@ -58,24 +58,24 @@ public class ScrollBar {
 			int paneHeight = (int) (parent.getPane().getDimensions().getHeight() > getParentHeight() ? parent.getPane().getDimensions().getHeight() : getParentHeight());
 			height = (int) (((float) getParentHeight() / (float) paneHeight) * (float) maxHeight);
 			if (barHover) {
-				if (Mouse.isButtonPressing(Mouse.LEFT_BUTTON)) {
+				if (Mouse.isButtonPressing(Mouse.BUTTON_LEFT)) {
 					startY = y;
-					startDragY = Mouse.getMouseY();
+					startDragY = (int) Mouse.getMouseY();
 				}
-				if (Mouse.isButtonDown(Mouse.LEFT_BUTTON)) {
-					y = startY + (Mouse.getMouseY() - startDragY);
+				if (Mouse.isButtonDown(Mouse.BUTTON_LEFT)) {
+					y = startY + (int) (Mouse.getMouseY() - startDragY);
 				}
 			}
-			if (Mouse.isButtonReleasing(Mouse.LEFT_BUTTON)) {
+			if (Mouse.isButtonReleasing(Mouse.BUTTON_LEFT)) {
 				startY = -1;
 				startDragY = -1;
 			}
-			if (!Mouse.isButtonDown(Mouse.LEFT_BUTTON)) {
+			if (!Mouse.isButtonDown(Mouse.BUTTON_LEFT)) {
 				barHover = getBar().contains(Mouse.getMouseX(), Mouse.getMouseY());
 			}
 			topHover = (new Rectangle((int) (parent.getDisplayLocation().getX() + getParentWidth()) - 13, (int) (parent.getDisplayLocation().getY()) + 2, 11, 11)).contains(Mouse.getMouseX(), Mouse.getMouseY());
 			bottomHover = (new Rectangle((int) (parent.getDisplayLocation().getX() + getParentWidth()) - 13, (int) (parent.getDisplayLocation().getY()) + maxHeight + 17, 11, 11)).contains(Mouse.getMouseX(), Mouse.getMouseY());
-			if (Mouse.isButtonDown(Mouse.LEFT_BUTTON)) {
+			if (Mouse.isButtonDown(Mouse.BUTTON_LEFT)) {
 				if (topHover) {
 					y -= 3;
 				}
@@ -96,24 +96,24 @@ public class ScrollBar {
 			int paneWidth = (int) (parent.getPane().getDimensions().getWidth() > getParentWidth() ? parent.getPane().getDimensions().getWidth() : getParentWidth());
 			width = (int) (((float) getParentWidth() / (float) paneWidth) * (float) maxWidth);
 			if (barHover) {
-				if (Mouse.isButtonPressing(Mouse.LEFT_BUTTON)) {
+				if (Mouse.isButtonPressing(Mouse.BUTTON_LEFT)) {
 					startX = x;
-					startDragX = Mouse.getMouseX();
+					startDragX = (int) Mouse.getMouseX();
 				}
-				if (Mouse.isButtonDown(Mouse.LEFT_BUTTON)) {
-					x = startX + (Mouse.getMouseX() - startDragX);
+				if (Mouse.isButtonDown(Mouse.BUTTON_LEFT)) {
+					x = startX + (int) (Mouse.getMouseX() - startDragX);
 				}
 			}
-			if (Mouse.isButtonReleasing(Mouse.LEFT_BUTTON)) {
+			if (Mouse.isButtonReleasing(Mouse.BUTTON_LEFT)) {
 				startX = -1;
 				startDragX = -1;
 			}
-			if (!Mouse.isButtonDown(Mouse.LEFT_BUTTON)) {
+			if (!Mouse.isButtonDown(Mouse.BUTTON_LEFT)) {
 				barHover = getBar().contains(Mouse.getMouseX(), Mouse.getMouseY());
 			}
 			leftHover = (new Rectangle((int) parent.getDisplayLocation().getX() + 2, (int) (parent.getDisplayLocation().getY() + getParentHeight()) - 13, 11, 11)).contains(Mouse.getMouseX(), Mouse.getMouseY());
 			rightHover = (new Rectangle((int) parent.getDisplayLocation().getX() + getParentWidth() - 13, (int) (parent.getDisplayLocation().getY() + getParentHeight()) - 13, 11, 11)).contains(Mouse.getMouseX(), Mouse.getMouseY());
-			if (Mouse.isButtonDown(Mouse.LEFT_BUTTON)) {
+			if (Mouse.isButtonDown(Mouse.BUTTON_LEFT)) {
 				if (leftHover) {
 					x -= 3;
 				}

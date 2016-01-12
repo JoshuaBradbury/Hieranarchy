@@ -34,7 +34,7 @@ public class Window extends Container {
 	@Override
 	public void update() {
 		super.update();
-		if (Mouse.isButtonPressing(Mouse.LEFT_BUTTON) && !moving) {
+		if (Mouse.isButtonPressing(Mouse.BUTTON_LEFT) && !moving) {
 			if (Mouse.getMouseX() > getLocation().getX() && Mouse.getMouseX() < getLocation().getX() + getDimensions().getWidth()) {
 				if (Mouse.getMouseY() > getLocation().getY()  - 30 && Mouse.getMouseY() < getLocation().getY()) {
 					moving = true;
@@ -42,10 +42,10 @@ public class Window extends Container {
 			}
 		}
 		if (moving) {
-			if (Mouse.isButtonReleasing(Mouse.LEFT_BUTTON)) {
+			if (Mouse.isButtonReleasing(Mouse.BUTTON_LEFT)) {
 				moving = false;
 			}
-			if (Mouse.isButtonDown(Mouse.LEFT_BUTTON)) {
+			if (Mouse.isButtonDown(Mouse.BUTTON_LEFT)) {
 				for (Component component : getComponents()) {
 					component.setLocation((int) (component.getLocation().getX() + Mouse.getChangeInMouseX()), (int) (component.getLocation().getY() - Mouse.getChangeInMouseY()));
 				}

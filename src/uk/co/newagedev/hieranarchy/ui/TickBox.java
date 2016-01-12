@@ -40,7 +40,7 @@ public class TickBox extends Component {
 				hover = true;
 			}
 		}
-		if (Mouse.isButtonReleasing(Mouse.LEFT_BUTTON)) {
+		if (Mouse.isButtonReleasing(Mouse.BUTTON_LEFT)) {
 			if (hover) {
 				ticked = !ticked;
 			}

@@ -2,9 +2,6 @@ package uk.co.newagedev.hieranarchy.ui;
 
 import java.awt.Rectangle;
 
-import org.lwjgl.input.Keyboard;
-
-import uk.co.newagedev.hieranarchy.graphics.FontSheet;
 import uk.co.newagedev.hieranarchy.input.KeyBinding;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.main.Main;
@@ -16,7 +13,7 @@ public class TextBox extends Component {
 	private boolean hover = false, selected = false;
 	private String text;
 	private int selectedTimer = 0, cursorPlacement = 0;
-	private int[] keyTimer = new int[Keyboard.KEYBOARD_SIZE];
+	private int[] keyTimer = new int[KeyBinding.KEYBOARD_SIZE];
 
 	public TextBox(int x, int y, int width, int height) {
 		super(x, y, width, height);
@@ -57,7 +54,7 @@ public class TextBox extends Component {
 				hover = true;
 			}
 		}
-		if (Mouse.isButtonReleasing(Mouse.LEFT_BUTTON)) {
+		if (Mouse.isButtonReleasing(Mouse.BUTTON_LEFT)) {
 			selected = hover;
 		}
 
@@ -65,22 +62,23 @@ public class TextBox extends Component {
 			for (int key : KeyBinding.getKeysDown()) {
 				keyTimer[key] += 1;
 				if (keyTimer[key] == 1 || keyTimer[key] > 30) {
-					if (Keyboard.getKeyName(key).trim().equalsIgnoreCase("back")) {
+					if (KeyBinding.getKeyName(key).trim().equalsIgnoreCase("back")) {
 						removeFromText();
-					} else if (Keyboard.getKeyName(key).trim().equalsIgnoreCase("delete")) {
+					} else if (KeyBinding.getKeyName(key).trim().equalsIgnoreCase("delete")) {
 						if (cursorPlacement < text.length()) {
 							cursorPlacement++;
 							removeFromText();
 						}
-					} else if (Keyboard.getKeyName(key).trim().equalsIgnoreCase("left")) {
+					} else if (KeyBinding.getKeyName(key).trim().equalsIgnoreCase("left")) {
 						cursorPlacement--;
 						if (cursorPlacement < 0) cursorPlacement++;
-					} else if (Keyboard.getKeyName(key).trim().equalsIgnoreCase("right")) {
+					} else if (KeyBinding.getKeyName(key).trim().equalsIgnoreCase("right")) {
 						cursorPlacement++;
 						if (cursorPlacement > text.length()) cursorPlacement--;
 					} else {
 						String kt = String.valueOf(KeyBinding.getKeyChar(key));
-						if (FontSheet.POSSIBLE_CHARACTERS.contains(kt)) {
+						char c = kt.toCharArray()[0];
+						if (c >= 32 && c < 128) {
 							addToText(kt);
 						}
 					}

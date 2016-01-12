@@ -1,9 +1,6 @@
 package uk.co.newagedev.hieranarchy.graphics;
 
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-
-import org.newdawn.slick.opengl.Texture;
 
 import uk.co.newagedev.hieranarchy.util.Vector2f;
 
@@ -15,13 +12,10 @@ public interface Screen {
 	public void close();
 	
 	public void setTitle(String title);
+	public long getWindowID();
 	
-	public Texture loadTexture(String path);
-	public BufferedImage loadImage(String path);
-	public void loadSpritesFromImage(String imagePath, int width, int height);
-	public void loadSpritesFromImage(String imagePath, int width, int height, String[] names);
-	public Texture getTextureFromImage(BufferedImage image);
-	
+	public Sprite loadImageFromFile(String path);
+
 	public void renderInit();
 	public void postRender();
 
@@ -31,7 +25,7 @@ public interface Screen {
 	public void renderSprite(String spriteName, Vector2f location, float width, float height, float[] texCoords, float[] colour, float[] rotation);
 
 	public void renderSpriteIgnoringCamera(String spriteName, Vector2f location);
-	public void renderSpriteIgnoringCamera(String spriteName, Vector2f location, float[] texCoords, float[] colour);
+	public void renderSpriteIgnoringCamera(String spriteName, Vector2f location, Vector2f size, float[] texCoords, float[] colour);
 
 	public void renderQuad(Vector2f loc, int width, int height, float[] colour);
 	public void renderQuad(Vector2f loc, int width, int height, float[][] colours);

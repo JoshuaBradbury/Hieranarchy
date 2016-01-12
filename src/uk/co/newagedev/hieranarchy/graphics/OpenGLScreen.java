@@ -30,20 +30,18 @@ import static org.lwjgl.opengl.GL11.glVertex2f;
 
 import java.awt.Font;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 
-import javax.imageio.ImageIO;
-
-import org.lwjgl.LWJGLException;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.PixelFormat;
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
-import org.newdawn.slick.util.BufferedImageUtil;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.stb.STBImage;
 
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.main.Main;
@@ -56,37 +54,111 @@ public class OpenGLScreen implements Screen {
 	private boolean close = false;
 	public static final boolean DEBUG = false;
 	private Font screenFont;
+	private long windowID;
+
+	@SuppressWarnings("unused")
+	private GLFWFramebufferSizeCallback framebufferSizeCallback;
+	@SuppressWarnings("unused")
+	private GLFWErrorCallback errorCallback;
 
 	public OpenGLScreen() {
-		try {
-			PixelFormat pixelFormat = new PixelFormat();
+		if (GLFW.glfwInit() != GLFW.GLFW_TRUE)
+			throw new IllegalStateException("Unable to initialize GLFW");
 
-			Display.setDisplayMode(new DisplayMode(Main.WIDTH, Main.HEIGHT));
-			Display.setTitle(Main.TITLE);
-			Display.create(pixelFormat);
-		} catch (LWJGLException e) {
-			e.printStackTrace();
-			Display.destroy();
-			System.exit(1);
+		// GLFW.glfwDefaultWindowHints();
+		// GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_FALSE);
+
+		GLFW.glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
+
+		windowID = GLFW.glfwCreateWindow(Main.WIDTH, Main.HEIGHT, Main.TITLE, 0, 0);
+
+		if (windowID == 0) {
+			throw new RuntimeException("Failed to create GLFW window");
 		}
+
+		// GLFW.glfwSetFramebufferSizeCallback(windowID,
+		// (framebufferSizeCallback = new GLFWFramebufferSizeCallback() {
+		// @Override
+		// public void invoke(long window, int width, int height) {
+		// Main.WIDTH = width;
+		// Main.HEIGHT = height;
+		// Logger.info(width, height);
+		// }
+		// }));
+
+		GLFW.glfwMakeContextCurrent(windowID);
+		GL.createCapabilities();
+
+		GLFW.glfwShowWindow(windowID);
 	}
 
 	public void cleanup() {
-		Display.destroy();
+		GLFW.glfwDestroyWindow(windowID);
+		GLFW.glfwTerminate();
+	}
+
+	public long getWindowID() {
+		return windowID;
+	}
+
+	private long variableYieldTime, lastTime;
+
+	private void sync(int fps) {
+		if (fps <= 0)
+			return;
+
+		long sleepTime = 1000000000 / fps;
+		long yieldTime = Math.min(sleepTime, variableYieldTime + sleepTime % (1000 * 1000));
+		long overSleep = 0;
+
+		try {
+			while (true) {
+				long t = System.nanoTime() - lastTime;
+
+				if (t < sleepTime - yieldTime) {
+					Thread.sleep(1);
+				} else if (t < sleepTime) {
+					Thread.yield();
+				} else {
+					overSleep = t - sleepTime;
+					break;
+				}
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} finally {
+			lastTime = System.nanoTime() - Math.min(overSleep, sleepTime);
+
+			if (overSleep > variableYieldTime) {
+				variableYieldTime = Math.min(variableYieldTime + 200 * 1000, sleepTime);
+			} else if (overSleep < variableYieldTime - 200 * 1000) {
+				variableYieldTime = Math.max(variableYieldTime - 2 * 1000, 0);
+			}
+		}
 	}
 
 	public boolean shouldClose() {
-		return Display.isCloseRequested() || close;
+		return GLFW.glfwWindowShouldClose(windowID) == GL11.GL_TRUE || close;
 	}
 
-	public Texture loadTexture(String path) {
-		Texture texture = null;
+	public Sprite loadImageFromFile(String path) {
+		ByteBuffer image = null, imageBuffer;
+
+		IntBuffer width = BufferUtils.createIntBuffer(1);
+		IntBuffer height = BufferUtils.createIntBuffer(1);
+		IntBuffer components = BufferUtils.createIntBuffer(1);
+
 		try {
-			texture = TextureLoader.getTexture(FileUtil.getExtension(path).toUpperCase(), new FileInputStream(new File(path)));
+			imageBuffer = FileUtil.readToByteBuffer(new FileInputStream(path));
+
+			image = STBImage.stbi_load_from_memory(imageBuffer, width, height, components, 0);
+
+			if (image == null)
+				throw new RuntimeException("Failed to load image: " + STBImage.stbi_failure_reason());
 		} catch (IOException e) {
 			Logger.error(e.getMessage());
 		}
-		return texture;
+		return new Sprite(image, width.get(0), height.get(0), GL11.GL_RGB);
 	}
 
 	public void renderSprite(String spriteName, Vector2f location, Camera camera) {
@@ -105,20 +177,20 @@ public class OpenGLScreen implements Screen {
 	}
 
 	public void renderSpriteIgnoringCamera(String spriteName, Vector2f location) {
-		renderSpriteIgnoringCamera(spriteName, location, new float[] { 0.0f, 1.0f, 0.0f, 1.0f }, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
-	}
-
-	public void renderSpriteIgnoringCamera(String spriteName, Vector2f location, float[] texCoords, float[] colour) {
 		if (SpriteRegistry.doesSpriteExist(spriteName)) {
 			Sprite sprite = SpriteRegistry.getSprite(spriteName);
-			renderSprite(spriteName, location, sprite.getWidth(), sprite.getHeight(), texCoords, colour, new float[] { 0.0f, 0.0f, 0.0f });
+			renderSpriteIgnoringCamera(spriteName, location, new Vector2f(sprite.getWidth(), sprite.getHeight()), new float[] { 0.0f, 1.0f, 0.0f, 1.0f }, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
 		}
 	}
-	
+
+	public void renderSpriteIgnoringCamera(String spriteName, Vector2f location, Vector2f size, float[] texCoords, float[] colour) {
+		renderSprite(spriteName, location, size.getX(), size.getY(), texCoords, colour, new float[] { 0.0f, 0.0f, 0.0f });
+	}
+
 	public void renderSprite(String spriteName, Vector2f location, float width, float height, float[] rotation) {
 		renderSprite(spriteName, location, width, height, new float[] { 0.0f, 1.0f, 0.0f, 1.0f }, new float[] { 1.0f, 1.0f, 1.0f, 1.0f }, rotation);
 	}
-	
+
 	public void renderSprite(String spriteName, Vector2f location, float width, float height, float[] texCoords, float[] colour, float[] rotation) {
 		if (SpriteRegistry.doesSpriteExist(spriteName)) {
 			glEnable(GL_TEXTURE_2D);
@@ -147,7 +219,7 @@ public class OpenGLScreen implements Screen {
 	}
 
 	public void setTitle(String title) {
-		Display.setTitle(title);
+		GLFW.glfwSetWindowTitle(windowID, title);
 	}
 
 	public void renderInit() {
@@ -170,61 +242,12 @@ public class OpenGLScreen implements Screen {
 			}
 			String text = "(" + String.valueOf(Mouse.getMouseX()) + "," + String.valueOf(Mouse.getMouseY()) + ")";
 		}
-		Display.update();
-		Display.sync(60);
+
+		GLFW.glfwPollEvents();
+		GLFW.glfwSwapBuffers(windowID);
+		sync(60);
 	}
 
-	public BufferedImage loadImage(String path) {
-		File imageFile = new File(path);
-		if (imageFile.exists()) {
-			try {
-				return ImageIO.read(imageFile);
-			} catch (IOException e) {
-				Logger.error(e.getMessage());
-			}
-		}
-		return null;
-	}
-
-	public void loadSpritesFromImage(String imagePath, int width, int height) {
-		String[] names = new String[width * height];
-		for (int i = 0; i < (width * height); i++) {
-			names[i] = FileUtil.getFileNameWithoutExtension(imagePath) + Math.floor(i / width) + (i % width);
-		}
-		loadSpritesFromImage(imagePath, width, height, names);
-	}
-
-	public void loadSpritesFromImage(String imagePath, int width, int height, String[] names) {
-		int max = names.length;
-		if (FileUtil.doesFileExist(imagePath)) {
-			BufferedImage image;
-			try {
-				image = ImageIO.read(FileUtil.load(imagePath));
-				int tileWidth = (image.getWidth() / width);
-				int tileHeight = (image.getHeight() / height);
-				for (int y = 0; y < height; y++) {
-					for (int x = 0; x < width; x++) {
-						if (y * width + x < max) {
-							SpriteRegistry.registerImage(names[x + (y * width)], image.getSubimage(x * tileWidth, y * tileHeight, tileWidth, tileHeight));
-						}
-					}
-				}
-				Logger.info("\"" + imagePath + "\"", "loaded sheet", "width:", width, "height:", height, "tile width:", tileWidth, "tile height:", tileHeight);
-			} catch (IOException e) {
-				Logger.error(e.getMessage());
-			}
-		}
-	}
-
-	public Texture getTextureFromImage(BufferedImage image) {
-		try {
-			return BufferedImageUtil.getTexture("", image);
-		} catch (IOException e) {
-			Logger.error(e.getMessage());
-		}
-		return null;
-	}
-	
 	public void renderQuad(Rectangle rect, float[] colour) {
 		renderQuad(new Vector2f((int) rect.getX(), (int) rect.getY()), (int) rect.getWidth(), (int) rect.getHeight(), colour);
 	}
@@ -296,7 +319,7 @@ public class OpenGLScreen implements Screen {
 		glEnable(GL_SCISSOR_TEST);
 		glScissor((int) loc.getX(), (int) loc.getY(), width, height);
 	}
-	
+
 	public void stopScissor() {
 		glDisable(GL_SCISSOR_TEST);
 	}

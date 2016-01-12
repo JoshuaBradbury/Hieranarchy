@@ -180,7 +180,7 @@ public class EditorState extends State {
 	@Override
 	public void update() {
 		toolbar.update();
-		if (KeyBinding.isKeyReleasing("editmapplay")) {
+		if (KeyBinding.isBindingReleasing("editmapplay")) {
 			changePlaying();
 		}
 		if (editing) {
@@ -196,19 +196,19 @@ public class EditorState extends State {
 
 				currentMap.removeObject(selection);
 
-				if (Mouse.isButtonDown(Mouse.LEFT_BUTTON) || Mouse.isButtonDown(Mouse.RIGHT_BUTTON) || Mouse.isButtonDown(Mouse.MIDDLE_BUTTON)) {
+				if (Mouse.isButtonDown(Mouse.BUTTON_LEFT) || Mouse.isButtonDown(Mouse.BUTTON_RIGHT) || Mouse.isButtonDown(Mouse.BUTTON_MIDDLE)) {
 					if (mouseOverWindow) {
 						downOverWindow = true;
 					}
 				}
 
-				if (!Mouse.isButtonDown(Mouse.LEFT_BUTTON) && !Mouse.isButtonDown(Mouse.RIGHT_BUTTON) && !Mouse.isButtonDown(Mouse.MIDDLE_BUTTON)) {
+				if (!Mouse.isButtonDown(Mouse.BUTTON_LEFT) && !Mouse.isButtonDown(Mouse.BUTTON_RIGHT) && !Mouse.isButtonDown(Mouse.BUTTON_MIDDLE)) {
 					if (downOverWindow) {
 						downOverWindow = false;
 					}
 				}
 
-				if (Mouse.isButtonDown(Mouse.RIGHT_BUTTON) && !placing && !mouseOverWindow) {
+				if (Mouse.isButtonDown(Mouse.BUTTON_RIGHT) && !placing && !mouseOverWindow) {
 					deleting = true;
 					Tile tile = currentMap.getTileAt(selectionLocation);
 					if (tile != null) {
@@ -218,7 +218,7 @@ public class EditorState extends State {
 					}
 				}
 
-				if (Mouse.isButtonReleasing(Mouse.RIGHT_BUTTON) && !placing) {
+				if (Mouse.isButtonReleasing(Mouse.BUTTON_RIGHT) && !placing) {
 					deleting = false;
 					List<MapObject> tiles = currentMap.getObjectsWithProperty("delete", "type:tile");
 					for (MapObject tile : tiles) {
@@ -226,7 +226,7 @@ public class EditorState extends State {
 					}
 				}
 
-				if (Mouse.isButtonDown(Mouse.LEFT_BUTTON) && !deleting && !mouseOverWindow) {
+				if (Mouse.isButtonDown(Mouse.BUTTON_LEFT) && !deleting && !mouseOverWindow) {
 					placing = true;
 					if (currentMap.getTileAt(selectionLocation) != null) {
 						currentMap.removeObject(currentMap.getTileAt(selectionLocation));
@@ -238,15 +238,15 @@ public class EditorState extends State {
 					currentMap.addObject(selection);
 				}
 
-				if (Mouse.isButtonReleasing(Mouse.LEFT_BUTTON) && !deleting) {
+				if (Mouse.isButtonReleasing(Mouse.BUTTON_LEFT) && !deleting) {
 					placing = false;
 				}
 
-				if (KeyBinding.isKeyReleasing("SelectNextTile")) {
+				if (KeyBinding.isBindingReleasing("SelectNextTile")) {
 					currentTileName = currentMap.getMapStore().getNextTile(currentTileName);
 				}
 
-				if (KeyBinding.isKeyReleasing("SelectPrevTile")) {
+				if (KeyBinding.isBindingReleasing("SelectPrevTile")) {
 					currentTileName = currentMap.getMapStore().getPrevTile(currentTileName);
 				}
 
@@ -272,11 +272,11 @@ public class EditorState extends State {
 	
 				Camera camera = getCurrentCamera();
 
-				if (KeyBinding.isKeyDown("Up")) {
+				if (KeyBinding.isBindingDown("Up")) {
 					camera.move(0, (int) (5 * camera.getZoom()));
 				}
 
-				if (KeyBinding.isKeyDown("Down")) {
+				if (KeyBinding.isBindingDown("Down")) {
 					camera.move(0, (int) (-5 * camera.getZoom()));
 				}
 

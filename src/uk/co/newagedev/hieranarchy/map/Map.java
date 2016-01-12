@@ -122,10 +122,10 @@ public class Map {
 	public void updateCamera() {
 		bg.update();
 		Camera camera = getState().getCurrentCamera();
-		if (KeyBinding.isKeyDown("Left")) {
+		if (KeyBinding.isBindingDown("Left")) {
 			camera.move((int) (-5 * camera.getZoom()), 0);
 		}
-		if (KeyBinding.isKeyDown("Right")) {
+		if (KeyBinding.isBindingDown("Right")) {
 			camera.move((int) (5 * camera.getZoom()), 0);
 		}
 	}

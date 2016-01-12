@@ -2,8 +2,6 @@ package uk.co.newagedev.hieranarchy.main;
 
 import java.util.Stack;
 
-import org.lwjgl.input.Keyboard;
-
 import com.google.gson.Gson;
 
 import uk.co.newagedev.hieranarchy.graphics.OpenGLScreen;
@@ -26,7 +24,7 @@ public class Main {
 
 	public static Project project = new Project("testing");
 
-	public static final int WIDTH = 1024, HEIGHT = 576;
+	public static int WIDTH = 1024, HEIGHT = 576;
 
 	public static final int SPRITE_WIDTH = 64, SPRITE_HEIGHT = 64;
 
@@ -43,6 +41,7 @@ public class Main {
 	private static Stack<String> popupStack = new Stack<String>();
 
 	public void init() {
+		Mouse.init();
 		initResources();
 		initStates();
 		initBindings();
@@ -60,13 +59,13 @@ public class Main {
 	}
 
 	public void initBindings() {
-		KeyBinding.bindKey("Left", Keyboard.KEY_LEFT);
-		KeyBinding.bindKey("Right", Keyboard.KEY_RIGHT);
-		KeyBinding.bindKey("Up", Keyboard.KEY_UP);
-		KeyBinding.bindKey("Down", Keyboard.KEY_DOWN);
-		KeyBinding.bindKey("editmapplay", Keyboard.KEY_RETURN);
-		KeyBinding.bindKey("SelectPrevTile", Keyboard.KEY_Z);
-		KeyBinding.bindKey("SelectNextTile", Keyboard.KEY_X);
+		KeyBinding.bindKey("Left", KeyBinding.KEY_LEFT);
+		KeyBinding.bindKey("Right", KeyBinding.KEY_RIGHT);
+		KeyBinding.bindKey("Up", KeyBinding.KEY_UP);
+		KeyBinding.bindKey("Down", KeyBinding.KEY_DOWN);
+		KeyBinding.bindKey("editmapplay", KeyBinding.KEY_ENTER);
+		KeyBinding.bindKey("SelectPrevTile", KeyBinding.KEY_Z);
+		KeyBinding.bindKey("SelectNextTile", KeyBinding.KEY_X);
 	}
 
 	public void initStates() {

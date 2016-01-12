@@ -1,9 +1,14 @@
 package uk.co.newagedev.hieranarchy.util;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.lwjgl.BufferUtils;
 
 public class FileUtil {
 
@@ -109,5 +114,33 @@ public class FileUtil {
 			}
 		}
 		return file;
+	}
+
+	public static ByteBuffer readToByteBuffer(InputStream inputStream) {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+		byte[] buffer = new byte[4096];
+
+		try {
+			while (true) {
+				int n = inputStream.read(buffer);
+
+				if (n < 0)
+					break;
+
+				outputStream.write(buffer, 0, n);
+			}
+
+			inputStream.close();
+		} catch (Exception e) {
+			Logger.error((Object[]) e.getStackTrace());
+		}
+
+		byte[] bytes = outputStream.toByteArray();
+
+		ByteBuffer byteBuffer = BufferUtils.createByteBuffer(bytes.length);
+		byteBuffer.put(bytes).flip();
+
+		return byteBuffer;
 	}
 }

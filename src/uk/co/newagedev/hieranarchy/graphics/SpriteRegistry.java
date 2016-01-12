@@ -1,10 +1,7 @@
 package uk.co.newagedev.hieranarchy.graphics;
 
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.newdawn.slick.opengl.Texture;
 
 import uk.co.newagedev.hieranarchy.main.Main;
 import uk.co.newagedev.hieranarchy.util.Logger;
@@ -14,20 +11,17 @@ public class SpriteRegistry {
 	private static Map<String, Sprite> sprites = new HashMap<String, Sprite>();
 	
 	public static void registerSprite(String name, String path) {
-		Texture texture = Main.getScreen().loadTexture(path);
-		if (texture != null) {
-			sprites.put(name, new Sprite(texture));
+		Sprite sprite = Main.getScreen().loadImageFromFile(path);
+		if (sprite != null) {
+			sprites.put(name, sprite);
 			Logger.info("\"" + path + "\" loaded as \"" + name + "\"");
 		} else {
 			Logger.error("The path \"" + path + "\" couldn't be loaded.");
 		}
 	}
 	
-	public static void registerImage(String name, BufferedImage image) {
-		Texture texture = Main.getScreen().getTextureFromImage(image);
-		if (texture != null) {
-			sprites.put(name, new Sprite(texture));
-		}
+	public static void registerSprite(String name, Sprite sprite) {
+		sprites.put(name, sprite);
 	}
 	
 	public static Sprite getSprite(String name) {
