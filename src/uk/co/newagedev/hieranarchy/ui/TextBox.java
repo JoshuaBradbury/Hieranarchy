@@ -62,7 +62,7 @@ public class TextBox extends Component {
 			for (int key : KeyBinding.getKeysDown()) {
 				keyTimer[key] += 1;
 				if (keyTimer[key] == 1 || keyTimer[key] > 30) {
-					if (KeyBinding.getKeyName(key).trim().equalsIgnoreCase("back")) {
+					if (KeyBinding.getKeyName(key).trim().equalsIgnoreCase("backspace")) {
 						removeFromText();
 					} else if (KeyBinding.getKeyName(key).trim().equalsIgnoreCase("delete")) {
 						if (cursorPlacement < text.length()) {

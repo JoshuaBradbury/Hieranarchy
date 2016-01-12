@@ -91,14 +91,10 @@ public class FontSheet {
 			STBTruetype.stbtt_GetBakedQuad(cdata, BITMAP_WIDTH, BITMAP_HEIGHT, c - 32, x, y, q, 1);
 		}
 		
-		return (int) y.get(0);
+		return (int) (y.get(0) == 0 ? fontSize : y.get(0));
 	}
 
 	public void renderText(String text, int xPos, int yPos) {
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
 		FloatBuffer x = BufferUtils.createFloatBuffer(1);
 		FloatBuffer y = BufferUtils.createFloatBuffer(1);
 		STBTTAlignedQuad q = STBTTAlignedQuad.malloc();
@@ -120,9 +116,8 @@ public class FontSheet {
 
 				STBTruetype.stbtt_GetBakedQuad(cdata, BITMAP_WIDTH, BITMAP_HEIGHT, c - 32, x, y, q, 1);
 				
-				Main.getScreen().renderSpriteIgnoringCamera(fontName + fontSize, new Vector2f(q.x0() - textWidth / 2, q.y0() + fontSize / 4), new Vector2f(q.x1() - q.x0(), q.y1() - q.y0()), new float[] { q.s0(), q.s1(), q.t0(), q.t1() }, Colour.BLACK);
+				Main.getScreen().renderSpriteIgnoringCamera(fontName + fontSize, new Vector2f(q.x0() - textWidth / 2, q.y0() + getTextHeight(String.valueOf(c)) / 4), new Vector2f(q.x1() - q.x0(), q.y1() - q.y0()), new float[] { q.s0(), q.s1(), q.t0(), q.t1() }, Colour.BLACK);
 			}
 		}
-		GL11.glDisable(GL11.GL_BLEND);
 	}
 }

@@ -65,8 +65,8 @@ public class OpenGLScreen implements Screen {
 		if (GLFW.glfwInit() != GLFW.GLFW_TRUE)
 			throw new IllegalStateException("Unable to initialize GLFW");
 
-		// GLFW.glfwDefaultWindowHints();
-		// GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_FALSE);
+		GLFW.glfwDefaultWindowHints();
+		GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_TRUE);
 
 		GLFW.glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
 
@@ -76,15 +76,14 @@ public class OpenGLScreen implements Screen {
 			throw new RuntimeException("Failed to create GLFW window");
 		}
 
-		// GLFW.glfwSetFramebufferSizeCallback(windowID,
-		// (framebufferSizeCallback = new GLFWFramebufferSizeCallback() {
-		// @Override
-		// public void invoke(long window, int width, int height) {
-		// Main.WIDTH = width;
-		// Main.HEIGHT = height;
-		// Logger.info(width, height);
-		// }
-		// }));
+		GLFW.glfwSetFramebufferSizeCallback(windowID, (framebufferSizeCallback = new GLFWFramebufferSizeCallback() {
+			@Override
+			public void invoke(long window, int width, int height) {
+				Main.WIDTH = width;
+				Main.HEIGHT = height;
+				Logger.info(width, height);
+			}
+		}));
 
 		GLFW.glfwMakeContextCurrent(windowID);
 		GL.createCapabilities();
@@ -158,7 +157,8 @@ public class OpenGLScreen implements Screen {
 		} catch (IOException e) {
 			Logger.error(e.getMessage());
 		}
-		return new Sprite(image, width.get(0), height.get(0), GL11.GL_RGB);
+		
+		return new Sprite(image, width.get(0), height.get(0), components.get(0) == 3 ? GL11.GL_RGB : GL11.GL_RGBA);
 	}
 
 	public void renderSprite(String spriteName, Vector2f location, Camera camera) {
