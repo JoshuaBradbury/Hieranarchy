@@ -13,7 +13,7 @@ import uk.co.newagedev.hieranarchy.util.Logger;
 
 public class KeyBinding {
 
-	public static final int KEYBOARD_SIZE = 0x15C;
+	public static final int KEYBOARD_SIZE = 0x15c;
 	
 	public static final int KEY_SPACE         = 0x20,
 							KEY_APOSTROPHE    = 0x27,

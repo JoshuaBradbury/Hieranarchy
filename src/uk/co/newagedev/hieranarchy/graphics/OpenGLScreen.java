@@ -24,7 +24,7 @@ import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class OpenGLScreen implements Screen {
 
-	private boolean close = false;
+	private boolean close = false, cursorHidden = false, cursorVisible = true;
 	public static final boolean DEBUG = false;
 	private Font screenFont;
 	private long windowID;
@@ -48,6 +48,8 @@ public class OpenGLScreen implements Screen {
 		if (windowID == 0) {
 			throw new RuntimeException("Failed to create GLFW window");
 		}
+		
+		hideCursor(true);
 
 		GLFW.glfwSetFramebufferSizeCallback(windowID, (framebufferSizeCallback = new GLFWFramebufferSizeCallback() {
 			@Override
@@ -68,7 +70,29 @@ public class OpenGLScreen implements Screen {
 		GLFW.glfwShowWindow(windowID);
 	}
 
+	public void hideCursor(boolean hidden) {
+		cursorHidden = hidden;
+		if (hidden) {
+			GLFW.glfwSetInputMode(windowID, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
+		} else {
+			GLFW.glfwSetInputMode(windowID, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
+		}
+	}
+	
+	public boolean isCursorHidden() {
+		return cursorHidden;
+	}
+	
+	public boolean isCursorVisible() {
+		return cursorVisible;
+	}
+	
+	public void setCursorVisibility(boolean isVisible) {
+		cursorVisible = isVisible;
+	}
+
 	public void cleanup() {
+		hideCursor(false);
 		GLFW.glfwDestroyWindow(windowID);
 		GLFW.glfwTerminate();
 	}
@@ -123,11 +147,11 @@ public class OpenGLScreen implements Screen {
 		IntBuffer width = BufferUtils.createIntBuffer(1);
 		IntBuffer height = BufferUtils.createIntBuffer(1);
 		IntBuffer components = BufferUtils.createIntBuffer(1);
-
+		
 		try {
 			imageBuffer = FileUtil.readToByteBuffer(new FileInputStream(path));
 
-			image = STBImage.stbi_load_from_memory(imageBuffer, width, height, components, 0);
+			image = STBImage.stbi_load_from_memory(imageBuffer, width, height, components, STBImage.STBI_rgb_alpha);
 
 			if (image == null)
 				throw new RuntimeException("Failed to load image: " + STBImage.stbi_failure_reason());

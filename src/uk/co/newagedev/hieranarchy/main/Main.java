@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import uk.co.newagedev.hieranarchy.graphics.OpenGLScreen;
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
+import uk.co.newagedev.hieranarchy.input.Controller;
 import uk.co.newagedev.hieranarchy.input.KeyBinding;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.project.Project;
@@ -15,6 +16,7 @@ import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
 import uk.co.newagedev.hieranarchy.ui.Container;
 import uk.co.newagedev.hieranarchy.util.Logger;
+import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class Main {
 
@@ -49,13 +51,14 @@ public class Main {
 
 	public void initResources() {
 		SpriteRegistry.registerSprite("bg", "Projects/testing/Assets/Textures/background.png");
-		SpriteRegistry.registerSprite("play", "Projects/testing/Assets/Textures/gui/play.png");
-		SpriteRegistry.registerSprite("reset", "Projects/testing/Assets/Textures/gui/reset.png");
-		SpriteRegistry.registerSprite("pause", "Projects/testing/Assets/Textures/gui/pause.png");
-		SpriteRegistry.registerSprite("edit", "Projects/testing/Assets/Textures/gui/edit.png");
-		SpriteRegistry.registerSprite("new tile", "Projects/testing/Assets/Textures/gui/newtile.png");
-		SpriteRegistry.registerSprite("arrow", "Projects/testing/Assets/Textures/gui/arrow.png");
-		SpriteRegistry.registerSprite("arrow hover", "Projects/testing/Assets/Textures/gui/arrow hover.png");
+		SpriteRegistry.registerSprite("play", "assets/textures/play.png");
+		SpriteRegistry.registerSprite("reset", "assets/textures/reset.png");
+		SpriteRegistry.registerSprite("pause", "assets/textures/pause.png");
+		SpriteRegistry.registerSprite("edit", "assets/textures/edit.png");
+		SpriteRegistry.registerSprite("new tile", "assets/textures/newtile.png");
+		SpriteRegistry.registerSprite("arrow", "assets/textures/arrow.png");
+		SpriteRegistry.registerSprite("arrow hover", "assets/textures/arrow hover.png");
+		SpriteRegistry.registerSprite("cursor", "assets/textures/cursor.png");
 	}
 
 	public void initBindings() {
@@ -66,6 +69,7 @@ public class Main {
 		KeyBinding.bindKey("editmapplay", KeyBinding.KEY_ENTER);
 		KeyBinding.bindKey("SelectPrevTile", KeyBinding.KEY_Z);
 		KeyBinding.bindKey("SelectNextTile", KeyBinding.KEY_X);
+		KeyBinding.bindKey("Unhide Mouse", KeyBinding.KEY_ESCAPE);
 	}
 
 	public void initStates() {
@@ -102,6 +106,7 @@ public class Main {
 
 	public void update() {
 		Mouse.update();
+		Controller.update();
 		KeyBinding.update();
 		if (StateManager.getState(currentState) != null) {
 			StateManager.getState(currentState).update();
@@ -112,6 +117,9 @@ public class Main {
 		screen.renderInit();
 		if (StateManager.getState(currentState) != null) {
 			StateManager.getState(currentState).render();
+		}
+		if (screen.isCursorVisible()) {
+			screen.renderSpriteIgnoringCamera("cursor", new Vector2f(Mouse.getMouseX(), Mouse.getMouseY()));
 		}
 		screen.postRender();
 	}
@@ -167,7 +175,6 @@ public class Main {
 	public void cleanup() {
 		project.cleanup();
 		SpriteRegistry.clear();
-		KeyBinding.cleanup();
 		screen.cleanup();
 	}
 

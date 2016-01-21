@@ -18,6 +18,11 @@ public interface Screen {
 
 	public void renderInit();
 	public void postRender();
+	
+	public void hideCursor(boolean hidden);
+	public boolean isCursorHidden();
+	public boolean isCursorVisible();
+	public void setCursorVisibility(boolean isVisible);
 
 	public void renderSprite(String spriteName, Vector2f location, Camera camera);
 	public void renderSprite(String spriteName, Vector2f location, Camera camera, float[] texCoords, float[] colour);

@@ -17,11 +17,11 @@ public class Sprite {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
 		
 		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, glFormat, width, height, 0, glFormat, GL11.GL_UNSIGNED_BYTE, image);
-		
-		if (glFormat == GL11.GL_ALPHA) {
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-		}
+
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 	}
 
 	public void setWidth(int width) {

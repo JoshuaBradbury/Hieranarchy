@@ -34,12 +34,12 @@ public class Mouse {
 		}));
 	}
 
-	public static double getMouseX() {
-		return mx;
+	public static int getMouseX() {
+		return (int) mx;
 	}
 
-	public static double getMouseY() {
-		return my;
+	public static int getMouseY() {
+		return (int) my;
 	}
 
 	public static void simulateLocation(int x, int y) {
@@ -68,6 +68,9 @@ public class Mouse {
 	}
 
 	public static void update() {
+		if (KeyBinding.isBindingReleasing("Unhide Mouse") && Main.getScreen().isCursorHidden()) {
+			Main.getScreen().hideCursor(false);
+		}
 		int t = 0;
 		for (int i = 0; i < BUTTON_COUNT; i++) {
 			boolean bd = GLFW.glfwGetMouseButton(Main.getScreen().getWindowID(), i) == GLFW.GLFW_PRESS;
@@ -100,6 +103,9 @@ public class Mouse {
 			updatesSinceLastButton += 1;
 		} else {
 			updatesSinceLastButton = 0;
+			if (!Main.getScreen().isCursorHidden()) {
+				Main.getScreen().hideCursor(true);
+			}
 		}
 
 		if (mdx == 0 && mdy == 0) {
