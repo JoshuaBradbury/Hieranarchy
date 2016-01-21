@@ -35,8 +35,8 @@ public class Window extends Container {
 	public void update() {
 		super.update();
 		if (Mouse.isButtonPressing(Mouse.BUTTON_LEFT) && !moving) {
-			if (Mouse.getMouseX() > getLocation().getX() && Mouse.getMouseX() < getLocation().getX() + getDimensions().getWidth()) {
-				if (Mouse.getMouseY() > getLocation().getY()  - 30 && Mouse.getMouseY() < getLocation().getY()) {
+			if (Mouse.getCursorX() > getLocation().getX() && Mouse.getCursorX() < getLocation().getX() + getDimensions().getWidth()) {
+				if (Mouse.getCursorY() > getLocation().getY()  - 30 && Mouse.getCursorY() < getLocation().getY()) {
 					moving = true;
 				}
 			}

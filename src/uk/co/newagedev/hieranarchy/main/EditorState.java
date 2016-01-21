@@ -185,14 +185,14 @@ public class EditorState extends State {
 		}
 		if (editing) {
 			for (Window window : getWindows()) {
-				if (Mouse.getMouseX() > window.getLocation().getX() && Mouse.getMouseX() < window.getLocation().getX() + window.getDimensions().getWidth()) {
-					if (Mouse.getMouseY() > window.getLocation().getY() - 30 && Mouse.getMouseY() < window.getLocation().getY() + window.getDimensions().getHeight() - 30) {
+				if (Mouse.getCursorX() > window.getLocation().getX() && Mouse.getCursorX() < window.getLocation().getX() + window.getDimensions().getWidth()) {
+					if (Mouse.getCursorY() > window.getLocation().getY() - 30 && Mouse.getCursorY() < window.getLocation().getY() + window.getDimensions().getHeight() - 30) {
 						mouseOverWindow = true;
 					}
 				}
 			}
-			if (Mouse.getMouseY() > toolbar.getDimensions().getHeight() + toolbar.getLocation().getY()) {
-				selectionLocation = new Vector2f((int) ((Mouse.getMouseX() + getCurrentCamera().getX()) / (Main.SPRITE_WIDTH * getCurrentCamera().getZoom())), (int) ((Mouse.getMouseY() - getCurrentCamera().getY()) / (Main.SPRITE_HEIGHT * getCurrentCamera().getZoom())));
+			if (Mouse.getCursorY() > toolbar.getDimensions().getHeight() + toolbar.getLocation().getY()) {
+				selectionLocation = new Vector2f((int) ((Mouse.getCursorX() + getCurrentCamera().getX()) / (Main.SPRITE_WIDTH * getCurrentCamera().getZoom())), (int) ((Mouse.getCursorY() - getCurrentCamera().getY()) / (Main.SPRITE_HEIGHT * getCurrentCamera().getZoom())));
 
 				currentMap.removeObject(selection);
 

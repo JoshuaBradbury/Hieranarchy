@@ -242,7 +242,7 @@ public class OpenGLScreen implements Screen {
 			if (screenFont == null) {
 				screenFont = new Font("Tahoma", Font.PLAIN, 10);
 			}
-			String text = "(" + String.valueOf(Mouse.getMouseX()) + "," + String.valueOf(Mouse.getMouseY()) + ")";
+			String text = "(" + String.valueOf(Mouse.getCursorX()) + "," + String.valueOf(Mouse.getCursorY()) + ")";
 		}
 
 		GLFW.glfwPollEvents();

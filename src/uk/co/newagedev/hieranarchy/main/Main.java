@@ -119,7 +119,7 @@ public class Main {
 			StateManager.getState(currentState).render();
 		}
 		if (screen.isCursorVisible()) {
-			screen.renderSpriteIgnoringCamera("cursor", new Vector2f(Mouse.getMouseX(), Mouse.getMouseY()));
+			screen.renderSpriteIgnoringCamera("cursor", new Vector2f(Mouse.getCursorX(), Mouse.getCursorY()));
 		}
 		screen.postRender();
 	}

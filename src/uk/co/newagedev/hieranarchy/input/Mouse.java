@@ -12,9 +12,10 @@ public class Mouse {
 	private static boolean[] pressing = new boolean[BUTTON_COUNT];
 	private static boolean[] down = new boolean[BUTTON_COUNT];
 	private static boolean[] releasing = new boolean[BUTTON_COUNT];
+	private static boolean[] simButtons = new boolean[BUTTON_COUNT];
 
 	private static int updatesSinceLastMovement = 0, updatesSinceLastButton = 0;
-	private static double mx = 0, my = 0, mdx = 0, mdy = 0, mdw = 0;
+	private static double cx = Main.WIDTH / 2, cy = Main.HEIGHT / 2, mx = 0, my = 0, mdx = 0, mdy = 0, mdw = 0;
 
 	@SuppressWarnings("unused")
 	private static GLFWCursorPosCallback cursorPosCallback;
@@ -24,27 +25,41 @@ public class Mouse {
 
 			@Override
 			public void invoke(long window, double xpos, double ypos) {
+				if (mx == 0 && my == 0) {
+					mx = xpos;
+					my = ypos;
+					return;
+				}
 				double oldmx = mx, oldmy = my;
 				mx = xpos;
 				my = ypos;
 				mdx = mx - oldmx;
 				mdy = my - oldmy;
+				cx += mdx;
+				cy += mdy;
 			}
-
 		}));
 	}
 
+	public static int getCursorX() {
+		return (int) cx;
+	}
+
+	public static int getCursorY() {
+		return (int) cy;
+	}
+	
 	public static int getMouseX() {
 		return (int) mx;
 	}
-
+	
 	public static int getMouseY() {
 		return (int) my;
 	}
 
 	public static void simulateLocation(int x, int y) {
-		mx = x;
-		my = y;
+		cx = x;
+		cy = y;
 	}
 
 	public static double getChangeInMouseX() {
@@ -73,7 +88,7 @@ public class Mouse {
 		}
 		int t = 0;
 		for (int i = 0; i < BUTTON_COUNT; i++) {
-			boolean bd = GLFW.glfwGetMouseButton(Main.getScreen().getWindowID(), i) == GLFW.GLFW_PRESS;
+			boolean bd = (GLFW.glfwGetMouseButton(Main.getScreen().getWindowID(), i) == GLFW.GLFW_PRESS) || simButtons[i];
 			if (!pressing[i] && !down[i] && bd) {
 				pressing[i] = true;
 			} else if (pressing[i] && !down[i] && bd) {
@@ -86,6 +101,7 @@ public class Mouse {
 				releasing[i] = false;
 			} else {
 				t += 1;
+				simButtons[i] = false;
 			}
 
 			if (pressing[i] && releasing[i]) {
@@ -108,6 +124,7 @@ public class Mouse {
 			}
 		}
 
+		
 		if (mdx == 0 && mdy == 0) {
 			updatesSinceLastMovement += 1;
 		} else {
@@ -125,6 +142,10 @@ public class Mouse {
 
 	public static boolean isButtonReleasing(int index) {
 		return releasing[index];
+	}
+	
+	public static void simulatePress(int index) {
+		simButtons[index] = true;
 	}
 
 	public static String getButtonStates(int index) {

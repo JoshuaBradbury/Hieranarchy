@@ -49,8 +49,8 @@ public class TextBox extends Component {
 
 	public void update() {
 		hover = false;
-		if (Mouse.getMouseX() > getDisplayLocation().getX() && Mouse.getMouseX() < getDisplayLocation().getX() + getDimensions().getWidth()) {
-			if (Mouse.getMouseY() > getDisplayLocation().getY() && Mouse.getMouseY() < getDisplayLocation().getY() + getDimensions().getHeight()) {
+		if (Mouse.getCursorX() > getDisplayLocation().getX() && Mouse.getCursorX() < getDisplayLocation().getX() + getDimensions().getWidth()) {
+			if (Mouse.getCursorY() > getDisplayLocation().getY() && Mouse.getCursorY() < getDisplayLocation().getY() + getDimensions().getHeight()) {
 				hover = true;
 			}
 		}

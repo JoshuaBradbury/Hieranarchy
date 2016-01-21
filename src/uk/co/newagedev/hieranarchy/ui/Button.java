@@ -47,7 +47,7 @@ public class Button extends Component {
 		
 		if (toolTipDisplay && toolTip) {
 			int textHeight = componentFont.getTextHeight(text), textWidth = componentFont.getTextWidth(text);
-			int toolTipX = (int) Mouse.getMouseX(), toolTipY = (int) (getParent().getDisplayLocation().getY() + getParent().getDimensions().getHeight() + 10);
+			int toolTipX = (int) Mouse.getCursorX(), toolTipY = (int) (getParent().getDisplayLocation().getY() + getParent().getDimensions().getHeight() + 10);
 			Main.getScreen().renderQuad(new Vector2f(toolTipX, toolTipY - textHeight + 14), textWidth + 14, textHeight + 14, Colour.DARK_GREY);
 			Main.getScreen().renderQuad(new Vector2f(toolTipX + 2, toolTipY + 16 - textHeight), textWidth + 10, textHeight + 10, Colour.GREY);
 			
@@ -57,8 +57,8 @@ public class Button extends Component {
 
 	public void update() {
 		hover = false;
-		if (Mouse.getMouseX() > getDisplayLocation().getX() && Mouse.getMouseX() < getDisplayLocation().getX() + getDimensions().getWidth()) {
-			if (Mouse.getMouseY() > getDisplayLocation().getY() && Mouse.getMouseY() < getDisplayLocation().getY() + getDimensions().getHeight()) {
+		if (Mouse.getCursorX() > getDisplayLocation().getX() && Mouse.getCursorX() < getDisplayLocation().getX() + getDimensions().getWidth()) {
+			if (Mouse.getCursorY() > getDisplayLocation().getY() && Mouse.getCursorY() < getDisplayLocation().getY() + getDimensions().getHeight()) {
 				hover = true;
 			}
 		}
