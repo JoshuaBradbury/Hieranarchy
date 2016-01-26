@@ -56,7 +56,6 @@ public class OpenGLScreen implements Screen {
 			public void invoke(long window, int width, int height) {
 				Main.WIDTH = width;
 				Main.HEIGHT = height;
-				Logger.info(width, height);
 			}
 		}));
 
@@ -73,7 +72,7 @@ public class OpenGLScreen implements Screen {
 	public void hideCursor(boolean hidden) {
 		cursorHidden = hidden;
 		if (hidden) {
-			GLFW.glfwSetInputMode(windowID, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
+			GLFW.glfwSetInputMode(windowID, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_HIDDEN);
 		} else {
 			GLFW.glfwSetInputMode(windowID, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
 		}
@@ -242,7 +241,7 @@ public class OpenGLScreen implements Screen {
 			if (screenFont == null) {
 				screenFont = new Font("Tahoma", Font.PLAIN, 10);
 			}
-			String text = "(" + String.valueOf(Mouse.getCursorX()) + "," + String.valueOf(Mouse.getCursorY()) + ")";
+			String text = "(" + String.valueOf(Mouse.getMouseX()) + "," + String.valueOf(Mouse.getMouseY()) + ")";
 		}
 
 		GLFW.glfwPollEvents();

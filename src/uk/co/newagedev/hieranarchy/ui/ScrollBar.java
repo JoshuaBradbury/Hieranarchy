@@ -60,10 +60,10 @@ public class ScrollBar {
 			if (barHover) {
 				if (Mouse.isButtonPressing(Mouse.BUTTON_LEFT)) {
 					startY = y;
-					startDragY = (int) Mouse.getCursorY();
+					startDragY = (int) Mouse.getMouseY();
 				}
 				if (Mouse.isButtonDown(Mouse.BUTTON_LEFT)) {
-					y = startY + (int) (Mouse.getCursorY() - startDragY);
+					y = startY + (int) (Mouse.getMouseY() - startDragY);
 				}
 			}
 			if (Mouse.isButtonReleasing(Mouse.BUTTON_LEFT)) {
@@ -71,10 +71,10 @@ public class ScrollBar {
 				startDragY = -1;
 			}
 			if (!Mouse.isButtonDown(Mouse.BUTTON_LEFT)) {
-				barHover = getBar().contains(Mouse.getCursorX(), Mouse.getCursorY());
+				barHover = getBar().contains(Mouse.getMouseX(), Mouse.getMouseY());
 			}
-			topHover = (new Rectangle((int) (parent.getDisplayLocation().getX() + getParentWidth()) - 13, (int) (parent.getDisplayLocation().getY()) + 2, 11, 11)).contains(Mouse.getCursorX(), Mouse.getCursorY());
-			bottomHover = (new Rectangle((int) (parent.getDisplayLocation().getX() + getParentWidth()) - 13, (int) (parent.getDisplayLocation().getY()) + maxHeight + 17, 11, 11)).contains(Mouse.getCursorX(), Mouse.getCursorY());
+			topHover = (new Rectangle((int) (parent.getDisplayLocation().getX() + getParentWidth()) - 13, (int) (parent.getDisplayLocation().getY()) + 2, 11, 11)).contains(Mouse.getMouseX(), Mouse.getMouseY());
+			bottomHover = (new Rectangle((int) (parent.getDisplayLocation().getX() + getParentWidth()) - 13, (int) (parent.getDisplayLocation().getY()) + maxHeight + 17, 11, 11)).contains(Mouse.getMouseX(), Mouse.getMouseY());
 			if (Mouse.isButtonDown(Mouse.BUTTON_LEFT)) {
 				if (topHover) {
 					y -= 3;
@@ -98,10 +98,10 @@ public class ScrollBar {
 			if (barHover) {
 				if (Mouse.isButtonPressing(Mouse.BUTTON_LEFT)) {
 					startX = x;
-					startDragX = (int) Mouse.getCursorX();
+					startDragX = (int) Mouse.getMouseX();
 				}
 				if (Mouse.isButtonDown(Mouse.BUTTON_LEFT)) {
-					x = startX + (int) (Mouse.getCursorX() - startDragX);
+					x = startX + (int) (Mouse.getMouseX() - startDragX);
 				}
 			}
 			if (Mouse.isButtonReleasing(Mouse.BUTTON_LEFT)) {
@@ -109,10 +109,10 @@ public class ScrollBar {
 				startDragX = -1;
 			}
 			if (!Mouse.isButtonDown(Mouse.BUTTON_LEFT)) {
-				barHover = getBar().contains(Mouse.getCursorX(), Mouse.getCursorY());
+				barHover = getBar().contains(Mouse.getMouseX(), Mouse.getMouseY());
 			}
-			leftHover = (new Rectangle((int) parent.getDisplayLocation().getX() + 2, (int) (parent.getDisplayLocation().getY() + getParentHeight()) - 13, 11, 11)).contains(Mouse.getCursorX(), Mouse.getCursorY());
-			rightHover = (new Rectangle((int) parent.getDisplayLocation().getX() + getParentWidth() - 13, (int) (parent.getDisplayLocation().getY() + getParentHeight()) - 13, 11, 11)).contains(Mouse.getCursorX(), Mouse.getCursorY());
+			leftHover = (new Rectangle((int) parent.getDisplayLocation().getX() + 2, (int) (parent.getDisplayLocation().getY() + getParentHeight()) - 13, 11, 11)).contains(Mouse.getMouseX(), Mouse.getMouseY());
+			rightHover = (new Rectangle((int) parent.getDisplayLocation().getX() + getParentWidth() - 13, (int) (parent.getDisplayLocation().getY() + getParentHeight()) - 13, 11, 11)).contains(Mouse.getMouseX(), Mouse.getMouseY());
 			if (Mouse.isButtonDown(Mouse.BUTTON_LEFT)) {
 				if (leftHover) {
 					x -= 3;

@@ -15,7 +15,7 @@ public class Controller {
 			float x = axis.get(0), y = axis.get(1);
 			x *= Math.abs(x) > 0.3 ? 1 : 0;
 			y *= Math.abs(y) > 0.3 ? 1 : 0;
-			Mouse.simulateLocation(Mouse.getCursorX() + (int) (x * 10.0f), Mouse.getCursorY() + (int) (y * 10.0f));
+			Mouse.simulateLocation(Mouse.getMouseX() + (int) (x * 10.0f), Mouse.getMouseY() + (int) (y * 10.0f));
 			
 			if (buttons.get(0) == 1) {
 				Mouse.simulatePress(Mouse.BUTTON_1);

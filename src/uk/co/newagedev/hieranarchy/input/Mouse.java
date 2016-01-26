@@ -15,7 +15,7 @@ public class Mouse {
 	private static boolean[] simButtons = new boolean[BUTTON_COUNT];
 
 	private static int updatesSinceLastMovement = 0, updatesSinceLastButton = 0;
-	private static double cx = Main.WIDTH / 2, cy = Main.HEIGHT / 2, mx = 0, my = 0, mdx = 0, mdy = 0, mdw = 0;
+	private static double mx = 0, my = 0, mdx = 0, mdy = 0, mdw = 0;
 
 	@SuppressWarnings("unused")
 	private static GLFWCursorPosCallback cursorPosCallback;
@@ -35,20 +35,10 @@ public class Mouse {
 				my = ypos;
 				mdx = mx - oldmx;
 				mdy = my - oldmy;
-				cx += mdx;
-				cy += mdy;
 			}
 		}));
 	}
 
-	public static int getCursorX() {
-		return (int) cx;
-	}
-
-	public static int getCursorY() {
-		return (int) cy;
-	}
-	
 	public static int getMouseX() {
 		return (int) mx;
 	}
@@ -58,8 +48,8 @@ public class Mouse {
 	}
 
 	public static void simulateLocation(int x, int y) {
-		cx = x;
-		cy = y;
+		mx = x;
+		my = y;
 	}
 
 	public static double getChangeInMouseX() {
