@@ -2,7 +2,7 @@ package uk.co.newagedev.hieranarchy.ui;
 
 import java.awt.Rectangle;
 
-import uk.co.newagedev.hieranarchy.input.Mouse;
+import uk.co.newagedev.hieranarchy.events.types.input.CursorMoveEvent;
 import uk.co.newagedev.hieranarchy.main.Main;
 import uk.co.newagedev.hieranarchy.util.Colour;
 
@@ -34,19 +34,18 @@ public class ScrollPane extends Component {
 	}
 
 	public void update() {
-		for (ScrollBar bar : scrollBars) {
-			if (bar != null) {
-				bar.update();
-			}
-		}
-		int mx = (int) Mouse.getMouseX(), my = (int) Mouse.getMouseY();
+	
+	}
+	
+	public void cursorMove(CursorMoveEvent event) {
+		int mx = event.getX(), my = event.getY();
 		boolean hovering = (scrollBars[0] != null ? (my > getDisplayLocation().getY() + getHeight() && my < getDisplayLocation().getY() + getHeight() + 15) || scrollBars[0].isHeld() : false) || (scrollBars[1] != null ? (mx > getDisplayLocation().getX() + getWidth() && mx < getDisplayLocation().getX() + getWidth() + 15) || scrollBars[1].isHeld() : false);
-		if ((new Rectangle((int) getDisplayLocation().getX(), (int) getDisplayLocation().getY(), getWidth(), getHeight())).contains(Mouse.getMouseX(), Mouse.getMouseY())) {
+		if ((new Rectangle((int) getDisplayLocation().getX(), (int) getDisplayLocation().getY(), getWidth(), getHeight())).contains(event.getX(), event.getY())) {
 			pane.update();
 		} else if (hovering) {
-			Mouse.simulateLocation(-1, -1);
+			Main.getCursor().setOffset(-mx - 1, -my - 1);
 			pane.update();
-			Mouse.simulateLocation(mx, my);
+			Main.getCursor().setOffset(0, 0);
 		}
 	}
 

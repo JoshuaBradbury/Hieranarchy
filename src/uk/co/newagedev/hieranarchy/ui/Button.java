@@ -3,6 +3,8 @@ package uk.co.newagedev.hieranarchy.ui;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import uk.co.newagedev.hieranarchy.events.types.input.CursorClickEvent;
+import uk.co.newagedev.hieranarchy.events.types.input.CursorMoveEvent;
 import uk.co.newagedev.hieranarchy.graphics.Sprite;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
 import uk.co.newagedev.hieranarchy.input.Mouse;
@@ -17,6 +19,8 @@ public class Button extends Component {
 	private ButtonRunnable task;
 
 	private String image = "", text = "";
+	
+	private int toolTipX;
 
 	public Button(String text, int x, int y, int width, int height, boolean toolTip, ButtonRunnable task) {
 		super(x, y, width, height);
@@ -47,23 +51,27 @@ public class Button extends Component {
 		
 		if (toolTipDisplay && toolTip) {
 			int textHeight = componentFont.getTextHeight(text), textWidth = componentFont.getTextWidth(text);
-			int toolTipX = (int) Mouse.getMouseX(), toolTipY = (int) (getParent().getDisplayLocation().getY() + getParent().getDimensions().getHeight() + 10);
+			int toolTipY = (int) (getParent().getDisplayLocation().getY() + getParent().getDimensions().getHeight() + 10);
 			Main.getScreen().renderQuad(new Vector2f(toolTipX, toolTipY - textHeight + 14), textWidth + 14, textHeight + 14, Colour.DARK_GREY);
 			Main.getScreen().renderQuad(new Vector2f(toolTipX + 2, toolTipY + 16 - textHeight), textWidth + 10, textHeight + 10, Colour.GREY);
 			
 			componentFont.renderText(text, toolTipX + textWidth / 2 + 7, toolTipY - textHeight / 2 + 21);
 		}
 	}
-
+	
 	public void update() {
+		
+	}
+
+	public void cursorMove(CursorMoveEvent event) {
 		hover = false;
-		if (Mouse.getMouseX() > getDisplayLocation().getX() && Mouse.getMouseX() < getDisplayLocation().getX() + getDimensions().getWidth()) {
-			if (Mouse.getMouseY() > getDisplayLocation().getY() && Mouse.getMouseY() < getDisplayLocation().getY() + getDimensions().getHeight()) {
+		if (event.getX() > getDisplayLocation().getX() && event.getX() < getDisplayLocation().getX() + getDimensions().getWidth()) {
+			if (event.getY() > getDisplayLocation().getY() && event.getY() < getDisplayLocation().getY() + getDimensions().getHeight()) {
 				hover = true;
 			}
 		}
 		if (hover) {
-			if (Mouse.getMillisSinceLastMovement() > 30 && !toolTipDisplay) {
+			if (event.getUpdatesSinceLastMovement() > 30 && !toolTipDisplay) {
 				toolTipDisplay = true;
 			}
 		} else {
@@ -71,7 +79,10 @@ public class Button extends Component {
 				toolTipDisplay = false;
 			}
 		}
-		if (Mouse.isButtonReleasing(Mouse.BUTTON_LEFT)) {
+	}
+	
+	public void cursorClick(CursorClickEvent event) {
+		if (event.isButtonReleasing(Mouse.BUTTON_LEFT)) {
 			if (hover) {
 				task.run();
 			}

@@ -5,7 +5,13 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.glfw.GLFW;
 
+import uk.co.newagedev.hieranarchy.events.EventHub;
+import uk.co.newagedev.hieranarchy.events.types.input.ControllerMoveEvent;
+import uk.co.newagedev.hieranarchy.events.types.input.MouseButtonEvent;
+
 public class Controller {
+
+	private static boolean button1;
 	
 	public static void update() {
 		for (int i = GLFW.GLFW_JOYSTICK_1; i < GLFW.GLFW_JOYSTICK_LAST; i++) {
@@ -15,10 +21,14 @@ public class Controller {
 			float x = axis.get(0), y = axis.get(1);
 			x *= Math.abs(x) > 0.3 ? 1 : 0;
 			y *= Math.abs(y) > 0.3 ? 1 : 0;
-			Mouse.simulateLocation(Mouse.getMouseX() + (int) (x * 10.0f), Mouse.getMouseY() + (int) (y * 10.0f));
+			EventHub.pushEvent(new ControllerMoveEvent(x * 10.0f, y * 10.0f));
 			
-			if (buttons.get(0) == 1) {
-				Mouse.simulatePress(Mouse.BUTTON_1);
+			if (buttons.get(0) == 1 && !button1) {
+				EventHub.pushEvent(new MouseButtonEvent(Mouse.BUTTON_1, true));
+				button1 = true;
+			} else if (buttons.get(0) == 0 && button1) {
+				EventHub.pushEvent(new MouseButtonEvent(Mouse.BUTTON_1, false));
+				button1 = false;
 			}
 		}
 	}

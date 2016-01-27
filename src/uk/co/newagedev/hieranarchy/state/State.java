@@ -5,15 +5,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import uk.co.newagedev.hieranarchy.events.EventHub;
+import uk.co.newagedev.hieranarchy.events.Listener;
 import uk.co.newagedev.hieranarchy.graphics.Camera;
 import uk.co.newagedev.hieranarchy.ui.Window;
 
-public abstract class State {
+public abstract class State implements Listener {
 	private Map<String, Camera> cameras = new HashMap<String, Camera>();
 	private List<Window> windows = new ArrayList<Window>();
 	private Camera currentCamera;
 	private String name;
 	private boolean loaded = false;
+	
+	public State() {
+		EventHub.registerListener(this);
+	}
 	
 	public void setName(String name) {
 		this.name = name;

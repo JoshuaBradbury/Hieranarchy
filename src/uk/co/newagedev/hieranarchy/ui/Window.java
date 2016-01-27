@@ -1,14 +1,16 @@
 package uk.co.newagedev.hieranarchy.ui;
 
-import uk.co.newagedev.hieranarchy.util.Colour;
+import uk.co.newagedev.hieranarchy.events.types.input.CursorClickEvent;
+import uk.co.newagedev.hieranarchy.events.types.input.CursorMoveEvent;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.main.Main;
 import uk.co.newagedev.hieranarchy.state.State;
+import uk.co.newagedev.hieranarchy.util.Colour;
 
 public class Window extends Container {
 
 	private boolean moving = false;
-	
+
 	public Window(State state, int x, int y, int width, int height) {
 		super(x, y, width, height);
 		Button closeButton = new Button("X", width - 30, -25, 20, 20, false, new ButtonRunnable() {
@@ -18,7 +20,7 @@ public class Window extends Container {
 		});
 		addComponent(closeButton);
 	}
-	
+
 	public void addComponent(Component component) {
 		component.setLocation((int) (component.getLocation().getX() + getLocation().getX()), (int) (component.getLocation().getY() + getLocation().getY()));
 		super.addComponent(component);
@@ -34,23 +36,29 @@ public class Window extends Container {
 	@Override
 	public void update() {
 		super.update();
-		if (Mouse.isButtonPressing(Mouse.BUTTON_LEFT) && !moving) {
-			if (Mouse.getMouseX() > getLocation().getX() && Mouse.getMouseX() < getLocation().getX() + getDimensions().getWidth()) {
-				if (Mouse.getMouseY() > getLocation().getY()  - 30 && Mouse.getMouseY() < getLocation().getY()) {
+	}
+
+	public void cursorClick(CursorClickEvent event) {
+		if (event.isButtonPressing(Mouse.BUTTON_LEFT) && !moving) {
+			if (event.getX() > getLocation().getX() && event.getX() < getLocation().getX() + getDimensions().getWidth()) {
+				if (event.getY() > getLocation().getY() - 30 && event.getY() < getLocation().getY()) {
 					moving = true;
 				}
 			}
 		}
 		if (moving) {
-			if (Mouse.isButtonReleasing(Mouse.BUTTON_LEFT)) {
+			if (event.isButtonReleasing(Mouse.BUTTON_LEFT)) {
 				moving = false;
 			}
-			if (Mouse.isButtonDown(Mouse.BUTTON_LEFT)) {
-				for (Component component : getComponents()) {
-					component.setLocation((int) (component.getLocation().getX() + Mouse.getChangeInMouseX()), (int) (component.getLocation().getY() - Mouse.getChangeInMouseY()));
-				}
-				setLocation((int) (getLocation().getX() + Mouse.getChangeInMouseX()), (int) (getLocation().getY() - Mouse.getChangeInMouseY()));
+		}
+	}
+
+	public void cursorMove(CursorMoveEvent event) {
+		if (moving) {
+			for (Component component : getComponents()) {
+				component.setLocation((int) (component.getLocation().getX() + event.getDX()), (int) (component.getLocation().getY() - event.getDY()));
 			}
+			setLocation((int) (getLocation().getX() + event.getDX()), (int) (getLocation().getY() - event.getDY()));
 		}
 	}
 }

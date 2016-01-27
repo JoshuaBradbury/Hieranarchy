@@ -2,7 +2,8 @@ package uk.co.newagedev.hieranarchy.ui;
 
 import java.awt.Rectangle;
 
-import uk.co.newagedev.hieranarchy.input.KeyBinding;
+import uk.co.newagedev.hieranarchy.events.types.input.CursorClickEvent;
+import uk.co.newagedev.hieranarchy.events.types.input.CursorMoveEvent;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.main.Main;
 import uk.co.newagedev.hieranarchy.util.Colour;
@@ -26,14 +27,14 @@ public class ScrollBar {
 		maxWidth = (int) getParentWidth() - 30;
 		width = 0;
 	}
-	
+
 	private int getParentHeight() {
 		int offset = 0;
 		if (display == ScrollBar.VERTICAL)
 			offset = 15;
 		return (int) parent.getDimensions().getHeight() - offset;
 	}
-	
+
 	private int getParentWidth() {
 		int offset = 0;
 		if (display == ScrollBar.HORIZONTAL)
@@ -44,7 +45,7 @@ public class ScrollBar {
 	public boolean hoveringOverBar() {
 		return barHover;
 	}
-	
+
 	public boolean isHeld() {
 		if (display == ScrollBar.VERTICAL)
 			return startDragY > -1;
@@ -52,30 +53,51 @@ public class ScrollBar {
 			return startDragX > -1;
 		return false;
 	}
-	
+
 	public void update() {
+
+	}
+
+	public void cursorMove(CursorMoveEvent event) {
+		if (display == ScrollBar.VERTICAL) {
+			if (startDragY != -1) {
+				barHover = getBar().contains(event.getX(), event.getY());
+				y = startY + event.getY() - startDragY;
+			}
+
+			topHover = (new Rectangle((int) (parent.getDisplayLocation().getX() + getParentWidth()) - 13, (int) (parent.getDisplayLocation().getY()) + 2, 11, 11)).contains(event.getX(), event.getY());
+			bottomHover = (new Rectangle((int) (parent.getDisplayLocation().getX() + getParentWidth()) - 13, (int) (parent.getDisplayLocation().getY()) + maxHeight + 17, 11, 11)).contains(event.getX(), event.getY());
+		}
+
+		if (display == ScrollBar.HORIZONTAL) {
+			if (startDragX != -1) {
+				barHover = getBar().contains(event.getX(), event.getY());
+				x = startX + event.getX() - startDragX;
+			}
+
+			leftHover = (new Rectangle((int) parent.getDisplayLocation().getX() + 2, (int) (parent.getDisplayLocation().getY() + getParentHeight()) - 13, 11, 11)).contains(event.getX(), event.getY());
+			rightHover = (new Rectangle((int) parent.getDisplayLocation().getX() + getParentWidth() - 13, (int) (parent.getDisplayLocation().getY() + getParentHeight()) - 13, 11, 11)).contains(event.getY(), event.getY());
+		}
+	}
+
+	public void cursorClick(CursorClickEvent event) {
 		if (display == ScrollBar.VERTICAL) {
 			int paneHeight = (int) (parent.getPane().getDimensions().getHeight() > getParentHeight() ? parent.getPane().getDimensions().getHeight() : getParentHeight());
 			height = (int) (((float) getParentHeight() / (float) paneHeight) * (float) maxHeight);
+
 			if (barHover) {
-				if (Mouse.isButtonPressing(Mouse.BUTTON_LEFT)) {
+				if (event.isButtonPressing(Mouse.BUTTON_LEFT)) {
 					startY = y;
-					startDragY = (int) Mouse.getMouseY();
-				}
-				if (Mouse.isButtonDown(Mouse.BUTTON_LEFT)) {
-					y = startY + (int) (Mouse.getMouseY() - startDragY);
+					startDragY = event.getY();
 				}
 			}
-			if (Mouse.isButtonReleasing(Mouse.BUTTON_LEFT)) {
+
+			if (event.isButtonReleasing(Mouse.BUTTON_LEFT)) {
 				startY = -1;
 				startDragY = -1;
 			}
-			if (!Mouse.isButtonDown(Mouse.BUTTON_LEFT)) {
-				barHover = getBar().contains(Mouse.getMouseX(), Mouse.getMouseY());
-			}
-			topHover = (new Rectangle((int) (parent.getDisplayLocation().getX() + getParentWidth()) - 13, (int) (parent.getDisplayLocation().getY()) + 2, 11, 11)).contains(Mouse.getMouseX(), Mouse.getMouseY());
-			bottomHover = (new Rectangle((int) (parent.getDisplayLocation().getX() + getParentWidth()) - 13, (int) (parent.getDisplayLocation().getY()) + maxHeight + 17, 11, 11)).contains(Mouse.getMouseX(), Mouse.getMouseY());
-			if (Mouse.isButtonDown(Mouse.BUTTON_LEFT)) {
+
+			if (event.isButtonDown(Mouse.BUTTON_LEFT)) {
 				if (topHover) {
 					y -= 3;
 				}
@@ -83,37 +105,31 @@ public class ScrollBar {
 					y += 3;
 				}
 			}
-			if (!KeyBinding.isShift()) {
-				y -= Mouse.getChangeInMouseWheel() / 10;
-			}
+
 			if (y < 0) {
 				y = 0;
 			}
+
 			if (y + height > maxHeight) {
 				y = maxHeight - height;
 			}
 		} else if (display == ScrollBar.HORIZONTAL) {
 			int paneWidth = (int) (parent.getPane().getDimensions().getWidth() > getParentWidth() ? parent.getPane().getDimensions().getWidth() : getParentWidth());
 			width = (int) (((float) getParentWidth() / (float) paneWidth) * (float) maxWidth);
+
 			if (barHover) {
-				if (Mouse.isButtonPressing(Mouse.BUTTON_LEFT)) {
+				if (event.isButtonPressing(Mouse.BUTTON_LEFT)) {
 					startX = x;
-					startDragX = (int) Mouse.getMouseX();
-				}
-				if (Mouse.isButtonDown(Mouse.BUTTON_LEFT)) {
-					x = startX + (int) (Mouse.getMouseX() - startDragX);
+					startDragX = event.getX();
 				}
 			}
-			if (Mouse.isButtonReleasing(Mouse.BUTTON_LEFT)) {
+
+			if (event.isButtonReleasing(Mouse.BUTTON_LEFT)) {
 				startX = -1;
 				startDragX = -1;
 			}
-			if (!Mouse.isButtonDown(Mouse.BUTTON_LEFT)) {
-				barHover = getBar().contains(Mouse.getMouseX(), Mouse.getMouseY());
-			}
-			leftHover = (new Rectangle((int) parent.getDisplayLocation().getX() + 2, (int) (parent.getDisplayLocation().getY() + getParentHeight()) - 13, 11, 11)).contains(Mouse.getMouseX(), Mouse.getMouseY());
-			rightHover = (new Rectangle((int) parent.getDisplayLocation().getX() + getParentWidth() - 13, (int) (parent.getDisplayLocation().getY() + getParentHeight()) - 13, 11, 11)).contains(Mouse.getMouseX(), Mouse.getMouseY());
-			if (Mouse.isButtonDown(Mouse.BUTTON_LEFT)) {
+
+			if (event.isButtonDown(Mouse.BUTTON_LEFT)) {
 				if (leftHover) {
 					x -= 3;
 				}
@@ -121,12 +137,11 @@ public class ScrollBar {
 					x += 3;
 				}
 			}
-			if (KeyBinding.isShift()) {
-				x += Mouse.getChangeInMouseWheel() / 10;
-			}
+
 			if (x < 0) {
 				x = 0;
 			}
+
 			if (x + width > maxWidth) {
 				x = maxWidth - width;
 			}

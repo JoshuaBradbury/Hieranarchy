@@ -2,10 +2,12 @@ package uk.co.newagedev.hieranarchy.ui;
 
 import java.awt.Dimension;
 
+import uk.co.newagedev.hieranarchy.events.EventHub;
+import uk.co.newagedev.hieranarchy.events.Listener;
 import uk.co.newagedev.hieranarchy.graphics.FontSheet;
 import uk.co.newagedev.hieranarchy.util.Vector2f;
 
-public abstract class Component {
+public abstract class Component implements Listener {
 	
 	public static FontSheet componentFont = new FontSheet("segoeui", 25);
 	private float x, y;
@@ -18,6 +20,7 @@ public abstract class Component {
 		this.width = width;
 		this.height = height;
 		parent = null;
+		EventHub.registerListener(this);
 	}
 	
 	public void setParent(Component parent) {

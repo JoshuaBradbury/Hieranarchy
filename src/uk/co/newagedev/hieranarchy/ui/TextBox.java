@@ -2,6 +2,8 @@ package uk.co.newagedev.hieranarchy.ui;
 
 import java.awt.Rectangle;
 
+import uk.co.newagedev.hieranarchy.events.types.input.CursorClickEvent;
+import uk.co.newagedev.hieranarchy.events.types.input.CursorMoveEvent;
 import uk.co.newagedev.hieranarchy.input.KeyBinding;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.main.Main;
@@ -48,16 +50,6 @@ public class TextBox extends Component {
 	}
 
 	public void update() {
-		hover = false;
-		if (Mouse.getMouseX() > getDisplayLocation().getX() && Mouse.getMouseX() < getDisplayLocation().getX() + getDimensions().getWidth()) {
-			if (Mouse.getMouseY() > getDisplayLocation().getY() && Mouse.getMouseY() < getDisplayLocation().getY() + getDimensions().getHeight()) {
-				hover = true;
-			}
-		}
-		if (Mouse.isButtonReleasing(Mouse.BUTTON_LEFT)) {
-			selected = hover;
-		}
-
 		if (selected) {
 			for (int key : KeyBinding.getKeysDown()) {
 				keyTimer[key] += 1;
@@ -87,6 +79,21 @@ public class TextBox extends Component {
 			for (int key : KeyBinding.getKeysReleasing()) {
 				keyTimer[key] = 0;
 			}
+		}
+	}
+	
+	public void cursorMove(CursorMoveEvent event) {
+		hover = false;
+		if (event.getX() > getDisplayLocation().getX() && event.getX() < getDisplayLocation().getX() + getDimensions().getWidth()) {
+			if (event.getY() > getDisplayLocation().getY() && event.getY() < getDisplayLocation().getY() + getDimensions().getHeight()) {
+				hover = true;
+			}
+		}
+	}	
+	
+	public void cursorClick(CursorClickEvent event) {
+		if (event.isButtonReleasing(Mouse.BUTTON_LEFT)) {
+			selected = hover;
 		}
 	}
 

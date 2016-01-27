@@ -4,10 +4,12 @@ import java.util.Stack;
 
 import com.google.gson.Gson;
 
+import uk.co.newagedev.hieranarchy.events.EventHub;
 import uk.co.newagedev.hieranarchy.graphics.OpenGLScreen;
 import uk.co.newagedev.hieranarchy.graphics.Screen;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
 import uk.co.newagedev.hieranarchy.input.Controller;
+import uk.co.newagedev.hieranarchy.input.Cursor;
 import uk.co.newagedev.hieranarchy.input.KeyBinding;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.project.Project;
@@ -32,7 +34,9 @@ public class Main {
 
 	public static float SCALE = 1;
 
-	public static OpenGLScreen screen;
+	private static OpenGLScreen screen;
+
+	private static Cursor cursor;
 
 	private Thread thread;
 
@@ -47,6 +51,7 @@ public class Main {
 		initResources();
 		initStates();
 		initBindings();
+		EventHub.init();
 	}
 
 	public void initResources() {
@@ -70,6 +75,8 @@ public class Main {
 		KeyBinding.bindKey("SelectPrevTile", KeyBinding.KEY_Z);
 		KeyBinding.bindKey("SelectNextTile", KeyBinding.KEY_X);
 		KeyBinding.bindKey("Unhide Mouse", KeyBinding.KEY_ESCAPE);
+
+		cursor = new Cursor(WIDTH / 2, HEIGHT / 2);
 	}
 
 	public void initStates() {
@@ -119,13 +126,17 @@ public class Main {
 			StateManager.getState(currentState).render();
 		}
 		if (screen.isCursorVisible()) {
-			screen.renderSpriteIgnoringCamera("cursor", new Vector2f(Mouse.getMouseX(), Mouse.getMouseY()));
+			screen.renderSpriteIgnoringCamera("cursor", new Vector2f(cursor.getX(), cursor.getY()));
 		}
 		screen.postRender();
 	}
 
 	public static Screen getScreen() {
 		return screen;
+	}
+
+	public static Cursor getCursor() {
+		return cursor;
 	}
 
 	public void run() {
@@ -152,18 +163,20 @@ public class Main {
 		}
 		PopupState popup = new PopupState(title, contents, currentState, new ButtonRunnable() {
 			public void run() {
-				if (!popupStack.isEmpty())
+				if (!popupStack.isEmpty()) {
 					setCurrentState(((PopupState) StateManager.getState(popupStack.lastElement())).getState());
-				StateManager.removeState(popupStack.pop());
+					StateManager.removeState(popupStack.pop());
+				}
 
 				runnable.setButton(button);
 				runnable.run();
 			}
 		}, new ButtonRunnable() {
 			public void run() {
-				if (!popupStack.isEmpty())
+				if (!popupStack.isEmpty()) {
 					setCurrentState(((PopupState) StateManager.getState(popupStack.lastElement())).getState());
-				StateManager.removeState(popupStack.pop());
+					StateManager.removeState(popupStack.pop());
+				}
 			}
 		});
 		StateManager.registerState(title, popup);

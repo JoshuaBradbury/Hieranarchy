@@ -16,7 +16,6 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.stb.STBImage;
 
-import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.main.Main;
 import uk.co.newagedev.hieranarchy.util.FileUtil;
 import uk.co.newagedev.hieranarchy.util.Logger;
@@ -241,7 +240,7 @@ public class OpenGLScreen implements Screen {
 			if (screenFont == null) {
 				screenFont = new Font("Tahoma", Font.PLAIN, 10);
 			}
-			String text = "(" + String.valueOf(Mouse.getMouseX()) + "," + String.valueOf(Mouse.getMouseY()) + ")";
+			String text = "(" + String.valueOf(Main.getCursor().getX()) + "," + String.valueOf(Main.getCursor().getY()) + ")";
 		}
 
 		GLFW.glfwPollEvents();

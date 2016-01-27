@@ -2,6 +2,7 @@ package uk.co.newagedev.hieranarchy.main;
 
 import java.util.List;
 
+import uk.co.newagedev.hieranarchy.events.types.input.CursorClickEvent;
 import uk.co.newagedev.hieranarchy.graphics.Camera;
 import uk.co.newagedev.hieranarchy.graphics.Sprite;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
@@ -23,7 +24,7 @@ import uk.co.newagedev.hieranarchy.util.Vector2f;
 public class EditorState extends State {
 
 	private Map currentMap;
-	private boolean playing = false, editing = false, placing = false, deleting = false, mouseOverWindow = false, downOverWindow = false;
+	private boolean playing = false, editing = false, placing = false, deleting = false, mouseOverWindow = false;
 
 	private Vector2f selectionLocation;
 
@@ -95,12 +96,12 @@ public class EditorState extends State {
 
 		currentTileName = currentMap.getMapStore().getNextTile(currentTileName);
 	}
-	
+
 	@Override
 	public void onLoad() {
 		currentMap.update();
 	}
-	
+
 	public Map getCurrentMap() {
 		return currentMap;
 	}
@@ -131,7 +132,7 @@ public class EditorState extends State {
 				buttons[0].changeText("Pause");
 				buttons[0].setImage("pause");
 				switchCamera("play");
-				
+
 			} else {
 				buttons[0].changeText("Play");
 				buttons[0].setImage("play");
@@ -177,38 +178,12 @@ public class EditorState extends State {
 		playing = true;
 	}
 
-	@Override
-	public void update() {
-		toolbar.update();
-		if (KeyBinding.isBindingReleasing("editmapplay")) {
-			changePlaying();
-		}
-		if (editing) {
-			for (Window window : getWindows()) {
-				if (Mouse.getMouseX() > window.getLocation().getX() && Mouse.getMouseX() < window.getLocation().getX() + window.getDimensions().getWidth()) {
-					if (Mouse.getMouseY() > window.getLocation().getY() - 30 && Mouse.getMouseY() < window.getLocation().getY() + window.getDimensions().getHeight() - 30) {
-						mouseOverWindow = true;
-					}
-				}
-			}
-			if (Mouse.getMouseY() > toolbar.getDimensions().getHeight() + toolbar.getLocation().getY()) {
-				selectionLocation = new Vector2f((int) ((Mouse.getMouseX() + getCurrentCamera().getX()) / (Main.SPRITE_WIDTH * getCurrentCamera().getZoom())), (int) ((Mouse.getMouseY() - getCurrentCamera().getY()) / (Main.SPRITE_HEIGHT * getCurrentCamera().getZoom())));
+	public void onButtonPress(CursorClickEvent event) {
+		if (event.getY() > toolbar.getDimensions().getHeight() + toolbar.getLocation().getY()) {
+			selectionLocation = new Vector2f((int) ((event.getX() + getCurrentCamera().getX()) / (Main.SPRITE_WIDTH * getCurrentCamera().getZoom())), (int) ((event.getY() - getCurrentCamera().getY()) / (Main.SPRITE_HEIGHT * getCurrentCamera().getZoom())));
 
-				currentMap.removeObject(selection);
-
-				if (Mouse.isButtonDown(Mouse.BUTTON_LEFT) || Mouse.isButtonDown(Mouse.BUTTON_RIGHT) || Mouse.isButtonDown(Mouse.BUTTON_MIDDLE)) {
-					if (mouseOverWindow) {
-						downOverWindow = true;
-					}
-				}
-
-				if (!Mouse.isButtonDown(Mouse.BUTTON_LEFT) && !Mouse.isButtonDown(Mouse.BUTTON_RIGHT) && !Mouse.isButtonDown(Mouse.BUTTON_MIDDLE)) {
-					if (downOverWindow) {
-						downOverWindow = false;
-					}
-				}
-
-				if (Mouse.isButtonDown(Mouse.BUTTON_RIGHT) && !placing && !mouseOverWindow) {
+			if (event.getButton() == Mouse.BUTTON_RIGHT) {
+				if (event.isDown() && !placing && !mouseOverWindow) {
 					deleting = true;
 					Tile tile = currentMap.getTileAt(selectionLocation);
 					if (tile != null) {
@@ -218,15 +193,17 @@ public class EditorState extends State {
 					}
 				}
 
-				if (Mouse.isButtonReleasing(Mouse.BUTTON_RIGHT) && !placing) {
+				if (event.isReleasing() && !placing) {
 					deleting = false;
 					List<MapObject> tiles = currentMap.getObjectsWithProperty("delete", "type:tile");
 					for (MapObject tile : tiles) {
 						currentMap.removeObject(tile);
 					}
 				}
+			}
 
-				if (Mouse.isButtonDown(Mouse.BUTTON_LEFT) && !deleting && !mouseOverWindow) {
+			if (event.getButton() == Mouse.BUTTON_LEFT) {
+				if (event.isDown() && !deleting && !mouseOverWindow) {
 					placing = true;
 					if (currentMap.getTileAt(selectionLocation) != null) {
 						currentMap.removeObject(currentMap.getTileAt(selectionLocation));
@@ -238,9 +215,31 @@ public class EditorState extends State {
 					currentMap.addObject(selection);
 				}
 
-				if (Mouse.isButtonReleasing(Mouse.BUTTON_LEFT) && !deleting) {
+				if (event.isReleasing() && !deleting) {
 					placing = false;
 				}
+			}
+		}
+	}
+
+	@Override
+	public void update() {
+		toolbar.update();
+		if (KeyBinding.isBindingReleasing("editmapplay")) {
+			changePlaying();
+		}
+		if (editing) {
+			for (Window window : getWindows()) {
+				if (Main.getCursor().getX() > window.getLocation().getX() && Main.getCursor().getX() < window.getLocation().getX() + window.getDimensions().getWidth()) {
+					if (Main.getCursor().getY() > window.getLocation().getY() - 30 && Main.getCursor().getY() < window.getLocation().getY() + window.getDimensions().getHeight() - 30) {
+						mouseOverWindow = true;
+					}
+				}
+			}
+			if (Main.getCursor().getY() > toolbar.getDimensions().getHeight() + toolbar.getLocation().getY()) {
+				selectionLocation = new Vector2f((int) ((Main.getCursor().getX() + getCurrentCamera().getX()) / (Main.SPRITE_WIDTH * getCurrentCamera().getZoom())), (int) ((Main.getCursor().getY() - getCurrentCamera().getY()) / (Main.SPRITE_HEIGHT * getCurrentCamera().getZoom())));
+
+				currentMap.removeObject(selection);
 
 				if (KeyBinding.isBindingReleasing("SelectNextTile")) {
 					currentTileName = currentMap.getMapStore().getNextTile(currentTileName);
@@ -252,7 +251,7 @@ public class EditorState extends State {
 
 				selection = new Tile();
 				selection.setLocation(selectionLocation);
-				
+
 				java.util.Map<String, Object> props = currentMap.getMapStore().getObjectProperties(currentTileName);
 				if (props != null) {
 					for (String prop : props.keySet()) {
@@ -269,7 +268,7 @@ public class EditorState extends State {
 				if (deleting) {
 					selection.setProperty("delete", null);
 				}
-	
+
 				Camera camera = getCurrentCamera();
 
 				if (KeyBinding.isBindingDown("Up")) {

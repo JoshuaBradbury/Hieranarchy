@@ -1,5 +1,7 @@
 package uk.co.newagedev.hieranarchy.ui;
 
+import uk.co.newagedev.hieranarchy.events.types.input.CursorClickEvent;
+import uk.co.newagedev.hieranarchy.events.types.input.CursorMoveEvent;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.main.Main;
 import uk.co.newagedev.hieranarchy.util.Colour;
@@ -34,13 +36,20 @@ public class TickBox extends Component {
 
 	@Override
 	public void update() {
+		
+	}
+	
+	public void cursorMove(CursorMoveEvent event) {
 		hover = false;
-		if (Mouse.getMouseX() > getDisplayLocation().getX() && Mouse.getMouseX() < getDisplayLocation().getX() + getDimensions().getWidth()) {
-			if (Mouse.getMouseY() > getDisplayLocation().getY() && Mouse.getMouseY() < getDisplayLocation().getY() + getDimensions().getHeight()) {
+		if (event.getX() > getDisplayLocation().getX() && event.getX() < getDisplayLocation().getX() + getDimensions().getWidth()) {
+			if (event.getY() > getDisplayLocation().getY() && event.getY() < getDisplayLocation().getY() + getDimensions().getHeight()) {
 				hover = true;
 			}
 		}
-		if (Mouse.isButtonReleasing(Mouse.BUTTON_LEFT)) {
+	}
+	
+	public void cursorClick(CursorClickEvent event) {
+		if (event.isButtonReleasing(Mouse.BUTTON_LEFT)) {
 			if (hover) {
 				ticked = !ticked;
 			}
