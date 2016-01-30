@@ -12,7 +12,6 @@ public interface Screen {
 	public void close();
 	
 	public void setTitle(String title);
-	public long getWindowID();
 	
 	public Sprite loadImageFromFile(String path);
 

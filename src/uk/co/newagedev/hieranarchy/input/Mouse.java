@@ -6,6 +6,7 @@ import org.lwjgl.glfw.GLFWCursorPosCallback;
 import uk.co.newagedev.hieranarchy.events.EventHub;
 import uk.co.newagedev.hieranarchy.events.types.input.MouseButtonEvent;
 import uk.co.newagedev.hieranarchy.events.types.input.MouseMoveEvent;
+import uk.co.newagedev.hieranarchy.graphics.OpenGLScreen;
 import uk.co.newagedev.hieranarchy.main.Main;
 
 public class Mouse {
@@ -20,29 +21,33 @@ public class Mouse {
 	private static GLFWCursorPosCallback cursorPosCallback;
 
 	public static void init() {
-		GLFW.glfwSetCursorPosCallback(Main.getScreen().getWindowID(), (cursorPosCallback = new GLFWCursorPosCallback() {
+		if (Main.getScreen() instanceof OpenGLScreen) {
+			GLFW.glfwSetCursorPosCallback(((OpenGLScreen) Main.getScreen()).getWindowID(), (cursorPosCallback = new GLFWCursorPosCallback() {
 
-			@Override
-			public void invoke(long window, double xpos, double ypos) {
-				if (mx == 0 && my == 0) {
+				@Override
+				public void invoke(long window, double xpos, double ypos) {
+					if (mx == 0 && my == 0) {
+						mx = xpos;
+						my = ypos;
+						return;
+					}
+					double oldmx = mx, oldmy = my;
 					mx = xpos;
 					my = ypos;
-					return;
+					EventHub.pushEvent(new MouseMoveEvent(mx, my, mx - oldmx, my - oldmy));
 				}
-				double oldmx = mx, oldmy = my;
-				mx = xpos;
-				my = ypos;
-				EventHub.pushEvent(new MouseMoveEvent(mx, my, mx - oldmx, my - oldmy));
-			}
-		}));
+			}));
+		}
 	}
 
 	public static void update() {
-		for (int i = 0; i < BUTTON_COUNT; i++) {
-			boolean bd = (GLFW.glfwGetMouseButton(Main.getScreen().getWindowID(), i) == GLFW.GLFW_PRESS);
-			if (bd != buttonStates[i]) {
-				EventHub.pushEvent(new MouseButtonEvent(i, bd));
-				buttonStates[i] = bd;
+		if (Main.getScreen() instanceof OpenGLScreen) {
+			for (int i = 0; i < BUTTON_COUNT; i++) {
+				boolean bd = (GLFW.glfwGetMouseButton(((OpenGLScreen) Main.getScreen()).getWindowID(), i) == GLFW.GLFW_PRESS);
+				if (bd != buttonStates[i]) {
+					EventHub.pushEvent(new MouseButtonEvent(i, bd));
+					buttonStates[i] = bd;
+				}
 			}
 		}
 	}
