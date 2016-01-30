@@ -1,5 +1,6 @@
 package uk.co.newagedev.hieranarchy.main;
 
+import java.awt.Rectangle;
 import java.util.List;
 
 import uk.co.newagedev.hieranarchy.events.types.input.CursorClickEvent;
@@ -114,7 +115,7 @@ public class EditorState extends State {
 				selection.render(getCurrentCamera());
 			}
 		}
-		Main.getScreen().renderQuad(new Vector2f(), Main.WIDTH, 40, Colour.LIGHT_LIGHT_GREY);
+		Main.getScreen().renderQuad(new Rectangle(0, 0, Main.WIDTH, 40), Colour.LIGHT_LIGHT_GREY);
 		toolbar.render();
 		if (editing) {
 			Component.componentFont.renderText("Edit Mode", 10, 50);

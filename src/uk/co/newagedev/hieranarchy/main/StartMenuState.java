@@ -1,5 +1,7 @@
 package uk.co.newagedev.hieranarchy.main;
 
+import java.awt.Rectangle;
+
 import uk.co.newagedev.hieranarchy.state.MenuState;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.ui.Button;
@@ -49,7 +51,7 @@ public class StartMenuState extends MenuState {
 	
 	@Override
 	public void render() {
-		Main.getScreen().renderQuad(new Vector2f(), Main.WIDTH, Main.HEIGHT, Colour.DARK_GREY);
+		Main.getScreen().renderQuad(new Rectangle(Main.WIDTH, Main.HEIGHT), Colour.DARK_GREY);
 		for (int i = -200; i < Main.WIDTH; i += 20) {
 			Main.getScreen().renderLine(new Vector2f(200 + i + offset, -10), new Vector2f(i + offset, Main.HEIGHT + 10), 10.0f, Colour.LIGHT_GREY);
 		}

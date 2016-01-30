@@ -50,7 +50,7 @@ public class ScrollPane extends Component {
 	}
 
 	public void render() {
-		Main.getScreen().renderQuad(getDisplayLocation(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Colour.LIGHT_LIGHT_GREY);
+		Main.getScreen().renderQuad(new Rectangle((int) getDisplayLocation().getX(), (int) getDisplayLocation().getY(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight()), Colour.LIGHT_LIGHT_GREY);
 		for (ScrollBar bar : scrollBars) {
 			if (bar != null) {
 				bar.render();

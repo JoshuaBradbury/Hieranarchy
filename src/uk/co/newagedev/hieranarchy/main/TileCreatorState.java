@@ -1,5 +1,6 @@
 package uk.co.newagedev.hieranarchy.main;
 
+import java.awt.Rectangle;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,7 +13,6 @@ import uk.co.newagedev.hieranarchy.ui.Label;
 import uk.co.newagedev.hieranarchy.ui.TextBox;
 import uk.co.newagedev.hieranarchy.ui.TickBox;
 import uk.co.newagedev.hieranarchy.util.Colour;
-import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class TileCreatorState extends State {
 	
@@ -90,7 +90,7 @@ public class TileCreatorState extends State {
 	
 	@Override
 	public void render() {
-		Main.getScreen().renderQuad(new Vector2f(), Main.WIDTH, Main.HEIGHT, Colour.LIGHT_GREY);
+		Main.getScreen().renderQuad(new Rectangle(Main.WIDTH, Main.HEIGHT), Colour.LIGHT_GREY);
 		container.render();
 	}
 

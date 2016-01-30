@@ -68,6 +68,7 @@ public class OpenGLScreen implements Screen {
 		GLFW.glfwShowWindow(windowID);
 	}
 
+	@Override
 	public void hideCursor(boolean hidden) {
 		cursorHidden = hidden;
 		if (hidden) {
@@ -77,18 +78,22 @@ public class OpenGLScreen implements Screen {
 		}
 	}
 	
+	@Override
 	public boolean isCursorHidden() {
 		return cursorHidden;
 	}
 	
+	@Override
 	public boolean isCursorVisible() {
 		return cursorVisible;
 	}
 	
+	@Override
 	public void setCursorVisibility(boolean isVisible) {
 		cursorVisible = isVisible;
 	}
 
+	@Override
 	public void cleanup() {
 		hideCursor(false);
 		GLFW.glfwDestroyWindow(windowID);
@@ -135,10 +140,12 @@ public class OpenGLScreen implements Screen {
 		}
 	}
 
+	@Override
 	public boolean shouldClose() {
 		return GLFW.glfwWindowShouldClose(windowID) == GL11.GL_TRUE || close;
 	}
 
+	@Override
 	public Sprite loadImageFromFile(String path) {
 		ByteBuffer image = null, imageBuffer;
 
@@ -160,10 +167,12 @@ public class OpenGLScreen implements Screen {
 		return new Sprite(image, width.get(0), height.get(0), components.get(0) == 3 ? GL11.GL_RGB : GL11.GL_RGBA);
 	}
 
+	@Override
 	public void renderSprite(String spriteName, Vector2f location, Camera camera) {
 		renderSprite(spriteName, location, camera, new float[] { 0.0f, 1.0f, 0.0f, 1.0f }, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
 	}
 
+	@Override
 	public void renderSprite(String spriteName, Vector2f location, Camera camera, float[] texCoords, float[] colour) {
 		if (SpriteRegistry.doesSpriteExist(spriteName)) {
 			if (camera != null) {
@@ -175,6 +184,7 @@ public class OpenGLScreen implements Screen {
 		}
 	}
 
+	@Override
 	public void renderSpriteIgnoringCamera(String spriteName, Vector2f location) {
 		if (SpriteRegistry.doesSpriteExist(spriteName)) {
 			Sprite sprite = SpriteRegistry.getSprite(spriteName);
@@ -182,14 +192,17 @@ public class OpenGLScreen implements Screen {
 		}
 	}
 
+	@Override
 	public void renderSpriteIgnoringCamera(String spriteName, Vector2f location, Vector2f size, float[] texCoords, float[] colour) {
 		renderSprite(spriteName, location, size.getX(), size.getY(), texCoords, colour, new float[] { 0.0f, 0.0f, 0.0f });
 	}
 
+	@Override
 	public void renderSprite(String spriteName, Vector2f location, float width, float height, float[] rotation) {
 		renderSprite(spriteName, location, width, height, new float[] { 0.0f, 1.0f, 0.0f, 1.0f }, new float[] { 1.0f, 1.0f, 1.0f, 1.0f }, rotation);
 	}
 
+	@Override
 	public void renderSprite(String spriteName, Vector2f location, float width, float height, float[] texCoords, float[] colour, float[] rotation) {
 		if (SpriteRegistry.doesSpriteExist(spriteName)) {
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -217,10 +230,12 @@ public class OpenGLScreen implements Screen {
 		}
 	}
 
+	@Override
 	public void setTitle(String title) {
 		GLFW.glfwSetWindowTitle(windowID, title);
 	}
 
+	@Override
 	public void renderInit() {
 		GL11.glViewport(0, 0, Main.WIDTH, Main.HEIGHT);
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
@@ -235,6 +250,7 @@ public class OpenGLScreen implements Screen {
 		GL11.glLoadIdentity();
 	}
 
+	@Override
 	public void postRender() {
 		if (DEBUG) {
 			if (screenFont == null) {
@@ -248,19 +264,15 @@ public class OpenGLScreen implements Screen {
 		sync(60);
 	}
 
+	@Override
 	public void renderQuad(Rectangle rect, float[] colour) {
-		renderQuad(new Vector2f((int) rect.getX(), (int) rect.getY()), (int) rect.getWidth(), (int) rect.getHeight(), colour);
+		renderQuad(rect, new float[][] { colour, colour, colour, colour });
 	}
 
+	@Override
 	public void renderQuad(Rectangle rect, float[][] colours) {
-		renderQuad(new Vector2f((int) rect.getX(), (int) rect.getY()), (int) rect.getWidth(), (int) rect.getHeight(), colours);
-	}
-
-	public void renderQuad(Vector2f loc, int width, int height, float[] colour) {
-		renderQuad(loc, width, height, new float[][] { colour, colour, colour, colour });
-	}
-
-	public void renderQuad(Vector2f loc, int width, int height, float[][] colours) {
+		Vector2f loc = new Vector2f((int) rect.getX(), (int) rect.getY());
+		int width = (int) rect.getWidth(), height = (int) rect.getHeight();
 		if (colours[0].length == 4) {
 			GL11.glBegin(GL11.GL_QUADS);
 			{
@@ -290,6 +302,7 @@ public class OpenGLScreen implements Screen {
 		}
 	}
 
+	@Override
 	public void renderLine(Vector2f point1, Vector2f point2, float thickness, float[] colour) {
 		GL11.glColor3f(colour[0], colour[1], colour[2]);
 		float t = thickness / 2;
@@ -311,15 +324,18 @@ public class OpenGLScreen implements Screen {
 		GL11.glEnd();
 	}
 
+	@Override
 	public void close() {
 		close = true;
 	}
 
+	@Override
 	public void startScissor(Vector2f loc, int width, int height) {
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);
 		GL11.glScissor((int) loc.getX(), (int) loc.getY(), width, height);
 	}
 
+	@Override
 	public void stopScissor() {
 		GL11.glDisable(GL11.GL_SCISSOR_TEST);
 	}

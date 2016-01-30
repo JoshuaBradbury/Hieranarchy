@@ -1,5 +1,7 @@
 package uk.co.newagedev.hieranarchy.main;
 
+import java.awt.Rectangle;
+
 import uk.co.newagedev.hieranarchy.state.MenuState;
 import uk.co.newagedev.hieranarchy.ui.Button;
 import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
@@ -7,7 +9,6 @@ import uk.co.newagedev.hieranarchy.ui.Container;
 import uk.co.newagedev.hieranarchy.ui.ScrollBar;
 import uk.co.newagedev.hieranarchy.ui.ScrollPane;
 import uk.co.newagedev.hieranarchy.util.Colour;
-import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class ProjectLoaderState extends MenuState {
 
@@ -26,7 +27,7 @@ public class ProjectLoaderState extends MenuState {
 	
 	@Override
 	public void render() {
-		Main.getScreen().renderQuad(new Vector2f(), Main.WIDTH, Main.HEIGHT, Colour.DARK_DARK_GREY);
+		Main.getScreen().renderQuad(new Rectangle(0, 0, Main.WIDTH, Main.HEIGHT), Colour.DARK_DARK_GREY);
 		super.render();
 	}
 	

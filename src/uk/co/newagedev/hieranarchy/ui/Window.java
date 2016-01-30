@@ -1,5 +1,7 @@
 package uk.co.newagedev.hieranarchy.ui;
 
+import java.awt.Rectangle;
+
 import uk.co.newagedev.hieranarchy.events.types.input.CursorClickEvent;
 import uk.co.newagedev.hieranarchy.events.types.input.CursorMoveEvent;
 import uk.co.newagedev.hieranarchy.input.Mouse;
@@ -28,8 +30,8 @@ public class Window extends Container {
 
 	@Override
 	public void render() {
-		Main.getScreen().renderQuad(getLocation().clone().subtract(0, 30), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Colour.DARK_GREY);
-		Main.getScreen().renderQuad(getLocation().clone().add(5, 0), (int) getDimensions().getWidth() - 10, (int) getDimensions().getHeight() - 35, Colour.DARK_DARK_GREY);
+		Main.getScreen().renderQuad(new Rectangle((int) getLocation().getX(), (int) getLocation().getY() - 30, (int) getDimensions().getWidth(), (int) getDimensions().getHeight()), Colour.DARK_GREY);
+		Main.getScreen().renderQuad(new Rectangle((int) getLocation().getX() + 5, (int) getLocation().getY(), (int) getDimensions().getWidth() - 10, (int) getDimensions().getHeight() - 35), Colour.DARK_DARK_GREY);
 		super.render();
 	}
 

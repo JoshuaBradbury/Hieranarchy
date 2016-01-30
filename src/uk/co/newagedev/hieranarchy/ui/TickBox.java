@@ -1,5 +1,7 @@
 package uk.co.newagedev.hieranarchy.ui;
 
+import java.awt.Rectangle;
+
 import uk.co.newagedev.hieranarchy.events.types.input.CursorClickEvent;
 import uk.co.newagedev.hieranarchy.events.types.input.CursorMoveEvent;
 import uk.co.newagedev.hieranarchy.input.Mouse;
@@ -26,8 +28,8 @@ public class TickBox extends Component {
 	
 	@Override
 	public void render() {
-		Main.getScreen().renderQuad(getDisplayLocation(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight(), Colour.DARK_GREY);
-		Main.getScreen().renderQuad(getDisplayLocation().clone().add(1, 1), (int) getDimensions().getWidth() - 2, (int) getDimensions().getHeight() - 2, (hover ? Colour.LIGHT_GREY : Colour.GREY));
+		Main.getScreen().renderQuad(new Rectangle((int) getDisplayLocation().getX(), (int) getDisplayLocation().getY(), (int) getDimensions().getWidth(), (int) getDimensions().getHeight()), Colour.DARK_GREY);
+		Main.getScreen().renderQuad(new Rectangle((int) getDisplayLocation().getX() + 1, (int) getDisplayLocation().getY() + 1, (int) getDimensions().getWidth() - 2, (int) getDimensions().getHeight() - 2), (hover ? Colour.LIGHT_GREY : Colour.GREY));
 		if (ticked) {
 			Main.getScreen().renderLine(new Vector2f((int) getDisplayLocation().getX() + 15, (int) getDisplayLocation().getY() + 5), new Vector2f((int) getDisplayLocation().getX() + 5, (int) getDisplayLocation().getY() + 15), 2, Colour.DARK_DARK_GREY);
 			Main.getScreen().renderLine(new Vector2f((int) getDisplayLocation().getX() + 5, (int) getDisplayLocation().getY() + 5), new Vector2f((int) getDisplayLocation().getX() + 15, (int) getDisplayLocation().getY() + 15), 2, Colour.DARK_DARK_GREY);

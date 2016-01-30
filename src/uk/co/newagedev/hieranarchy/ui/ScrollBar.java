@@ -167,13 +167,13 @@ public class ScrollBar {
 
 	public void render() {
 		if (display == ScrollBar.VERTICAL) {
-			Main.getScreen().renderQuad(new Vector2f((int) (parent.getDisplayLocation().getX() + getParentWidth()) - 15, (int) parent.getDisplayLocation().getY()), 15, (int) getParentHeight(), Colour.LIGHT_GREY);
-			Main.getScreen().renderQuad(new Vector2f((int) (parent.getDisplayLocation().getX() + getParentWidth()) - 13, y + (int) parent.getDisplayLocation().getY() + 15), 11, height, barHover ? Colour.DARK_GREY : Colour.GREY);
+			Main.getScreen().renderQuad(new Rectangle((int) (parent.getDisplayLocation().getX() + getParentWidth()) - 15, (int) parent.getDisplayLocation().getY(), 15, (int) getParentHeight()), Colour.LIGHT_GREY);
+			Main.getScreen().renderQuad(new Rectangle((int) (parent.getDisplayLocation().getX() + getParentWidth()) - 13, y + (int) parent.getDisplayLocation().getY() + 15, 11, height), barHover ? Colour.DARK_GREY : Colour.GREY);
 			Main.getScreen().renderSprite(topHover ? "arrow hover" : "arrow", new Vector2f((float) (parent.getDisplayLocation().getX() + getParentWidth()) - 13, parent.getDisplayLocation().getY() + 2), 11.0f, 11.0f, new float[] { 0.0f, 0.0f, 0.0f });
 			Main.getScreen().renderSprite(bottomHover ? "arrow hover" : "arrow", new Vector2f((float) (parent.getDisplayLocation().getX() + getParentWidth()) - 2, parent.getDisplayLocation().getY() + maxHeight + 28), 11.0f, 11.0f, new float[] { 0.0f, 0.0f, 180.0f });
 		} else if (display == ScrollBar.HORIZONTAL) {
-			Main.getScreen().renderQuad(new Vector2f((int) parent.getDisplayLocation().getX(), (int) (parent.getDisplayLocation().getY() + getParentHeight()) - 15), (int) getParentWidth(), 15, Colour.LIGHT_GREY);
-			Main.getScreen().renderQuad(new Vector2f((int) (parent.getDisplayLocation().getX()) + 15 + x, y + (int) (parent.getDisplayLocation().getY() + getParentHeight()) - 13), width, 11, barHover ? Colour.DARK_GREY : Colour.GREY);
+			Main.getScreen().renderQuad(new Rectangle((int) parent.getDisplayLocation().getX(), (int) (parent.getDisplayLocation().getY() + getParentHeight()) - 15, (int) getParentWidth(), 15), Colour.LIGHT_GREY);
+			Main.getScreen().renderQuad(new Rectangle((int) (parent.getDisplayLocation().getX()) + 15 + x, y + (int) (parent.getDisplayLocation().getY() + getParentHeight()) - 13, width, 11), barHover ? Colour.DARK_GREY : Colour.GREY);
 			Main.getScreen().renderSprite(rightHover ? "arrow hover" : "arrow", new Vector2f((int) (parent.getDisplayLocation().getX() + getParentWidth()) - 2, (int) (parent.getDisplayLocation().getY() + getParentHeight()) - 13), 11, 11, new float[] { 0.0f, 0.0f, 90.0f });
 			Main.getScreen().renderSprite(leftHover ? "arrow hover" : "arrow", new Vector2f((int) (parent.getDisplayLocation().getX()) + 2, (int) (parent.getDisplayLocation().getY() + getParentHeight()) - 2), 11, 11, new float[] { 0.0f, 0.0f, 270.0f });
 		}

@@ -31,8 +31,6 @@ public interface Screen {
 	public void renderSpriteIgnoringCamera(String spriteName, Vector2f location);
 	public void renderSpriteIgnoringCamera(String spriteName, Vector2f location, Vector2f size, float[] texCoords, float[] colour);
 
-	public void renderQuad(Vector2f loc, int width, int height, float[] colour);
-	public void renderQuad(Vector2f loc, int width, int height, float[][] colours);
 	public void renderQuad(Rectangle rect, float[] colour);
 	public void renderQuad(Rectangle rect, float[][] colours);
 	
