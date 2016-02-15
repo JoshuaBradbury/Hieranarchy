@@ -29,15 +29,11 @@ public class StringUtil {
 		return parts;
 	}
 
-	public static int countOccurences(String line, String sub) {
-		int count = 0;
-		for (int i = 0; i < line.length(); i++) {
-			String sect = line.substring(i, i + sub.length());
-			if (sect.equals(sub)) {
-				count += 1;
-			}
+	public static boolean doesArrayContainString(String[] array, String str) {
+		for (int i = 0; i < array.length; i++) {
+			if (array[i].equals(str))
+				return true;
 		}
-		return count;
+		return false;
 	}
-	
 }

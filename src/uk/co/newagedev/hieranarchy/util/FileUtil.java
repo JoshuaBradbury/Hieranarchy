@@ -48,6 +48,23 @@ public class FileUtil {
 	}
 
 	public static String[] getAllFilesInFolder(String folder) {
+		File file = load(folder);
+		if (file != null) {
+			if (file.exists()) {
+				if (file.isDirectory()) {
+					File[] fileList = file.listFiles();
+					String[] fileNames = new String[fileList.length];
+					for (int i = 0; i < fileNames.length; i++) {
+						fileNames[i] = fileList[i].getName();
+					}
+					return fileNames;
+				}
+			}
+		}
+		return new String[] {};
+	}
+	
+	public static String[] getAllFilesInFolderAndSubFolders(String folder) {
 		List<File> filesToCheck = new ArrayList<File>();
 		File file = load(folder);
 		if (file != null) {
