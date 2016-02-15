@@ -2,6 +2,7 @@ package uk.co.newagedev.hieranarchy.ui;
 
 import java.awt.Rectangle;
 
+import uk.co.newagedev.hieranarchy.events.types.input.CursorClickEvent;
 import uk.co.newagedev.hieranarchy.events.types.input.CursorMoveEvent;
 import uk.co.newagedev.hieranarchy.main.Main;
 import uk.co.newagedev.hieranarchy.util.Colour;
@@ -19,6 +20,7 @@ public class ScrollPane extends Component {
 			scrollBars[1] = new ScrollBar(ScrollBar.VERTICAL, this);
 		}
 		pane = new Container(0, 0);
+		pane.setParent(this);
 	}
 
 	public Container getPane() {
@@ -34,7 +36,7 @@ public class ScrollPane extends Component {
 	}
 
 	public void update() {
-	
+		
 	}
 	
 	public void cursorMove(CursorMoveEvent event) {
@@ -46,6 +48,19 @@ public class ScrollPane extends Component {
 			Main.getCursor().setOffset(-mx - 1, -my - 1);
 			pane.update();
 			Main.getCursor().setOffset(0, 0);
+		}
+		for (ScrollBar bar : scrollBars) {
+			if (bar != null) {
+				bar.cursorMove(event);
+			}
+		}
+	}
+	
+	public void cursorClick(CursorClickEvent event) {
+		for (ScrollBar bar : scrollBars) {
+			if (bar != null) {
+				bar.cursorClick(event);
+			}
 		}
 	}
 
