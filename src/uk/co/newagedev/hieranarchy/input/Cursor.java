@@ -12,7 +12,7 @@ import uk.co.newagedev.hieranarchy.main.Main;
 public class Cursor implements Listener {
 
 	private int x, y, offX, offY, updatesSinceLastMovement, updatesSinceLastPress;
-	private boolean pressing, down, releasing;
+	private boolean pressing, down, releasing, mouseDown;
 
 	public Cursor(int x, int y) {
 		this.x = x;
@@ -25,15 +25,29 @@ public class Cursor implements Listener {
 			Main.getScreen().hideCursor(false);
 		}
 
-		if (pressing && releasing) {
+		if (mouseDown && !pressing && !down) {
+			pressing = true;
+			down = false;
 			releasing = false;
-		} else if (releasing && down) {
+		} else if (mouseDown && pressing) {
+			pressing = false;
+			down = true;
+		} else if (!mouseDown && (pressing || down)) {
+			pressing = false;
 			down = false;
-		} else if (pressing && down) {
-			down = false;
-		} else {
+			releasing = true;
+		} else if (!mouseDown && releasing) {
+			releasing = false;
+		}
+		
+		if (updatesSinceLastPress == 0) {
+			EventHub.pushEvent(new CursorClickEvent(pressing, down, releasing, getX(), getY(), updatesSinceLastPress, Mouse.BUTTON_1));
+		}
+		
+		if (!pressing && !down && !releasing) {
 			updatesSinceLastPress++;
 		}
+		
 		updatesSinceLastMovement++;
 	}
 
@@ -72,18 +86,7 @@ public class Cursor implements Listener {
 	public void updateCursorState(MouseButtonEvent event) {
 		updatesSinceLastPress = 0;
 		if (event.getMouseButton() == Mouse.BUTTON_LEFT) {
-			if (!pressing && !down && event.isDown()) {
-				pressing = true;
-			} else if (pressing && !down && event.isDown()) {
-				pressing = false;
-				down = true;
-			} else if (down && !releasing && !event.isDown()) {
-				down = false;
-				releasing = true;
-			} else if (!down && releasing && !event.isDown()) {
-				releasing = false;
-			}
+			mouseDown = event.isDown();
 		}
-		EventHub.pushEvent(new CursorClickEvent(pressing, down, releasing, getX(), getY(), updatesSinceLastPress, event.getMouseButton()));
 	}
 }

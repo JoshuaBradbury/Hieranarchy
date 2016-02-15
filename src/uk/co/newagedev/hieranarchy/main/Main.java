@@ -113,6 +113,7 @@ public class Main {
 
 	public void update() {
 		Mouse.update();
+		cursor.update();
 		Controller.update();
 		KeyBinding.update();
 		if (StateManager.getState(currentState) != null) {
