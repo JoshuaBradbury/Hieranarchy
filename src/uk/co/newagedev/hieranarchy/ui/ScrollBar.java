@@ -76,7 +76,7 @@ public class ScrollBar {
 			}
 
 			leftHover = (new Rectangle((int) parent.getDisplayLocation().getX() + 2, (int) (parent.getDisplayLocation().getY() + getParentHeight()) - 13, 11, 11)).contains(event.getX(), event.getY());
-			rightHover = (new Rectangle((int) parent.getDisplayLocation().getX() + getParentWidth() - 13, (int) (parent.getDisplayLocation().getY() + getParentHeight()) - 13, 11, 11)).contains(event.getY(), event.getY());
+			rightHover = (new Rectangle((int) parent.getDisplayLocation().getX() + getParentWidth() - 13, (int) (parent.getDisplayLocation().getY() + getParentHeight()) - 13, 11, 11)).contains(event.getX(), event.getY());
 		}
 	}
 
