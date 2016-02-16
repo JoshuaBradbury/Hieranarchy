@@ -19,6 +19,7 @@ public class Project {
 	private ProjectData projectData;
 	private Map<String, uk.co.newagedev.hieranarchy.map.Map> maps = new HashMap<String, uk.co.newagedev.hieranarchy.map.Map>();
 	private String name;
+	private boolean saved = true;
 	
 	public Project(String projectName) {
 		name = projectName;
@@ -51,6 +52,10 @@ public class Project {
 		}
 	}
 	
+	public boolean isSaved() {
+		return saved;
+	}
+	
 	public String getProjectFolder() {
 		return projectFolder;
 	}
@@ -79,9 +84,11 @@ public class Project {
 	public void removeMap(String mapName) {
 		saveMap(mapName);
 		maps.remove(mapName);
+		saved = false;
 	}
 	
 	public void save() {
+		saved = true;
 		try {
 			FileWriter writer = new FileWriter(FileUtil.create(projectFolder + PROJECT_FILE));
 			String json = Main.GSON.toJson(projectData);
@@ -97,5 +104,6 @@ public class Project {
 	
 	public void addObjectToMap(String map, Map<String, Object> objectProperties) {
 		maps.get(map).getMapStore().writeObject((String) objectProperties.get("name"), objectProperties);
+		saved = false;
 	}
 }
