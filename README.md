@@ -28,6 +28,9 @@ What is left to come is:
 - Possible sound editor?
 - and whatever anyone else wants to suggest!
 
+#Can I test it?
+Sure anyone can download the source and build it themselves, however you would need to download GSON and LWJGL 3 and then add them to the build path etc. So I have added a build folder that has the runnable jar that will be updated fairly often. All you need to do to run this is to download the jar and the assets folder, have them in the same application, and then run the jar and it works :D
+
 #Credits
 This project was created, designed and written by Joshua Bradbury
 Thanks go to:
