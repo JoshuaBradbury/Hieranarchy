@@ -87,4 +87,16 @@ public class ScrollPane extends Component {
 		pane.render();
 		Main.getScreen().stopScissor();
 	}
+	
+	@Override
+	public void hide() {
+		pane.hide();
+		super.hide();
+	}
+	
+	@Override
+	public void show() {
+		pane.show();
+		super.show();
+	}
 }

@@ -31,6 +31,7 @@ public class Container extends Component {
 		return components;
 	}
 
+	@Override
 	public Dimension getDimensions() {
 		return new Dimension(getWidth(), getHeight());
 	}
@@ -57,6 +58,7 @@ public class Container extends Component {
 		return width;
 	}
 
+	@Override
 	public void update() {
 		try {
 			for (Component component : components) {
@@ -66,10 +68,27 @@ public class Container extends Component {
 		} catch (Exception e) {
 		}
 	}
-
+	
+	@Override
 	public void render() {
 		for (Component component : components) {
 			component.render();
 		}
+	}
+	
+	@Override
+	public void hide() {
+		for (Component component : components) {
+			component.hide();
+		}
+		super.hide();
+	}
+	
+	@Override
+	public void show() {
+		for (Component component : components) {
+			component.show();
+		}
+		super.show();
 	}
 }
