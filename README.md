@@ -2,11 +2,11 @@
 
 #What is it?
 
-Hieranarchy is the name of the game I made for LD 29 that inspired me to make this engine. That was the original aim of the engine, to be used to rewrite the game, but it took a different turn to be a tool for anyone to easily create games with no coding necessary.
+Hieranarchy is the name of the game I made for LD 29 that inspired me to make this engine. That was the original aim of the engine, to be used to rewrite the game, but it took a different turn to be a tool for anyone to easily create games with no programming experience necessary.
 
 #How does it work?
 
-It works as sort of a level editor. Pretty much you have a map, which holds all the different tiles that are used in that map, and then you can place them where ever and it will work. The tiles are stored per map as you create the tiles for that map. This works through a fairly dynamic system of properties that you can set when creating a tile.
+In its current state it doesn't do much but look ugly! The plan is that you will have a prject that holds a bunch of maps and other data. In these maps is more data but also logic will be available, most likely in a way similar to Unreal Engine's blueprint system or MIT's Scratch. This will help to diversify a game but also make it more interesting.
 
 #What is left to do?
 
@@ -16,11 +16,13 @@ Features:
 - Map and State system which allows to dynamically load and swap states and maps
 - Dynamic tile system which allows you to create and save different tiles
 - Project system which saves and loads maps
-- Tile creation and editing in the editor
+- Basic tile creation and editing in an editor
+- Mostly complete UI system
 
 What is left to come is:
-- Add map management interface
+- Add project interface
 - Improve links between interfaces
+- Better control over map and project data
 - Entities as a whole
 - Image editor for sprites
 - Possible sound editor?
