@@ -2,6 +2,7 @@ package uk.co.newagedev.hieranarchy.main;
 
 import java.awt.Rectangle;
 
+import uk.co.newagedev.hieranarchy.events.types.screen.ScreenResizeEvent;
 import uk.co.newagedev.hieranarchy.project.Project;
 import uk.co.newagedev.hieranarchy.state.MenuState;
 import uk.co.newagedev.hieranarchy.state.StateManager;
@@ -18,9 +19,10 @@ import uk.co.newagedev.hieranarchy.util.Vector2f;
 public class StartMenuState extends MenuState {
 
 	private int count, offset;
+	private Button newProjectButton, loadProjectButton, quitButton;
 	
 	public StartMenuState() {
-		registerComponent(new Button("Create New Project", Main.WIDTH / 8 * 3 - 100, Main.HEIGHT / 8 * 3 - 25, 200, 50, false,  new ButtonRunnable() {
+		newProjectButton = new Button("Create New Project", Main.WIDTH / 2 - 225, Main.HEIGHT / 2 - 100, 200, 50, false,  new ButtonRunnable() {
 			public void run() {
 				Container cont = new Container(0, 0);
 				Label label = new Label("Project Name:", 0, 100);
@@ -41,19 +43,24 @@ public class StartMenuState extends MenuState {
 					}
 				});
 			}
-		}));
-		registerComponent(new Button("Load Project", Main.WIDTH / 8 * 5 - 100, Main.HEIGHT / 8 * 3 - 25, 200, 50, false, new ButtonRunnable() {
+		});
+		registerComponent(newProjectButton);
+		
+		loadProjectButton = new Button("Load Project", Main.WIDTH / 2 + 25, Main.HEIGHT / 2 - 100, 200, 50, false, new ButtonRunnable() {
 			public void run() {
 				ProjectLoaderState state = new ProjectLoaderState();
 				StateManager.registerState("project loader", state);
 				Main.setCurrentState("project loader");
 			}
-		}));
-		registerComponent(new Button("Quit Game", Main.WIDTH / 8 * 5 - 100, Main.HEIGHT / 8 * 5 - 25, 200, 50, false, new ButtonRunnable() {
+		});
+		registerComponent(loadProjectButton);
+		
+		quitButton = new Button("Quit Game", Main.WIDTH / 2 - 100, Main.HEIGHT / 2 + 50, 200, 50, false, new ButtonRunnable() {
 			public void run() {
 				Main.getScreen().close();
 			}
-		}));
+		});
+		registerComponent(quitButton);
 	}
 	
 	@Override
@@ -76,5 +83,11 @@ public class StartMenuState extends MenuState {
 				offset = 0;
 			}
 		}
+	}
+	
+	public void screenResize(ScreenResizeEvent event) {
+		newProjectButton.setLocation(Main.WIDTH / 2 - 225, Main.HEIGHT / 2 - 50);
+		loadProjectButton.setLocation(Main.WIDTH / 2 + 25, Main.HEIGHT / 2 - 50);
+		quitButton.setLocation(Main.WIDTH / 2 - 100, Main.HEIGHT / 2 + 50);
 	}
 }
