@@ -18,7 +18,6 @@ import uk.co.newagedev.hieranarchy.util.StringUtil;
 
 public class ProjectLoaderState extends MenuState {
 
-	private int count, offset;
 	private Container container;
 	private ScrollPane pane;
 	
@@ -65,18 +64,5 @@ public class ProjectLoaderState extends MenuState {
 	public void render() {
 		Main.getScreen().renderQuad(new Rectangle(0, 0, Main.WIDTH, Main.HEIGHT), Colour.DARK_DARK_GREY);
 		super.render();
-	}
-	
-	@Override
-	public void update() {
-		count++;
-		if (count % 5 == 0) {
-			count = 1;
-			offset += 1;
-			if (offset >= 20) {
-				offset = 0;
-			}
-		}
-		super.update();
 	}
 }
