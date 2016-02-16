@@ -2,6 +2,7 @@ package uk.co.newagedev.hieranarchy.main;
 
 import java.awt.Rectangle;
 
+import uk.co.newagedev.hieranarchy.project.Project;
 import uk.co.newagedev.hieranarchy.state.MenuState;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.ui.Button;
@@ -11,6 +12,7 @@ import uk.co.newagedev.hieranarchy.ui.Label;
 import uk.co.newagedev.hieranarchy.ui.TextBox;
 import uk.co.newagedev.hieranarchy.util.Colour;
 import uk.co.newagedev.hieranarchy.util.Logger;
+import uk.co.newagedev.hieranarchy.util.StringUtil;
 import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class StartMenuState extends MenuState {
@@ -30,7 +32,12 @@ public class StartMenuState extends MenuState {
 				Main.popup("Create New Project", cont, new ButtonRunnable() {
 					@Override
 					public void run() {
-						Logger.info("YOLO");
+						if (nameBox.getText().length() > 0) {
+							Logger.info("Loading project " + StringUtil.surroundWith(nameBox.getText(), "\""));
+							ProjectManagementState state = new ProjectManagementState(new Project(nameBox.getText()));
+							StateManager.registerState(nameBox.getText() + " management", state);
+							Main.setCurrentState(nameBox.getText() + " management");
+						}
 					}
 				});
 			}

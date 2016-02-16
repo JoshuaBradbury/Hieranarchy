@@ -59,6 +59,10 @@ public class Project {
 		return projectData;
 	}
 	
+	public String getName() {
+		return name;
+	}
+	
 	public void loadMap(String mapName) {
 		maps.put(mapName, new uk.co.newagedev.hieranarchy.map.Map(mapName, this));
 	}

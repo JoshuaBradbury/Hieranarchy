@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import uk.co.newagedev.hieranarchy.project.Project;
 import uk.co.newagedev.hieranarchy.state.MenuState;
+import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.ui.Button;
 import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
 import uk.co.newagedev.hieranarchy.ui.Container;
@@ -38,10 +39,9 @@ public class ProjectLoaderState extends MenuState {
 		cont.addComponent(new Button("Load Project", pane.getWidth() - 225, 20, 200, 50, false, new ButtonRunnable() {
 			public void run() {
 				Logger.info("Loading project " + StringUtil.surroundWith(projectName, "\""));
-				if (Main.project != null) {
-					Main.project.cleanup();
-				}
-				Main.project = project;
+				ProjectManagementState state = new ProjectManagementState(project);
+				StateManager.registerState(projectName + " management", state);
+				Main.setCurrentState(projectName + " management");
 			}
 		}));
 		cont.update();
