@@ -6,23 +6,20 @@ import java.util.List;
 
 public class Container extends Component {
 	private List<Component> components = new ArrayList<Component>();
-	private int width, height;
-	
+
 	public Container(int x, int y) {
 		super(x, y);
-		width = 0;
-		height = 0;
 	}
 
 	public Container(int x, int y, int width, int height) {
 		super(x, y);
-		this.width = width;
-		this.height = height;
+		setDimensions(width, height);
 	}
 
 	public void addComponent(Component component) {
 		components.add(component);
 		component.setParent(this);
+		update();
 	}
 
 	public void removeComponent(Component component) {
@@ -39,24 +36,22 @@ public class Container extends Component {
 	}
 
 	public int getHeight() {
-		if (height == 0) {
-			for (Component component : components) {
-				int temp = (int) (component.getLocation().getY() + component.getDimensions().getHeight());
-				if (temp > height) {
-					height = temp;
-				}
+		int height = 0;
+		for (Component component : components) {
+			int temp = (int) (component.getLocation().getY() + component.getDimensions().getHeight());
+			if (temp > height) {
+				height = temp;
 			}
 		}
 		return height;
 	}
 
 	public int getWidth() {
-		if (width == 0) {
-			for (Component component : components) {
-				int temp = (int) (component.getLocation().getX() + component.getDimensions().getWidth());
-				if (temp > width) {
-					width = temp;
-				}
+		int width = 0;
+		for (Component component : components) {
+			int temp = (int) (component.getLocation().getX() + component.getDimensions().getWidth());
+			if (temp > width) {
+				width = temp;
 			}
 		}
 		return width;

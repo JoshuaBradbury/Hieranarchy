@@ -6,6 +6,7 @@ import uk.co.newagedev.hieranarchy.events.types.input.CursorClickEvent;
 import uk.co.newagedev.hieranarchy.events.types.input.CursorMoveEvent;
 import uk.co.newagedev.hieranarchy.main.Main;
 import uk.co.newagedev.hieranarchy.util.Colour;
+import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class ScrollPane extends Component {
 	private ScrollBar[] scrollBars = new ScrollBar[2];
@@ -36,15 +37,13 @@ public class ScrollPane extends Component {
 	}
 
 	public void update() {
-		
+		pane.update();
 	}
 	
 	public void cursorMove(CursorMoveEvent event) {
 		int mx = event.getX(), my = event.getY();
 		boolean hovering = (scrollBars[0] != null ? (my > getDisplayLocation().getY() + getHeight() && my < getDisplayLocation().getY() + getHeight() + 15) || scrollBars[0].isHeld() : false) || (scrollBars[1] != null ? (mx > getDisplayLocation().getX() + getWidth() && mx < getDisplayLocation().getX() + getWidth() + 15) || scrollBars[1].isHeld() : false);
-		if ((new Rectangle((int) getDisplayLocation().getX(), (int) getDisplayLocation().getY(), getWidth(), getHeight())).contains(event.getX(), event.getY())) {
-			pane.update();
-		} else if (hovering) {
+		if (hovering) {
 			Main.getCursor().setOffset(-mx - 1, -my - 1);
 			pane.update();
 			Main.getCursor().setOffset(0, 0);
@@ -75,16 +74,16 @@ public class ScrollPane extends Component {
 		int xOffset = 0, yOffset = 0;
 
 		if (scrollBars[0] != null) {
-			xOffset = (int) -scrollBars[0].calculateXOffset();
+			xOffset = (int) -scrollBars[0].calculateXOffset() + (int) getDisplayLocation().getX();
 		}
 		if (scrollBars[1] != null) {
-			yOffset = (int) -scrollBars[1].calculateYOffset();
+			yOffset = (int) -scrollBars[1].calculateYOffset() + (int) getDisplayLocation().getY();
 		}
 
 		pane.setOffset(xOffset, yOffset);
 
 		int yOff = scrollBars[1] != null ? 15 : 0;
-		Main.getScreen().startScissor(getDisplayLocation().clone().add(0, yOff), getWidth(), getHeight());
+		Main.getScreen().startScissor(new Vector2f(getDisplayLocation().getX(), Main.HEIGHT - getDisplayLocation().getY() - (int) getDimensions().getHeight() + yOff), getWidth(), getHeight());
 		pane.render();
 		Main.getScreen().stopScissor();
 	}

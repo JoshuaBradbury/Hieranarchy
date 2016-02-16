@@ -22,9 +22,9 @@ public class ScrollBar {
 		this.parent = parent;
 		y = 0;
 		x = 0;
-		maxHeight = (int) getParentHeight() - 30;
+		maxHeight = getParentHeight() - 30;
 		height = 0;
-		maxWidth = (int) getParentWidth() - 30;
+		maxWidth = getParentWidth() - 30;
 		width = 0;
 	}
 
@@ -60,8 +60,9 @@ public class ScrollBar {
 
 	public void cursorMove(CursorMoveEvent event) {
 		if (display == ScrollBar.VERTICAL) {
+			barHover = getBar().contains(event.getX(), event.getY());
+			
 			if (startDragY != -1) {
-				barHover = getBar().contains(event.getX(), event.getY());
 				y = startY + event.getY() - startDragY;
 			}
 
@@ -70,8 +71,9 @@ public class ScrollBar {
 		}
 
 		if (display == ScrollBar.HORIZONTAL) {
+			barHover = getBar().contains(event.getX(), event.getY());
+
 			if (startDragX != -1) {
-				barHover = getBar().contains(event.getX(), event.getY());
 				x = startX + event.getX() - startDragX;
 			}
 
@@ -158,11 +160,13 @@ public class ScrollBar {
 	}
 
 	public float calculateYOffset() {
-		return ((float) y / (float) (maxHeight - height)) * (float) getParentHeight();
+		int paneHeight = (int) (parent.getPane().getDimensions().getHeight() > getParentHeight() ? parent.getPane().getDimensions().getHeight() : getParentHeight());
+		return ((float) y / (float) (maxHeight - height)) * (float) (paneHeight - getParentHeight());
 	}
 
 	public float calculateXOffset() {
-		return ((float) x / (float) (maxWidth - width)) * (float) getParentWidth();
+		int paneWidth = (int) (parent.getPane().getDimensions().getWidth() > getParentWidth() ? parent.getPane().getDimensions().getWidth() : getParentWidth());
+		return ((float) x / (float) (maxWidth - width)) * (float) (paneWidth - getParentWidth());
 	}
 
 	public void render() {
