@@ -5,9 +5,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 
 import uk.co.newagedev.hieranarchy.main.Main;
+import uk.co.newagedev.hieranarchy.map.Map;
 import uk.co.newagedev.hieranarchy.util.FileUtil;
 import uk.co.newagedev.hieranarchy.util.Logger;
 
@@ -17,7 +17,7 @@ public class Project {
 	
 	private String projectFolder;
 	private ProjectData projectData;
-	private Map<String, uk.co.newagedev.hieranarchy.map.Map> maps = new HashMap<String, uk.co.newagedev.hieranarchy.map.Map>();
+	private HashMap<String, Map> maps = new HashMap<String, Map>();
 	private String name;
 	private boolean saved = true;
 	
@@ -69,15 +69,16 @@ public class Project {
 	}
 	
 	public void loadMap(String mapName) {
-		maps.put(mapName, new uk.co.newagedev.hieranarchy.map.Map(mapName, this));
+		saved = false;
+		maps.put(mapName, new Map(mapName, this));
 	}
 	
-	public uk.co.newagedev.hieranarchy.map.Map getMap(String mapName) {
+	public Map getMap(String mapName) {
 		return maps.get(mapName);
 	}
 	
 	public void saveMap(String mapName) {
-		uk.co.newagedev.hieranarchy.map.Map map = maps.get(mapName);
+		Map map = maps.get(mapName);
 		map.save();
 	}
 	
@@ -89,6 +90,9 @@ public class Project {
 	
 	public void save() {
 		saved = true;
+		for (String mapName : maps.keySet()) {
+			saveMap(mapName);
+		}
 		try {
 			FileWriter writer = new FileWriter(FileUtil.create(projectFolder + PROJECT_FILE));
 			String json = Main.GSON.toJson(projectData);
@@ -102,7 +106,7 @@ public class Project {
 		}
 	}
 	
-	public void addObjectToMap(String map, Map<String, Object> objectProperties) {
+	public void addObjectToMap(String map, HashMap<String, Object> objectProperties) {
 		maps.get(map).getMapStore().writeObject((String) objectProperties.get("name"), objectProperties);
 		saved = false;
 	}

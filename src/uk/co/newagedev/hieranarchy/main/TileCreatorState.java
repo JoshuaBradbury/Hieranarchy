@@ -2,7 +2,6 @@ package uk.co.newagedev.hieranarchy.main;
 
 import java.awt.Rectangle;
 import java.util.HashMap;
-import java.util.Map;
 
 import uk.co.newagedev.hieranarchy.state.State;
 import uk.co.newagedev.hieranarchy.state.StateManager;
@@ -49,7 +48,7 @@ public class TileCreatorState extends State {
 			public void run() {
 				closeTileCreator();
 				EditorState editor = (EditorState) StateManager.getState(stateFrom);
-				Map<String, Object> props = getProps();
+				HashMap<String, Object> props = getProps();
 				
 				Main.project.addObjectToMap(editor.getCurrentMap().getMapStore().getName(), props);
 			}
@@ -70,8 +69,8 @@ public class TileCreatorState extends State {
 		StateManager.removeState(getName());
 	}
 	
-	public Map<String, Object> getProps() {
-		Map<String, Object> props = new HashMap<String, Object>();
+	public HashMap<String, Object> getProps() {
+		HashMap<String, Object> props = new HashMap<String, Object>();
 		
 		if (connectedTextures.isTicked()) {
 			props.put("connected-textures", true);

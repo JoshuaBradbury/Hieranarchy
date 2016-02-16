@@ -14,6 +14,7 @@ import uk.co.newagedev.hieranarchy.ui.Container;
 import uk.co.newagedev.hieranarchy.ui.Label;
 import uk.co.newagedev.hieranarchy.ui.ScrollBar;
 import uk.co.newagedev.hieranarchy.ui.ScrollPane;
+import uk.co.newagedev.hieranarchy.ui.TextBox;
 import uk.co.newagedev.hieranarchy.util.Colour;
 
 public class ProjectManagementState extends MenuState {
@@ -21,7 +22,7 @@ public class ProjectManagementState extends MenuState {
 	private Project project;
 	private ScrollPane pane;
 	private Container toolbar;
-	private Button exitProject, saveProject;
+	private Button exitProject, saveProject, addMap, deleteMap;
 
 	public ProjectManagementState(Project project) {
 		this.project = project;
@@ -36,6 +37,40 @@ public class ProjectManagementState extends MenuState {
 		Sprite save = SpriteRegistry.getSprite("save");
 		save.setWidth(20);
 		save.setHeight(20);
+		
+		Sprite add = SpriteRegistry.getSprite("addMap");
+		add.setWidth(20);
+		add.setHeight(20);
+		
+		Sprite delete = SpriteRegistry.getSprite("deleteMap");
+		delete.setWidth(20);
+		delete.setHeight(20);
+		
+		addMap = new Button("Add Map", 5, 55, 30, 30, true, new ButtonRunnable() {
+			public void run() {
+				Container cont = new Container(0, 0);
+				Label mapNameLabel = new Label("Map name", 0, 30);
+				cont.addComponent(mapNameLabel);
+				TextBox nameBox = new TextBox(100, 30, 300, (int) mapNameLabel.getDimensions().getHeight());
+				cont.addComponent(nameBox);
+				cont.addComponent(new Label("", 0, 60));
+				Main.popup("Add map", cont, new ButtonRunnable() {
+					public void run() {
+						project.loadMap(nameBox.getText());
+					}
+				});
+			}
+		});
+		
+		addMap.setImage("addMap");
+		
+		deleteMap = new Button("Delete Map", 40, 55, 30, 30, true, new ButtonRunnable() {
+			public void run() {
+				
+			}
+		});
+		
+		deleteMap.setImage("deleteMap");
 		
 		exitProject = new Button("Exit", Main.WIDTH - 35, 55, 30, 30, true, new ButtonRunnable() {
 			public void run() {
@@ -70,6 +105,8 @@ public class ProjectManagementState extends MenuState {
 		registerComponent(pane);
 		registerComponent(exitProject);
 		registerComponent(saveProject);
+		registerComponent(addMap);
+		registerComponent(deleteMap);
 	}
 
 	@Override

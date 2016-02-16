@@ -65,6 +65,8 @@ public class Main {
 		SpriteRegistry.registerSprite("reset", "assets/textures/reset.png");
 		SpriteRegistry.registerSprite("pause", "assets/textures/pause.png");
 		SpriteRegistry.registerSprite("edit", "assets/textures/edit.png");
+		SpriteRegistry.registerSprite("addMap", "assets/textures/newmap.png");
+		SpriteRegistry.registerSprite("deleteMap", "assets/textures/deletemap.png");
 		SpriteRegistry.registerSprite("exit", "assets/textures/exit.png");
 		SpriteRegistry.registerSprite("save", "assets/textures/save.png");
 		SpriteRegistry.registerSprite("new tile", "assets/textures/newtile.png");
