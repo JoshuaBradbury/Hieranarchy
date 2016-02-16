@@ -291,4 +291,20 @@ public class EditorState extends State {
 		}
 		super.update();
 	}
+
+	@Override
+	public void hide() {
+		for (Button button : buttons) {
+			button.hide();
+		}
+		toolbar.hide();
+	}
+
+	@Override
+	public void show() {
+		for (Button button : buttons) {
+			button.show();
+		}
+		toolbar.show();
+	}
 }

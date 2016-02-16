@@ -7,7 +7,7 @@ import uk.co.newagedev.hieranarchy.ui.Component;
 
 public class MenuState extends State {
 
-	public List<Component> components = new ArrayList<Component>();
+	private List<Component> components = new ArrayList<Component>();
 	
 	@Override
 	public void render() {
@@ -19,6 +19,18 @@ public class MenuState extends State {
 	@Override
 	public void onLoad() {
 		
+	}
+	
+	public void hide() {
+		for (Component component : components) {
+			component.hide();
+		}
+	}
+	
+	public void show() {
+		for (Component component : components) {
+			component.show();
+		}
 	}
 
 	@Override

@@ -83,4 +83,8 @@ public abstract class State implements Listener {
 	}
 	
 	public abstract void onLoad();
+	
+	public abstract void hide();
+	
+	public abstract void show();
 }

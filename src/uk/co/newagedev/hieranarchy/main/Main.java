@@ -14,6 +14,7 @@ import uk.co.newagedev.hieranarchy.input.KeyBinding;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.project.Project;
 import uk.co.newagedev.hieranarchy.state.PopupState;
+import uk.co.newagedev.hieranarchy.state.State;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
 import uk.co.newagedev.hieranarchy.ui.Container;
@@ -193,7 +194,11 @@ public class Main {
 	}
 
 	public static void setCurrentState(String state) {
+		State st = StateManager.getState(currentState);
+		if (st != null) st.hide();
 		currentState = state;
+		st = StateManager.getState(currentState);
+		if (st != null) st.show();
 	}
 
 	public static String getCurrentState() {

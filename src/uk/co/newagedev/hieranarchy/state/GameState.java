@@ -23,4 +23,14 @@ public class GameState extends State {
 	public void update() {
 		currentMap.update();
 	}
+
+	@Override
+	public void hide() {
+		
+	}
+
+	@Override
+	public void show() {
+		
+	}
 }

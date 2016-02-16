@@ -68,6 +68,14 @@ public abstract class Component implements Listener {
 		this.y = y;
 	}
 	
+	public void hide() {
+		EventHub.ignoreListener(this);
+	}
+	
+	public void show() {
+		EventHub.listenTo(this);
+	}
+	
 	public abstract void render();
 	
 	public abstract void update();

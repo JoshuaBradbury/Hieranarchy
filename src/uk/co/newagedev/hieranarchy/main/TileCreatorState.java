@@ -98,4 +98,20 @@ public class TileCreatorState extends State {
 	public void update() {
 		container.update();
 	}
+
+	@Override
+	public void hide() {
+		container.hide();
+		connectedTextures.hide();
+		sprite.hide();
+		tileName.hide();
+	}
+
+	@Override
+	public void show() {
+		container.show();
+		connectedTextures.show();
+		sprite.show();
+		tileName.show();		
+	}
 }
