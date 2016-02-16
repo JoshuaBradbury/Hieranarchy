@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="LibraryLWJGLOpenAL">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../sound system/LibraryLWJGLOpenAL.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
