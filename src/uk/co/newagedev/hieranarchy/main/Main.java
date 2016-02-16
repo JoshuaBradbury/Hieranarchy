@@ -13,6 +13,7 @@ import uk.co.newagedev.hieranarchy.input.Cursor;
 import uk.co.newagedev.hieranarchy.input.KeyBinding;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.project.Project;
+import uk.co.newagedev.hieranarchy.scheduler.TaskScheduler;
 import uk.co.newagedev.hieranarchy.state.PopupState;
 import uk.co.newagedev.hieranarchy.state.State;
 import uk.co.newagedev.hieranarchy.state.StateManager;
@@ -38,6 +39,8 @@ public class Main {
 	private static OpenGLScreen screen;
 
 	private static Cursor cursor;
+	
+	private static TaskScheduler scheduler;
 
 	private Thread thread;
 
@@ -53,6 +56,7 @@ public class Main {
 		initStates();
 		initBindings();
 		EventHub.init();
+		scheduler = new TaskScheduler();
 	}
 
 	public void initResources() {
@@ -117,6 +121,7 @@ public class Main {
 		cursor.update();
 		Controller.update();
 		KeyBinding.update();
+		scheduler.update();
 		if (StateManager.getState(currentState) != null) {
 			StateManager.getState(currentState).update();
 		}
