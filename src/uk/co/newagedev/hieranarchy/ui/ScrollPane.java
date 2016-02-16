@@ -35,6 +35,16 @@ public class ScrollPane extends Component {
 	public int getWidth() {
 		return (int) getDimensions().getWidth() - (scrollBars[0] != null ? 15 : 0);
 	}
+	
+	@Override
+	public void setDimensions(int width, int height) {
+		super.setDimensions(width, height);
+		for (ScrollBar bar : scrollBars) {
+			if (bar != null) {
+				bar.updatePaneSize(width, height);
+			}
+		}
+	}
 
 	public void update() {
 		pane.update();

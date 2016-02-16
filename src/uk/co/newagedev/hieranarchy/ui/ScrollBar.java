@@ -61,7 +61,7 @@ public class ScrollBar {
 	public void cursorMove(CursorMoveEvent event) {
 		if (display == ScrollBar.VERTICAL) {
 			barHover = getBar().contains(event.getX(), event.getY());
-			
+
 			if (startDragY != -1) {
 				y = startY + event.getY() - startDragY;
 			}
@@ -181,5 +181,16 @@ public class ScrollBar {
 			Main.getScreen().renderSprite(rightHover ? "arrow hover" : "arrow", new Vector2f((int) (parent.getDisplayLocation().getX() + getParentWidth()) - 2, (int) (parent.getDisplayLocation().getY() + getParentHeight()) - 13), 11, 11, new float[] { 0.0f, 0.0f, 90.0f });
 			Main.getScreen().renderSprite(leftHover ? "arrow hover" : "arrow", new Vector2f((int) (parent.getDisplayLocation().getX()) + 2, (int) (parent.getDisplayLocation().getY() + getParentHeight()) - 2), 11, 11, new float[] { 0.0f, 0.0f, 270.0f });
 		}
+	}
+
+	public void updatePaneSize(int scrollPaneWidth, int scrollPaneHeight) {
+		maxWidth = scrollPaneWidth - 30;
+		maxHeight = scrollPaneHeight - 30;
+
+		int paneWidth = (int) (parent.getPane().getDimensions().getWidth() > getParentWidth() ? parent.getPane().getDimensions().getWidth() : getParentWidth());
+		width = (int) (((float) getParentWidth() / (float) paneWidth) * (float) maxWidth);
+
+		int paneHeight = (int) (parent.getPane().getDimensions().getHeight() > getParentHeight() ? parent.getPane().getDimensions().getHeight() : getParentHeight());
+		height = (int) (((float) getParentHeight() / (float) paneHeight) * (float) maxHeight);
 	}
 }

@@ -16,6 +16,8 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.stb.STBImage;
 
+import uk.co.newagedev.hieranarchy.events.EventHub;
+import uk.co.newagedev.hieranarchy.events.types.screen.ScreenResizeEvent;
 import uk.co.newagedev.hieranarchy.main.Main;
 import uk.co.newagedev.hieranarchy.util.FileUtil;
 import uk.co.newagedev.hieranarchy.util.Logger;
@@ -55,6 +57,7 @@ public class OpenGLScreen implements Screen {
 			public void invoke(long window, int width, int height) {
 				Main.WIDTH = width;
 				Main.HEIGHT = height;
+				EventHub.pushEvent(new ScreenResizeEvent(width, height));
 			}
 		}));
 
