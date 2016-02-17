@@ -28,7 +28,7 @@ public class Main {
 
 	public static final Gson GSON = new Gson();
 
-	public static Project project = new Project("testing");
+	public static Project project;
 
 	public static int WIDTH = 1024, HEIGHT = 576;
 
@@ -197,7 +197,6 @@ public class Main {
 	}
 
 	public void cleanup() {
-		project.cleanup();
 		SpriteRegistry.clear();
 		screen.cleanup();
 	}

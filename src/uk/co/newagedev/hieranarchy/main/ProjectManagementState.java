@@ -5,7 +5,6 @@ import java.awt.Rectangle;
 import uk.co.newagedev.hieranarchy.events.types.screen.ScreenResizeEvent;
 import uk.co.newagedev.hieranarchy.graphics.Sprite;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
-import uk.co.newagedev.hieranarchy.project.Project;
 import uk.co.newagedev.hieranarchy.state.MenuState;
 import uk.co.newagedev.hieranarchy.ui.Button;
 import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
@@ -19,14 +18,11 @@ import uk.co.newagedev.hieranarchy.util.Colour;
 
 public class ProjectManagementState extends MenuState {
 
-	private Project project;
 	private ScrollPane pane;
 	private Container toolbar;
 	private Button exitProject, saveProject, addMap, deleteMap;
 
-	public ProjectManagementState(Project project) {
-		this.project = project;
-		
+	public ProjectManagementState() {
 		pane = new ScrollPane(0, 90, Main.WIDTH, Main.HEIGHT - 90, ScrollBar.VERTICAL);
 		toolbar = new Container(0, 50);
 		
@@ -56,7 +52,7 @@ public class ProjectManagementState extends MenuState {
 				cont.addComponent(new Label("", 0, 60));
 				Main.popup("Add map", cont, new ButtonRunnable() {
 					public void run() {
-						project.loadMap(nameBox.getText());
+						Main.project.loadMap(nameBox.getText());
 					}
 				});
 			}
@@ -74,7 +70,7 @@ public class ProjectManagementState extends MenuState {
 		
 		exitProject = new Button("Exit", Main.WIDTH - 35, 55, 30, 30, true, new ButtonRunnable() {
 			public void run() {
-				if (!project.isSaved()) {
+				if (!Main.project.isSaved()) {
 					Container cont = new Container(0, 0);
 					cont.addComponent(new Label("This project hasn't been saved yet, would you like to exit without saving?", 0, 40));
 					cont.addComponent(new Label("", 0, 100));
@@ -93,8 +89,8 @@ public class ProjectManagementState extends MenuState {
 		
 		saveProject = new Button("Save", Main.WIDTH - 70, 55, 30, 30, true, new ButtonRunnable() {
 			public void run() {
-				if (!project.isSaved()) {
-					project.save();
+				if (!Main.project.isSaved()) {
+					Main.project.save();
 				}
 			}
 		});
@@ -112,7 +108,7 @@ public class ProjectManagementState extends MenuState {
 	@Override
 	public void render() {
 		Main.getScreen().renderQuad(new Rectangle(0, 0, Main.WIDTH, 50), Colour.GREY);
-		Component.componentFont.renderText(project.getName(), Main.WIDTH / 2, 25);
+		Component.componentFont.renderText(Main.project.getName(), Main.WIDTH / 2, 25);
 		Main.getScreen().renderQuad(new Rectangle(0, 50, Main.WIDTH, 40), Colour.LIGHT_GREY);
 		super.render();
 	}

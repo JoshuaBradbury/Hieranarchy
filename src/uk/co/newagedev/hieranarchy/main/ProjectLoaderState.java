@@ -33,13 +33,13 @@ public class ProjectLoaderState extends MenuState {
 	}
 	
 	public void addProjectToLoad(String projectName) {
-		Project project = new Project(projectName);
+		Main.project = new Project(projectName);
 		Container cont = new Container(0, container.getHeight());
 		cont.addComponent(new Label(projectName, 25, 35));
 		cont.addComponent(new Button("Load Project", pane.getWidth() - 225, 20, 200, 50, false, new ButtonRunnable() {
 			public void run() {
 				Logger.info("Loading project " + StringUtil.surroundWith(projectName, "\""));
-				ProjectManagementState state = new ProjectManagementState(project);
+				ProjectManagementState state = new ProjectManagementState();
 				StateManager.registerState(projectName + " management", state);
 				Main.setCurrentState(projectName + " management");
 			}

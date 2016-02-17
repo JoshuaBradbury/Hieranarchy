@@ -36,7 +36,8 @@ public class StartMenuState extends MenuState {
 					public void run() {
 						if (nameBox.getText().length() > 0) {
 							Logger.info("Loading project " + StringUtil.surroundWith(nameBox.getText(), "\""));
-							ProjectManagementState state = new ProjectManagementState(new Project(nameBox.getText()));
+							Main.project = new Project(nameBox.getText());
+							ProjectManagementState state = new ProjectManagementState();
 							StateManager.registerState(nameBox.getText() + " management", state);
 							Main.setCurrentState(nameBox.getText() + " management");
 						}

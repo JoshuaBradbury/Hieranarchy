@@ -45,13 +45,6 @@ public class Project {
 		}
 	}
 	
-	public void cleanup() {
-		save();
-		for (String map : maps.keySet()) {
-			maps.get(map).save();
-		}
-	}
-	
 	public boolean isSaved() {
 		return saved;
 	}
@@ -80,12 +73,6 @@ public class Project {
 	public void saveMap(String mapName) {
 		Map map = maps.get(mapName);
 		map.save();
-	}
-	
-	public void removeMap(String mapName) {
-		saveMap(mapName);
-		maps.remove(mapName);
-		saved = false;
 	}
 	
 	public void save() {
