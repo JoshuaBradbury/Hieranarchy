@@ -1,10 +1,12 @@
 package uk.co.newagedev.hieranarchy.main;
 
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
 import uk.co.newagedev.hieranarchy.events.types.screen.ScreenResizeEvent;
 import uk.co.newagedev.hieranarchy.graphics.Sprite;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
+import uk.co.newagedev.hieranarchy.map.Map;
 import uk.co.newagedev.hieranarchy.state.MenuState;
 import uk.co.newagedev.hieranarchy.ui.Button;
 import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
@@ -15,15 +17,24 @@ import uk.co.newagedev.hieranarchy.ui.ScrollBar;
 import uk.co.newagedev.hieranarchy.ui.ScrollPane;
 import uk.co.newagedev.hieranarchy.ui.TextBox;
 import uk.co.newagedev.hieranarchy.util.Colour;
+import uk.co.newagedev.hieranarchy.util.Logger;
 
 public class ProjectManagementState extends MenuState {
 
 	private ScrollPane pane;
 	private Container toolbar;
 	private Button exitProject, saveProject, addMap, deleteMap;
+	private ArrayList<Container> projectMaps = new ArrayList<Container>();
 
 	public ProjectManagementState() {
+		Main.project.loadMaps();
+		
 		pane = new ScrollPane(0, 90, Main.WIDTH, Main.HEIGHT - 90, ScrollBar.VERTICAL);
+		
+		for (String mapName : Main.project.getMaps()) {
+			addMap(mapName);
+		}
+		
 		toolbar = new Container(0, 50);
 		
 		Sprite exit = SpriteRegistry.getSprite("exit");
@@ -53,6 +64,8 @@ public class ProjectManagementState extends MenuState {
 				Main.popup("Add map", cont, new ButtonRunnable() {
 					public void run() {
 						Main.project.loadMap(nameBox.getText());
+						addMap(nameBox.getText());
+						pane.getPane().addComponent(projectMaps.get(projectMaps.size() - 1));
 					}
 				});
 			}
@@ -103,6 +116,26 @@ public class ProjectManagementState extends MenuState {
 		registerComponent(saveProject);
 		registerComponent(addMap);
 		registerComponent(deleteMap);
+		for (Container cont : projectMaps) {
+			pane.getPane().addComponent(cont);
+		}
+	}
+	
+	public void addMap(String mapName) {
+		Map map = Main.project.getMap(mapName);
+		Container cont = new Container((projectMaps.size() % 2) * (pane.getWidth() / 2), projectMaps.size() / 2 * pane.getHeight() / 2, pane.getWidth() / 2, pane.getHeight() / 2);
+		cont.addComponent(new Button("", 0, 0, (int) cont.getDimensions().getWidth(), (int) cont.getDimensions().getHeight(), false, new ButtonRunnable() {
+			public void run() {
+				Logger.info(mapName, "button clicked!");
+			}
+		}));
+		Label label = new Label(mapName, 0, 0);
+		label.setLocation((int) cont.getDimensions().getWidth() / 2 - (int) label.getDimensions().getWidth() / 2, 25);
+		cont.addComponent(label);
+		cont.addComponent(new Label("Object count: " + map.getObjectCount(), 20, 70));
+		cont.addComponent(new Label("Width: " + map.getWidth(), 20, 100));
+		cont.addComponent(new Label("Height: " + map.getHeight(), 20, 130));
+		projectMaps.add(cont);
 	}
 
 	@Override
@@ -117,5 +150,12 @@ public class ProjectManagementState extends MenuState {
 		pane.setDimensions(event.getWidth(), event.getHeight() - 90);
 		exitProject.setLocation(Main.WIDTH - 35, 55);
 		saveProject.setLocation(Main.WIDTH - 70, 55);
+		for (int i = 0; i < projectMaps.size(); i++) {
+			projectMaps.get(i).setLocation(i % 2 * pane.getWidth() / 2, i / 2 * pane.getHeight() / 2);
+			projectMaps.get(i).setDimensions(pane.getWidth() / 2, pane.getHeight() / 2);
+			projectMaps.get(i).getComponents().get(0).setDimensions((int) projectMaps.get(i).getDimensions().getWidth(), (int) projectMaps.get(i).getDimensions().getHeight());
+			Label label = (Label) projectMaps.get(i).getComponents().get(1);
+			label.setLocation((int) projectMaps.get(i).getDimensions().getWidth() / 2 - (int) label.getDimensions().getWidth() / 2, 25);
+		}
 	}
 }
