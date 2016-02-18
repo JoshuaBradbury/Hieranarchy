@@ -29,11 +29,11 @@ public class ScrollPane extends Component {
 	}
 
 	public int getHeight() {
-		return (int) getDimensions().getHeight() - (scrollBars[1] != null ? 15 : 0);
+		return (int) getDimensions().getHeight() - (scrollBars[0] != null ? 15 : 0);
 	}
 
 	public int getWidth() {
-		return (int) getDimensions().getWidth() - (scrollBars[0] != null ? 15 : 0);
+		return (int) getDimensions().getWidth() - (scrollBars[1] != null ? 15 : 0);
 	}
 	
 	@Override
@@ -92,7 +92,7 @@ public class ScrollPane extends Component {
 
 		pane.setOffset(xOffset, yOffset);
 
-		int yOff = scrollBars[1] != null ? 15 : 0;
+		int yOff = scrollBars[0] != null ? 15 : 0;
 		Main.getScreen().startScissor(new Vector2f(getDisplayLocation().getX(), Main.HEIGHT - getDisplayLocation().getY() - (int) getDimensions().getHeight() + yOff), getWidth(), getHeight());
 		pane.render();
 		Main.getScreen().stopScissor();
