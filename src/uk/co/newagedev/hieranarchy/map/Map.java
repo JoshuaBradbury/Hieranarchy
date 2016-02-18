@@ -239,6 +239,18 @@ public class Map {
 		return objectsWithProps;
 	}
 
+	public int getObjectCount() {
+		return objects.size();
+	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+	
 	public List<MapObject> getObjectsWithinRadius(String type, Vector2f loc, float radius) {
 		List<MapObject> objectsWithinRadius = new ArrayList<MapObject>();
 		for (MapObject object : getObjectsWithProperty(type)) {
