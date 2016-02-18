@@ -6,13 +6,15 @@ import java.util.List;
 
 public class Container extends Component {
 	private List<Component> components = new ArrayList<Component>();
-
+	private boolean sizeSet = false;
+	
 	public Container(int x, int y) {
 		super(x, y);
 	}
 
 	public Container(int x, int y, int width, int height) {
 		super(x, y);
+		sizeSet = true;
 		setDimensions(width, height);
 	}
 
@@ -33,6 +35,7 @@ public class Container extends Component {
 
 	@Override
 	public Dimension getDimensions() {
+		if (sizeSet) return super.getDimensions();
 		return new Dimension(getWidth(), getHeight());
 	}
 
