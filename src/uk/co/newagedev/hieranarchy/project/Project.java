@@ -63,7 +63,8 @@ public class Project {
 	
 	public void loadMap(String mapName) {
 		saved = false;
-		maps.put(mapName, new Map(mapName, this));
+		if (!maps.containsKey(mapName))
+			maps.put(mapName, new Map(mapName, this));
 	}
 	
 	public Map getMap(String mapName) {
@@ -96,5 +97,15 @@ public class Project {
 	public void addObjectToMap(String map, HashMap<String, Object> objectProperties) {
 		maps.get(map).getMapStore().writeObject((String) objectProperties.get("name"), objectProperties);
 		saved = false;
+	}
+
+	public void loadMaps() {
+		for (String mapName : FileUtil.getAllFilesInFolder(projectFolder + MAPS_DIRECTORY)) {
+			loadMap(mapName);
+		}
+	}
+	
+	public String[] getMaps() {
+		return maps.keySet().toArray(new String[] {});
 	}
 }
