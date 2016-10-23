@@ -39,8 +39,6 @@ public class Main {
 	private static OpenGLScreen screen;
 
 	private static Cursor cursor;
-	
-	private static TaskScheduler scheduler;
 
 	private Thread thread;
 
@@ -56,7 +54,6 @@ public class Main {
 		initStates();
 		initBindings();
 		EventHub.init();
-		scheduler = new TaskScheduler();
 	}
 
 	public void initResources() {
@@ -125,7 +122,7 @@ public class Main {
 		cursor.update();
 		Controller.update();
 		KeyBinding.update();
-		scheduler.update();
+		TaskScheduler.update();
 		if (StateManager.getState(currentState) != null) {
 			StateManager.getState(currentState).update();
 		}

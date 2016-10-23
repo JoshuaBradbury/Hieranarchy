@@ -17,7 +17,7 @@ public class TaskScheduler {
 		return task.id;
 	}
 	
-	public int getNextId() {
+	public static int getNextId() {
 		return nextId++;
 	}
 	
@@ -25,7 +25,7 @@ public class TaskScheduler {
 		tasksToRemove.add(id);
 	}
 	
-	public void update() {
+	public static void update() {
 		for (Task task : tasks.values()) {
 			task.update();
 		}
