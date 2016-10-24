@@ -3,7 +3,7 @@ package uk.co.newagedev.hieranarchy.main;
 import java.awt.Rectangle;
 
 import uk.co.newagedev.hieranarchy.events.types.screen.ScreenResizeEvent;
-import uk.co.newagedev.hieranarchy.project.Project;
+import uk.co.newagedev.hieranarchy.project.ProjectManager;
 import uk.co.newagedev.hieranarchy.state.MenuState;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.ui.Button;
@@ -36,7 +36,8 @@ public class StartMenuState extends MenuState {
 					public void run() {
 						if (nameBox.getText().length() > 0) {
 							Logger.info("Loading project " + StringUtil.surroundWith(nameBox.getText(), "\""));
-							Main.project = new Project(nameBox.getText());
+							ProjectManager.loadProject(nameBox.getText());
+							ProjectManager.setCurrentProject(nameBox.getText());
 							ProjectManagementState state = new ProjectManagementState();
 							StateManager.registerState(nameBox.getText() + " management", state);
 							Main.setCurrentState(nameBox.getText() + " management");

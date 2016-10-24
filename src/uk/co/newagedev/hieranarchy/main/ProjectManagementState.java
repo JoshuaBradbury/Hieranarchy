@@ -7,6 +7,7 @@ import uk.co.newagedev.hieranarchy.events.types.screen.ScreenResizeEvent;
 import uk.co.newagedev.hieranarchy.graphics.Sprite;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
 import uk.co.newagedev.hieranarchy.map.Map;
+import uk.co.newagedev.hieranarchy.project.ProjectManager;
 import uk.co.newagedev.hieranarchy.state.MenuState;
 import uk.co.newagedev.hieranarchy.ui.Button;
 import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
@@ -27,11 +28,11 @@ public class ProjectManagementState extends MenuState {
 	private ArrayList<Container> projectMaps = new ArrayList<Container>();
 
 	public ProjectManagementState() {
-		Main.project.loadMaps();
+		ProjectManager.getCurrentProject().loadMaps();
 		
 		pane = new ScrollPane(0, 90, Main.WIDTH, Main.HEIGHT - 90, ScrollBar.VERTICAL);
 		
-		for (String mapName : Main.project.getMaps()) {
+		for (String mapName : ProjectManager.getCurrentProject().getMaps()) {
 			addMap(mapName);
 		}
 		
@@ -63,7 +64,7 @@ public class ProjectManagementState extends MenuState {
 				cont.addComponent(new Label("", 0, 60));
 				Main.popup("Add map", cont, new ButtonRunnable() {
 					public void run() {
-						Main.project.loadMap(nameBox.getText());
+						ProjectManager.getCurrentProject().loadMap(nameBox.getText());
 						addMap(nameBox.getText());
 						pane.getPane().addComponent(projectMaps.get(projectMaps.size() - 1));
 					}
@@ -83,7 +84,7 @@ public class ProjectManagementState extends MenuState {
 		
 		exitProject = new Button("Exit", Main.WIDTH - 35, 55, 30, 30, true, new ButtonRunnable() {
 			public void run() {
-				if (!Main.project.isSaved()) {
+				if (!ProjectManager.getCurrentProject().isSaved()) {
 					Container cont = new Container(0, 0);
 					cont.addComponent(new Label("This project hasn't been saved yet, would you like to exit without saving?", 0, 40));
 					cont.addComponent(new Label("", 0, 100));
@@ -102,9 +103,7 @@ public class ProjectManagementState extends MenuState {
 		
 		saveProject = new Button("Save", Main.WIDTH - 70, 55, 30, 30, true, new ButtonRunnable() {
 			public void run() {
-				if (!Main.project.isSaved()) {
-					Main.project.save();
-				}
+				ProjectManager.unloadCurrentProject();
 			}
 		});
 		
@@ -122,7 +121,7 @@ public class ProjectManagementState extends MenuState {
 	}
 	
 	public void addMap(String mapName) {
-		Map map = Main.project.getMap(mapName);
+		Map map = ProjectManager.getCurrentProject().getMap(mapName);
 		Container cont = new Container((projectMaps.size() % 2) * (pane.getWidth() / 2), projectMaps.size() / 2 * pane.getHeight() / 2, pane.getWidth() / 2, pane.getHeight() / 2);
 		cont.addComponent(new Button("", 0, 0, (int) cont.getDimensions().getWidth(), (int) cont.getDimensions().getHeight(), false, new ButtonRunnable() {
 			public void run() {
@@ -141,7 +140,7 @@ public class ProjectManagementState extends MenuState {
 	@Override
 	public void render() {
 		Main.getScreen().renderQuad(new Rectangle(0, 0, Main.WIDTH, 50), Colour.GREY);
-		Component.componentFont.renderText(Main.project.getName(), Main.WIDTH / 2, 25);
+		Component.componentFont.renderText(ProjectManager.getCurrentProject().getName(), Main.WIDTH / 2, 25);
 		Main.getScreen().renderQuad(new Rectangle(0, 50, Main.WIDTH, 40), Colour.LIGHT_GREY);
 		super.render();
 	}

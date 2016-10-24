@@ -12,7 +12,6 @@ import uk.co.newagedev.hieranarchy.input.Controller;
 import uk.co.newagedev.hieranarchy.input.Cursor;
 import uk.co.newagedev.hieranarchy.input.KeyBinding;
 import uk.co.newagedev.hieranarchy.input.Mouse;
-import uk.co.newagedev.hieranarchy.project.Project;
 import uk.co.newagedev.hieranarchy.scheduler.TaskScheduler;
 import uk.co.newagedev.hieranarchy.state.PopupState;
 import uk.co.newagedev.hieranarchy.state.State;
@@ -27,8 +26,6 @@ public class Main {
 	public static final String TITLE = "Hieranarchy";
 
 	public static final Gson GSON = new Gson();
-
-	public static Project project;
 
 	public static int WIDTH = 1024, HEIGHT = 576;
 

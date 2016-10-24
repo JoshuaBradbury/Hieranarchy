@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 
 import uk.co.newagedev.hieranarchy.project.Project;
+import uk.co.newagedev.hieranarchy.project.ProjectManager;
 import uk.co.newagedev.hieranarchy.state.MenuState;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.ui.Button;
@@ -33,7 +34,8 @@ public class ProjectLoaderState extends MenuState {
 	}
 	
 	public void addProjectToLoad(String projectName) {
-		Main.project = new Project(projectName);
+		ProjectManager.loadProject(projectName);
+		ProjectManager.setCurrentProject(projectName);
 		Container cont = new Container(0, container.getHeight());
 		cont.addComponent(new Label(projectName, 25, 35));
 		cont.addComponent(new Button("Load Project", pane.getWidth() - 225, 20, 200, 50, false, new ButtonRunnable() {

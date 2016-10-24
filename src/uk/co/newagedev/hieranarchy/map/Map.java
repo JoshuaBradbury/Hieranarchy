@@ -15,6 +15,7 @@ import uk.co.newagedev.hieranarchy.main.Main;
 import uk.co.newagedev.hieranarchy.map.objects.MapObject;
 import uk.co.newagedev.hieranarchy.map.objects.Tile;
 import uk.co.newagedev.hieranarchy.project.Project;
+import uk.co.newagedev.hieranarchy.project.ProjectManager;
 import uk.co.newagedev.hieranarchy.state.State;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.util.CollisionBox;
@@ -136,7 +137,7 @@ public class Map {
 			String sprite = (String) store.getObjectProperties(object).get("sprite");
 			if (!SpriteRegistry.doesSpriteExist(sprite)) {
 				String file = "";
-				for (String fileName : FileUtil.getAllFilesInFolder(Main.project.getProjectFolder() + Project.TEXTURES_DIRECTORY)) {
+				for (String fileName : FileUtil.getAllFilesInFolder(ProjectManager.getCurrentProject().getProjectFolder() + Project.TEXTURES_DIRECTORY)) {
 					String temp = FileUtil.getFileNameWithoutExtension(fileName);
 					if (temp.equalsIgnoreCase(sprite)) {
 						file = fileName;

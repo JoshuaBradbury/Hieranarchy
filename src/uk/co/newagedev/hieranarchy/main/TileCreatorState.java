@@ -3,6 +3,7 @@ package uk.co.newagedev.hieranarchy.main;
 import java.awt.Rectangle;
 import java.util.HashMap;
 
+import uk.co.newagedev.hieranarchy.project.ProjectManager;
 import uk.co.newagedev.hieranarchy.state.State;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.ui.Button;
@@ -50,7 +51,7 @@ public class TileCreatorState extends State {
 				EditorState editor = (EditorState) StateManager.getState(stateFrom);
 				HashMap<String, Object> props = getProps();
 				
-				Main.project.addObjectToMap(editor.getCurrentMap().getMapStore().getName(), props);
+				ProjectManager.getCurrentProject().addObjectToMap(editor.getCurrentMap().getMapStore().getName(), props);
 			}
 		});
 		container.addComponent(createTile);
