@@ -137,7 +137,7 @@ public class Map {
 			String sprite = (String) store.getObjectProperties(object).get("sprite");
 			if (!SpriteRegistry.doesSpriteExist(sprite)) {
 				String file = "";
-				for (String fileName : FileUtil.getAllFilesInFolder(ProjectManager.getCurrentProject().getProjectFolder() + Project.TEXTURES_DIRECTORY)) {
+				for (String fileName : FileUtil.getAllFilesInFolderAndSubFolders(ProjectManager.getCurrentProject().getProjectFolder() + Project.TEXTURES_DIRECTORY)) {
 					String temp = FileUtil.getFileNameWithoutExtension(fileName);
 					if (temp.equalsIgnoreCase(sprite)) {
 						file = fileName;

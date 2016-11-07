@@ -4,11 +4,13 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 
 import uk.co.newagedev.hieranarchy.events.types.screen.ScreenResizeEvent;
+import uk.co.newagedev.hieranarchy.graphics.Camera;
 import uk.co.newagedev.hieranarchy.graphics.Sprite;
 import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
 import uk.co.newagedev.hieranarchy.map.Map;
 import uk.co.newagedev.hieranarchy.project.ProjectManager;
 import uk.co.newagedev.hieranarchy.state.MenuState;
+import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.ui.Button;
 import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
 import uk.co.newagedev.hieranarchy.ui.Component;
@@ -18,7 +20,6 @@ import uk.co.newagedev.hieranarchy.ui.ScrollBar;
 import uk.co.newagedev.hieranarchy.ui.ScrollPane;
 import uk.co.newagedev.hieranarchy.ui.TextBox;
 import uk.co.newagedev.hieranarchy.util.Colour;
-import uk.co.newagedev.hieranarchy.util.Logger;
 
 public class ProjectManagementState extends MenuState {
 
@@ -127,7 +128,13 @@ public class ProjectManagementState extends MenuState {
 		Container cont = new Container((projectMaps.size() % 2) * (pane.getWidth() / 2), projectMaps.size() / 2 * pane.getHeight() / 2, pane.getWidth() / 2, pane.getHeight() / 2);
 		cont.addComponent(new Button("", 0, 0, (int) cont.getDimensions().getWidth(), (int) cont.getDimensions().getHeight(), false, new ButtonRunnable() {
 			public void run() {
-				Logger.info(mapName, "button clicked!");
+				EditorState state = new EditorState(map);
+				StateManager.registerState("Edit map " + mapName, state);
+				map.setState("Edit map " + mapName);
+				state.registerCamera("play", new Camera(100, 100));
+				state.registerCamera("edit", new Camera(0, 0));
+				state.switchCamera("edit");
+				Main.setCurrentState("Edit map " + mapName);
 			}
 		}));
 		Label label = new Label(mapName, 0, 0);

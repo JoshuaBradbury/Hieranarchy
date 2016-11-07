@@ -36,6 +36,7 @@ public class EditorState extends State {
 
 	public EditorState(Map map) {
 		currentMap = map;
+		
 		Sprite play = SpriteRegistry.getSprite("play");
 		play.setWidth(20);
 		play.setHeight(20);
