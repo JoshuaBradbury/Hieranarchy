@@ -54,7 +54,7 @@ public class EventHub {
 	public static void pushEvent(Event event) {
 		String[] eventNameParts = event.getClass().getTypeName().split("\\.");
 		String eventName = eventNameParts[eventNameParts.length - 1];
-
+		
 		List<Listener> listeners = new ArrayList<Listener>();
 
 		for (Listener listener : listenersEvents.keySet()) {

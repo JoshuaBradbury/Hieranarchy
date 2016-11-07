@@ -90,10 +90,12 @@ public class ProjectManagementState extends MenuState {
 					cont.addComponent(new Label("", 0, 100));
 					Main.popup("Project not saved", cont, new ButtonRunnable() {
 						public void run() {
+							ProjectManager.unloadCurrentProject();
 							Main.setCurrentState("start menu");
 						}
 					});
 				} else {
+					ProjectManager.unloadCurrentProject();
 					Main.setCurrentState("start menu");
 				}
 			}
@@ -103,7 +105,7 @@ public class ProjectManagementState extends MenuState {
 		
 		saveProject = new Button("Save", Main.WIDTH - 70, 55, 30, 30, true, new ButtonRunnable() {
 			public void run() {
-				ProjectManager.unloadCurrentProject();
+				ProjectManager.getCurrentProject().save();
 			}
 		});
 		

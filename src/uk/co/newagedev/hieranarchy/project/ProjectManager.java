@@ -14,13 +14,19 @@ public class ProjectManager {
 		return project;
 	}
 
-	public static void setCurrentProject(String name) {
+	public static Project getProjectFromName(String name) {
 		for (Project project : loadedProjects) {
 			if (project.getName().equalsIgnoreCase(name)) {
-				currentProject = project;
-				break;
+				return project;
 			}
 		}
+		return null;
+	}
+	
+	public static void setCurrentProject(String name) {
+		Project proj = getProjectFromName(name);
+		if (proj != null)
+			currentProject = proj;
 	}
 	
 	public static void unloadCurrentProject() {
@@ -32,13 +38,9 @@ public class ProjectManager {
 	}
 
 	public static void unloadProject(String name) {
-		for (Project project : loadedProjects) {
-			if (project.getName().equalsIgnoreCase(name)) {
-				project.save();
-				loadedProjects.remove(project);
-				if (currentProject == project)
-					currentProject = null;
-			}
-		}
+		Project proj = getProjectFromName(name);
+		loadedProjects.remove(proj);
+		if (currentProject == proj)
+			currentProject = null;
 	}
 }

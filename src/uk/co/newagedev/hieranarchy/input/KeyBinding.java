@@ -173,7 +173,7 @@ public class KeyBinding {
 		case KEY_2:
 			return shift ? '"' : '2';
 		case KEY_3:
-			return shift ? '£' : '3';
+			return shift ? 'Â£' : '3';
 		case KEY_4:
 			return shift ? '$' : '4';
 		case KEY_5:
@@ -215,7 +215,7 @@ public class KeyBinding {
 		case KEY_G:
 			return capsLock || shift ? 'G' : 'g';
 		case KEY_GRAVE_ACCENT:
-			return shift ? '¬' : '`';
+			return shift ? 'ï¿½' : '`';
 		case KEY_H:
 			return capsLock || shift ? 'H' : 'h';
 		case KEY_I:
@@ -295,6 +295,6 @@ public class KeyBinding {
 		case KEY_Z:
 			return capsLock || shift ? 'Z' : 'z';
 		}
-		return '¥';
+		return 'ï¿½';
 	}
 }
