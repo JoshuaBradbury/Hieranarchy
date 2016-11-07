@@ -6,7 +6,7 @@ Hieranarchy is the name of the game I made for LD 29 that inspired me to make th
 
 #How does it work?
 
-In its current state it doesn't do much but look ugly! The plan is that you will have a prject that holds a bunch of maps and other data. In these maps is more data but also logic will be available, most likely in a way similar to Unreal Engine's blueprint system or MIT's Scratch. This will help to diversify a game but also make it more interesting.
+In its current state it doesn't do much but look ugly! The plan is that you will have a project that holds a bunch of maps and other data. In these maps is more data but also logic will be available, most likely in a way similar to Unreal Engine's blueprint system or MIT's Scratch. This will help to diversify a game but also make it more interesting.
 
 #What is left to do?
 
