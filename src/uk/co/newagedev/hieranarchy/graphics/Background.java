@@ -1,16 +1,13 @@
 package uk.co.newagedev.hieranarchy.graphics;
 
 import uk.co.newagedev.hieranarchy.main.Main;
-import uk.co.newagedev.hieranarchy.map.Map;
+import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class Background {
 	
 	/** The sprite variable for the background. */
 	private String sprite;
-	
-	/** The map the background is a part of. */
-	private Map map;
 	
 	/** The location variables for the background. */
 	private int startX, startY, x, y, z;
@@ -58,25 +55,17 @@ public class Background {
 		return scrollsY;
 	}
 	
-	/**
-	 * Sets the current map.
-	 * @param map - the map to set as the current map.
-	 */
-	public void setMap(Map map) {
-		this.map = map;
-	}
-	
 	public void update() {
-		if (scrollsX) x = (int) ((-map.getState().getCurrentCamera().getX() / z) + startX);
-		if (scrollsY) y = (int) (startY + (map.getState().getCurrentCamera().getY() / z));
+		if (scrollsX) x = (int) ((-StateManager.getCurrentState().getCurrentCamera().getX() / z) + startX);
+		if (scrollsY) y = (int) (startY + (StateManager.getCurrentState().getCurrentCamera().getY() / z));
 	}
 	
 	public void render() {
 		if (SpriteRegistry.doesSpriteExist(sprite)) {
 			int width = SpriteRegistry.getSprite(sprite).getWidth();
-			Main.getScreen().renderSpriteIgnoringCamera(sprite, new Vector2f(((x - map.getState().getCurrentCamera().getX()) % width) - width, y));
-			Main.getScreen().renderSpriteIgnoringCamera(sprite, new Vector2f(((x - map.getState().getCurrentCamera().getX()) % width), y));
-			Main.getScreen().renderSpriteIgnoringCamera(sprite, new Vector2f(((x - map.getState().getCurrentCamera().getX()) % width) + width, y));
+			Main.getScreen().renderSpriteIgnoringCamera(sprite, new Vector2f(((x - StateManager.getCurrentState().getCurrentCamera().getX()) % width) - width, y));
+			Main.getScreen().renderSpriteIgnoringCamera(sprite, new Vector2f(((x - StateManager.getCurrentState().getCurrentCamera().getX()) % width), y));
+			Main.getScreen().renderSpriteIgnoringCamera(sprite, new Vector2f(((x - StateManager.getCurrentState().getCurrentCamera().getX()) % width) + width, y));
 		}
 	}
 }

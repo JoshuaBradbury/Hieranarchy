@@ -11,22 +11,15 @@ import uk.co.newagedev.hieranarchy.graphics.Camera;
 import uk.co.newagedev.hieranarchy.ui.Window;
 
 public abstract class State implements Listener {
-	private Map<String, Camera> cameras = new HashMap<String, Camera>();
-	private List<Window> windows = new ArrayList<Window>();
+	private Map<String, Camera> cameras;
+	private List<Window> windows;
 	private Camera currentCamera;
-	private String name;
-	private boolean loaded = false;
+	private boolean loaded, transparent, shown;
 	
 	public State() {
 		EventHub.registerListener(this);
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public String getName() {
-		return name;
+		windows = new ArrayList<Window>();
+		cameras = new HashMap<String, Camera>();
 	}
 	
 	public List<Window> getWindows() {
@@ -66,6 +59,14 @@ public abstract class State implements Listener {
 		windows.remove(window);
 	}
 	
+	protected void setShown(boolean shown) {
+		this.shown = shown;
+	}
+	
+	public boolean isShown() {
+		return shown;
+	}
+	
 	public void render() {
 		if (!loaded) {
 			loaded = true;
@@ -82,9 +83,22 @@ public abstract class State implements Listener {
 		}
 	}
 	
+	public boolean isTransparent() {
+		return transparent;
+	}
+	
+	public void setIsTransparent(boolean transparent) {
+		this.transparent = transparent;
+	}
+	
 	public abstract void onLoad();
+	public abstract void onDestroy();
 	
-	public abstract void hide();
+	public void hide() {
+		setShown(false);
+	}
 	
-	public abstract void show();
+	public void show() {
+		setShown(true);
+	}
 }

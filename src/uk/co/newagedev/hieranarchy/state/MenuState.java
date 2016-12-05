@@ -8,28 +8,39 @@ import uk.co.newagedev.hieranarchy.ui.Component;
 public class MenuState extends State {
 
 	private List<Component> components = new ArrayList<Component>();
-	
+
 	@Override
 	public void render() {
 		for (Component component : components) {
 			component.render();
 		}
 	}
-	
+
 	@Override
 	public void onLoad() {
-		
+
 	}
 	
+	@Override
+	public void onDestroy() {
+		components.clear();
+	}
+
 	public void hide() {
-		for (Component component : components) {
-			component.hide();
+		if (isShown()) {
+			super.hide();
+			for (Component component : components) {
+				component.hide();
+			}
 		}
 	}
-	
+
 	public void show() {
-		for (Component component : components) {
-			component.show();
+		if (!isShown()) {
+			super.show();
+			for (Component component : components) {
+				component.show();
+			}
 		}
 	}
 
@@ -43,7 +54,7 @@ public class MenuState extends State {
 	public void registerComponent(Component component) {
 		components.add(component);
 	}
-	
+
 	public void removeComponent(Component component) {
 		components.remove(component);
 	}

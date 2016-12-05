@@ -19,7 +19,7 @@ public class Button extends Component {
 	private ButtonRunnable task;
 
 	private String image = "", text = "";
-	
+
 	private int toolTipX;
 
 	public Button(String text, int x, int y, int width, int height, boolean toolTip, ButtonRunnable task) {
@@ -41,26 +41,26 @@ public class Button extends Component {
 		Main.getScreen().renderQuad(buttonDimensions, (hover ? Colour.GREY : Colour.LIGHT_GREY));
 
 		Vector2f loc = getDisplayLocation().clone().add((int) getDimensions().getWidth() / 2, (int) getDimensions().getHeight() / 2);
-		
+
 		if (image != "") {
 			Sprite sprite = SpriteRegistry.getSprite(image);
 			Main.getScreen().renderSpriteIgnoringCamera(image, loc.subtract(sprite.getWidth() / 2, sprite.getHeight() / 2));
 		} else {
 			componentFont.renderText(text, (int) loc.getX(), (int) loc.getY());
 		}
-		
+
 		if (toolTipDisplay && toolTip) {
 			int textHeight = componentFont.getTextHeight(text), textWidth = componentFont.getTextWidth(text);
 			int toolTipY = (int) (getParent().getDisplayLocation().getY() + getParent().getDimensions().getHeight() + 10);
 			Main.getScreen().renderQuad(new Rectangle(toolTipX, toolTipY - textHeight + 14, textWidth + 14, textHeight + 14), Colour.DARK_GREY);
 			Main.getScreen().renderQuad(new Rectangle(toolTipX + 2, toolTipY + 16 - textHeight, textWidth + 10, textHeight + 10), Colour.GREY);
-			
+
 			componentFont.renderText(text, toolTipX + textWidth / 2 + 7, toolTipY - textHeight / 2 + 21);
 		}
 	}
-	
+
 	public void update() {
-		
+
 	}
 
 	public void cursorMove(CursorMoveEvent event) {
@@ -80,7 +80,7 @@ public class Button extends Component {
 			}
 		}
 	}
-	
+
 	public void cursorClick(CursorClickEvent event) {
 		if (event.isButtonReleasing(Mouse.BUTTON_LEFT)) {
 			if (hover) {
@@ -88,11 +88,11 @@ public class Button extends Component {
 			}
 		}
 	}
-	
+
 	public void changeText(String text) {
 		this.text = text;
 	}
-	
+
 	public String getText() {
 		return text;
 	}

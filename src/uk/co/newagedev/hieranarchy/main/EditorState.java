@@ -88,9 +88,8 @@ public class EditorState extends State {
 		buttons[3] = new Button("Create New Tile", 45, 5, 30, 30, true, new ButtonRunnable() {
 			public void run() {
 				if (editing) {
-					TileCreatorState state = new TileCreatorState(getName());
-					StateManager.registerState("tile creator", state);
-					Main.setCurrentState("tile creator");
+					TileCreatorState state = new TileCreatorState();
+					StateManager.pushCurrentState(state);
 				}
 			}
 		});
@@ -102,6 +101,11 @@ public class EditorState extends State {
 	@Override
 	public void onLoad() {
 		currentMap.update();
+	}
+	
+	@Override
+	public void onDestroy() {
+		currentMap.save();
 	}
 
 	public Map getCurrentMap() {

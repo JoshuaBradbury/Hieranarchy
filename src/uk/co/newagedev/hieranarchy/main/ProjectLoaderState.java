@@ -42,8 +42,7 @@ public class ProjectLoaderState extends MenuState {
 			public void run() {
 				Logger.info("Loading project " + StringUtil.surroundWith(projectName, "\""));
 				ProjectManagementState state = new ProjectManagementState();
-				StateManager.registerState(projectName + " management", state);
-				Main.setCurrentState(projectName + " management");
+				StateManager.pushCurrentState(state);
 			}
 		}));
 		cont.update();

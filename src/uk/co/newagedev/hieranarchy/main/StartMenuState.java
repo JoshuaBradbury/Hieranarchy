@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import uk.co.newagedev.hieranarchy.events.types.screen.ScreenResizeEvent;
 import uk.co.newagedev.hieranarchy.project.ProjectManager;
 import uk.co.newagedev.hieranarchy.state.MenuState;
+import uk.co.newagedev.hieranarchy.state.PopupState;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.ui.Button;
 import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
@@ -31,7 +32,7 @@ public class StartMenuState extends MenuState {
 				cont.addComponent(label);
 				cont.addComponent(nameBox);
 				cont.addComponent(spacing);
-				Main.popup("Create New Project", cont, new ButtonRunnable() {
+				PopupState.popup("Create New Project", cont, new ButtonRunnable() {
 					@Override
 					public void run() {
 						if (nameBox.getText().length() > 0) {
@@ -39,8 +40,7 @@ public class StartMenuState extends MenuState {
 							ProjectManager.loadProject(nameBox.getText());
 							ProjectManager.setCurrentProject(nameBox.getText());
 							ProjectManagementState state = new ProjectManagementState();
-							StateManager.registerState(nameBox.getText() + " management", state);
-							Main.setCurrentState(nameBox.getText() + " management");
+							StateManager.pushCurrentState(state);
 						}
 					}
 				});
@@ -51,8 +51,7 @@ public class StartMenuState extends MenuState {
 		loadProjectButton = new Button("Load Project", Main.WIDTH / 2 + 25, Main.HEIGHT / 2 - 100, 200, 50, false, new ButtonRunnable() {
 			public void run() {
 				ProjectLoaderState state = new ProjectLoaderState();
-				StateManager.registerState("project loader", state);
-				Main.setCurrentState("project loader");
+				StateManager.pushCurrentState(state);
 			}
 		});
 		registerComponent(loadProjectButton);

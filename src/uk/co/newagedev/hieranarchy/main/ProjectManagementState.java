@@ -10,6 +10,7 @@ import uk.co.newagedev.hieranarchy.graphics.SpriteRegistry;
 import uk.co.newagedev.hieranarchy.map.Map;
 import uk.co.newagedev.hieranarchy.project.ProjectManager;
 import uk.co.newagedev.hieranarchy.state.MenuState;
+import uk.co.newagedev.hieranarchy.state.PopupState;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.ui.Button;
 import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
@@ -63,7 +64,7 @@ public class ProjectManagementState extends MenuState {
 				TextBox nameBox = new TextBox(100, 30, 300, (int) mapNameLabel.getDimensions().getHeight());
 				cont.addComponent(nameBox);
 				cont.addComponent(new Label("", 0, 60));
-				Main.popup("Add map", cont, new ButtonRunnable() {
+				PopupState.popup("Add map", cont, new ButtonRunnable() {
 					public void run() {
 						ProjectManager.getCurrentProject().loadMap(nameBox.getText());
 						addMap(nameBox.getText());
@@ -89,15 +90,14 @@ public class ProjectManagementState extends MenuState {
 					Container cont = new Container(0, 0);
 					cont.addComponent(new Label("This project hasn't been saved yet, would you like to exit without saving?", 0, 40));
 					cont.addComponent(new Label("", 0, 100));
-					Main.popup("Project not saved", cont, new ButtonRunnable() {
+					PopupState.popup("Project not saved", cont, new ButtonRunnable() {
 						public void run() {
 							ProjectManager.unloadCurrentProject();
-							Main.setCurrentState("start menu");
 						}
 					});
 				} else {
 					ProjectManager.unloadCurrentProject();
-					Main.setCurrentState("start menu");
+					StateManager.popCurrentState();
 				}
 			}
 		});
@@ -129,12 +129,12 @@ public class ProjectManagementState extends MenuState {
 		cont.addComponent(new Button("", 0, 0, (int) cont.getDimensions().getWidth(), (int) cont.getDimensions().getHeight(), false, new ButtonRunnable() {
 			public void run() {
 				EditorState state = new EditorState(map);
-				StateManager.registerState("Edit map " + mapName, state);
-				map.setState("Edit map " + mapName);
+				
 				state.registerCamera("play", new Camera(100, 100));
 				state.registerCamera("edit", new Camera(0, 0));
 				state.switchCamera("edit");
-				Main.setCurrentState("Edit map " + mapName);
+
+				StateManager.pushCurrentState(state);
 			}
 		}));
 		Label label = new Label(mapName, 0, 0);

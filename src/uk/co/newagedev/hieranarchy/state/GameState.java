@@ -15,6 +15,11 @@ public class GameState extends State {
 	}
 	
 	@Override
+	public void onDestroy() {
+		currentMap.save();
+	}
+	
+	@Override
 	public void render() {
 		currentMap.render(getCurrentCamera());
 	}
@@ -22,15 +27,5 @@ public class GameState extends State {
 	@Override
 	public void update() {
 		currentMap.update();
-	}
-
-	@Override
-	public void hide() {
-		
-	}
-
-	@Override
-	public void show() {
-		
 	}
 }

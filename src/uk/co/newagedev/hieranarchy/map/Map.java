@@ -16,13 +16,12 @@ import uk.co.newagedev.hieranarchy.map.objects.MapObject;
 import uk.co.newagedev.hieranarchy.map.objects.Tile;
 import uk.co.newagedev.hieranarchy.project.Project;
 import uk.co.newagedev.hieranarchy.project.ProjectManager;
-import uk.co.newagedev.hieranarchy.state.State;
 import uk.co.newagedev.hieranarchy.state.StateManager;
 import uk.co.newagedev.hieranarchy.util.CollisionBox;
 import uk.co.newagedev.hieranarchy.util.FileUtil;
-import uk.co.newagedev.hieranarchy.util.Vector2f;
 import uk.co.newagedev.hieranarchy.util.Logger;
 import uk.co.newagedev.hieranarchy.util.StringUtil;
+import uk.co.newagedev.hieranarchy.util.Vector2f;
 
 public class Map {
 
@@ -32,7 +31,7 @@ public class Map {
 	private MapStore store = new MapStore();
 	private Background bg;
 	private List<MapObject> objects;
-	private String state, name, mapFolder;
+	private String name, mapFolder;
 	private int width, height;
 
 	public Map(String name, Project project) {
@@ -103,17 +102,8 @@ public class Map {
 		return tile;
 	}
 	
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public State getState() {
-		return StateManager.getState(state);
-	}
-
 	public void setBackground(Background background) {
 		bg = background;
-		bg.setMap(this);
 	}
 
 	public void reload() {
@@ -122,7 +112,7 @@ public class Map {
 
 	public void updateCamera() {
 		bg.update();
-		Camera camera = getState().getCurrentCamera();
+		Camera camera = StateManager.getCurrentState().getCurrentCamera();
 		if (KeyBinding.isBindingDown("Left")) {
 			camera.move((int) (-5 * camera.getZoom()), 0);
 		}
@@ -170,7 +160,6 @@ public class Map {
 	public void loadMap() {
 		bg = new Background(store.getBGSprite(), store.getBGLocation()[0], store.getBGLocation()[1], store.getBGLocation()[2]);
 		bg.setScrollDirections(store.getBGScrollDirections()[0], store.getBGScrollDirections()[1]);
-		bg.setMap(this);
 		width = store.getWidth();
 		height = store.getHeight();
 		objects = new ArrayList<MapObject>();

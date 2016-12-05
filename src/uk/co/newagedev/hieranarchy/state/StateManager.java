@@ -1,22 +1,78 @@
 package uk.co.newagedev.hieranarchy.state;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Stack;
 
-public class StateManager {
+import uk.co.newagedev.hieranarchy.util.ErrorUtil;
 
-	private static Map<String, State> states = new HashMap<String, State>();
+public final class StateManager {
+
+	private static Stack<State> currentStates = new Stack<State>();
 	
-	public static void registerState(String name, State state) {
-		state.setName(name);
-		states.put(name, state);
+	private StateManager() {}
+	
+	public static State getCurrentState() {
+		return currentStates.peek();
 	}
 	
-	public static void removeState(String name) {
-		states.remove(name);
+	public static Stack<State> getCurrentStates() {
+		return currentStates;
 	}
 	
-	public static State getState(String name) {
-		return states.get(name);
+	public static void pushCurrentState(State state) {
+		if (state == null) {
+			ErrorUtil.throwError("Invalid state, please supply a non-null state");
+			return;
+		}
+		if (!state.isTransparent())
+			for (State st : currentStates) {
+				if (!st.isShown()) break;
+				st.hide();
+			}
+		currentStates.push(state);
+	}
+	
+	public static void popCurrentState() {
+		State state = getCurrentState();
+		if (!state.isTransparent()) {
+			for (State st : currentStates) {
+				if (st != state) {
+					if (st.isShown())
+						break;
+					st.show();
+					if (!st.isTransparent())
+						break;
+				}
+			}
+		}
+		currentStates.pop();
+	}
+	
+	public static void updateStates() {
+		ArrayList<State> statesVisible = new ArrayList<State>();
+		
+		for (State state : currentStates) {
+			if (!state.isTransparent())
+				statesVisible.clear();
+			statesVisible.add(state);
+		}
+		
+		for (State state : statesVisible) {
+			state.update();
+		}
+	}
+	
+	public static void renderStates() {
+		ArrayList<State> statesVisible = new ArrayList<State>();
+		
+		for (State state : currentStates) {
+			if (!state.isTransparent())
+				statesVisible.clear();
+			statesVisible.add(state);
+		}
+		
+		for (State state : statesVisible) {
+			state.render();
+		}
 	}
 }

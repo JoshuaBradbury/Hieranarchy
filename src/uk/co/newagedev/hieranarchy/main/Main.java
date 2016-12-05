@@ -1,7 +1,5 @@
 package uk.co.newagedev.hieranarchy.main;
 
-import java.util.Stack;
-
 import com.google.gson.Gson;
 
 import uk.co.newagedev.hieranarchy.events.EventHub;
@@ -13,11 +11,7 @@ import uk.co.newagedev.hieranarchy.input.Cursor;
 import uk.co.newagedev.hieranarchy.input.KeyBinding;
 import uk.co.newagedev.hieranarchy.input.Mouse;
 import uk.co.newagedev.hieranarchy.scheduler.TaskScheduler;
-import uk.co.newagedev.hieranarchy.state.PopupState;
-import uk.co.newagedev.hieranarchy.state.State;
 import uk.co.newagedev.hieranarchy.state.StateManager;
-import uk.co.newagedev.hieranarchy.ui.ButtonRunnable;
-import uk.co.newagedev.hieranarchy.ui.Container;
 import uk.co.newagedev.hieranarchy.util.Logger;
 import uk.co.newagedev.hieranarchy.util.Vector2f;
 
@@ -40,10 +34,6 @@ public class Main {
 	private Thread thread;
 
 	private boolean running;
-
-	private static String currentState;
-
-	private static Stack<String> popupStack = new Stack<String>();
 
 	public void init() {
 		Mouse.init();
@@ -84,8 +74,7 @@ public class Main {
 
 	public void initStates() {
 		StartMenuState state = new StartMenuState();
-		currentState = "start menu";
-		StateManager.registerState(currentState, state);
+		StateManager.pushCurrentState(state);
 	}
 
 	public static void main(String[] args) {
@@ -120,16 +109,12 @@ public class Main {
 		Controller.update();
 		KeyBinding.update();
 		TaskScheduler.update();
-		if (StateManager.getState(currentState) != null) {
-			StateManager.getState(currentState).update();
-		}
+		StateManager.updateStates();
 	}
 
 	public void render() {
 		screen.renderInit();
-		if (StateManager.getState(currentState) != null) {
-			StateManager.getState(currentState).render();
-		}
+		StateManager.renderStates();
 		if (screen.isCursorVisible()) {
 			screen.renderSpriteIgnoringCamera("cursor", new Vector2f(cursor.getX(), cursor.getY()));
 		}
@@ -162,48 +147,8 @@ public class Main {
 		}
 	}
 
-	public static void popup(String title, Container contents, ButtonRunnable runnable) {
-		if (!popupStack.isEmpty()) {
-			currentState = ((PopupState) StateManager.getState(popupStack.lastElement())).getState();
-		}
-		PopupState popup = new PopupState(title, contents, currentState, new ButtonRunnable() {
-			public void run() {
-				if (!popupStack.isEmpty()) {
-					setCurrentState(((PopupState) StateManager.getState(popupStack.lastElement())).getState());
-					StateManager.removeState(popupStack.pop());
-				}
-
-				runnable.setButton(button);
-				runnable.run();
-			}
-		}, new ButtonRunnable() {
-			public void run() {
-				if (!popupStack.isEmpty()) {
-					setCurrentState(((PopupState) StateManager.getState(popupStack.lastElement())).getState());
-					StateManager.removeState(popupStack.pop());
-				}
-			}
-		});
-		StateManager.registerState(title, popup);
-		setCurrentState(title);
-		popupStack.push(title);
-
-	}
-
 	public void cleanup() {
 		SpriteRegistry.clear();
 		screen.cleanup();
-	}
-
-	public static void setCurrentState(String state) {
-		State st = StateManager.getState(currentState);
-		if (st != null) st.hide();
-		currentState = state;
-		st = StateManager.getState(currentState);
-		if (st != null) st.show();
-	}
-
-	public static String getCurrentState() {
-		return currentState;
 	}
 }
